@@ -1,4 +1,4 @@
-import 'package:diasporacare/screens/profile_completed.dart';
+import 'package:diasporacare/screens/auth/profile_completed.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';

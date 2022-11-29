@@ -1,4 +1,4 @@
-import 'package:diasporacare/screens/sign_up.dart';
+import 'package:diasporacare/screens/auth/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
 import 'package:diasporacare/services/misc.dart';

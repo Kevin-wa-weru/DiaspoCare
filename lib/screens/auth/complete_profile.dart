@@ -1,84 +1,34 @@
-import 'package:diasporacare/screens/sign_in.dart';
+import 'package:country_picker/country_picker.dart';
+import 'package:diasporacare/screens/auth/verify_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
-import 'package:diasporacare/services/misc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'complete_profile.dart';
-
-class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+class CompleteProfile extends StatefulWidget {
+  const CompleteProfile({Key? key}) : super(key: key);
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<CompleteProfile> createState() => _CompleteProfileState();
 }
 
-class _SignUpState extends State<SignUp> {
-  final phoneController = TextEditingController();
-  final emailController = TextEditingController();
+class _CompleteProfileState extends State<CompleteProfile> {
+  final practitionerNameController = TextEditingController();
+  final regulatorLicenceController = TextEditingController();
+  final facilityNameController = TextEditingController();
   final passwordController = TextEditingController();
+  final areaofPracticeController = TextEditingController();
   bool hideTopBanner = false;
   bool keyboardVisible = false;
-  bool emailhasIssue = false;
-  bool phonehasIssue = false;
-  bool passwordHasIssue = false;
+  bool facilityNamehasIssue = false;
+  bool practitionerNamehasIssue = false;
+  bool regulatorLicenceIssue = false;
   bool showPassword = true;
   bool emailIsValid = true;
   bool phoneIsValid = true;
+  bool countryHasIssue = false;
   bool checkBoxValue = false;
-
-  void showSnackBar(BuildContext context) {
-    final snackBar = SnackBar(
-      backgroundColor: Colors.black87,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-      duration: const Duration(seconds: 10),
-      content: Row(
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 4.0, left: 15.0),
-            child: Text(
-              'Accept privacy policy',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 13),
-            ),
-          ),
-          const SizedBox(
-            width: 60,
-          ),
-          GestureDetector(
-            onTap: () {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            },
-            child: Container(
-              height: 35,
-              width: 80,
-              color: const Color(0xFF181717),
-              child: const Center(
-                child: Text(
-                  'Okay',
-                  style: TextStyle(
-                      color: primaryColor,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 13),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-      // backgroundColor: const Color(0xFF070606),
-      behavior: SnackBarBehavior.floating,
-      elevation: 2,
-      margin: const EdgeInsets.only(
-        left: 20,
-        right: 20,
-        bottom: 5,
-      ),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
+  String? selectedCountry;
+  int maxLine = 4;
 
   @override
   Widget build(BuildContext context) {
@@ -104,16 +54,16 @@ class _SignUpState extends State<SignUp> {
                 ],
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.06,
+                height: MediaQuery.of(context).size.height * 0.01,
               ),
               Row(
                 children: const [
                   Padding(
                     padding: EdgeInsets.only(left: 20.0),
                     child: Text(
-                      'Welcome to DiaspoCare',
+                      'Account Created',
                       style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.green,
                           fontSize: 20,
                           fontWeight: FontWeight.w600),
                     ),
@@ -123,25 +73,12 @@ class _SignUpState extends State<SignUp> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.03,
               ),
-              Transform.translate(
-                offset: const Offset(-7.0, 0.0),
-                child: const Text(
-                  'Join our DiaspoCare Care Provider Network to be part of \n a movement to provide a quality affordable healthcare in \nAfrica',
-                  style: TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14),
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.03,
-              ),
               Row(
                 children: const [
                   Padding(
                     padding: EdgeInsets.only(left: 20.0),
                     child: Text(
-                      'Owner Details',
+                      'Please complete the facility\ndetails below',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 18,
@@ -160,14 +97,14 @@ class _SignUpState extends State<SignUp> {
                     child: Row(
                       children: [
                         const Text(
-                          'Email Address',
+                          'Facility Name',
                           style: TextStyle(
                               color: Colors.black87,
                               fontFamily: 'AvenirNext',
                               fontWeight: FontWeight.w500,
                               fontSize: 14),
                         ),
-                        emailhasIssue
+                        facilityNamehasIssue
                             ? const Padding(
                                 padding: EdgeInsets.only(left: 8.0),
                                 child: Text(
@@ -205,14 +142,8 @@ class _SignUpState extends State<SignUp> {
                                   fontFamily: 'AvenirNext',
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14),
-                              keyboardType: TextInputType.emailAddress,
+                              keyboardType: TextInputType.name,
                               decoration: InputDecoration(
-                                suffixText: emailIsValid ? '' : 'Invalid email',
-                                suffixStyle: const TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w500,
-                                ),
                                 fillColor: Colors.transparent,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(4),
@@ -221,7 +152,7 @@ class _SignUpState extends State<SignUp> {
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: emailhasIssue
+                                      color: facilityNamehasIssue
                                           ? Colors.red
                                           : secondaryColor,
                                       width: 1.6),
@@ -239,24 +170,13 @@ class _SignUpState extends State<SignUp> {
                                 filled: true,
                               ),
                               onChanged: (value) {
-                                if (emailController.text.isNotEmpty) {
+                                if (facilityNameController.text.isNotEmpty) {
                                   setState(() {
-                                    emailhasIssue = false;
-                                  });
-                                }
-
-                                if (Misc.validateEmail(emailController.text) !=
-                                    null) {
-                                  setState(() {
-                                    emailIsValid = false;
-                                  });
-                                } else {
-                                  setState(() {
-                                    emailIsValid = true;
+                                    facilityNamehasIssue = false;
                                   });
                                 }
                               },
-                              controller: emailController,
+                              controller: facilityNameController,
                             ),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.03,
@@ -266,14 +186,14 @@ class _SignUpState extends State<SignUp> {
                                 Row(
                                   children: [
                                     const Text(
-                                      'Phone Number',
+                                      'Practitioner Name',
                                       style: TextStyle(
                                           color: Colors.black87,
                                           fontFamily: 'AvenirNext',
                                           fontWeight: FontWeight.w500,
                                           fontSize: 14),
                                     ),
-                                    phonehasIssue
+                                    practitionerNamehasIssue
                                         ? const Padding(
                                             padding: EdgeInsets.only(left: 8.0),
                                             child: Text(
@@ -296,121 +216,10 @@ class _SignUpState extends State<SignUp> {
                               textAlign: TextAlign.left,
                               style: const TextStyle(
                                   color: Colors.black87,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14),
-                              keyboardType: TextInputType.phone,
-                              decoration: InputDecoration(
-                                suffixText: phoneIsValid ? '' : 'Invalid phone',
-                                suffixStyle: const TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                fillColor: Colors.transparent,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                  borderSide: const BorderSide(
-                                      color: Colors.black12, width: 0),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: phonehasIssue
-                                          ? Colors.red
-                                          : secondaryColor,
-                                      width: 1.6),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: secondaryColor, width: 1.6),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 5,
-                                ),
-                                filled: true,
-                              ),
-                              onChanged: (value) {
-                                if (phoneController.text.isNotEmpty) {
-                                  setState(() {
-                                    phonehasIssue = false;
-                                  });
-                                }
-
-                                if (Misc.validateMobile(emailController.text) !=
-                                    null) {
-                                  setState(() {
-                                    phoneIsValid = false;
-                                  });
-                                } else {
-                                  setState(() {
-                                    phoneIsValid = true;
-                                  });
-                                }
-                              },
-                              controller: phoneController,
-                            ),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.03,
-                            ),
-                            Row(
-                              children: [
-                                Row(
-                                  children: [
-                                    const Text(
-                                      'Password',
-                                      style: TextStyle(
-                                          color: Colors.black87,
-                                          fontFamily: 'AvenirNext',
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14),
-                                    ),
-                                    passwordHasIssue
-                                        ? const Padding(
-                                            padding: EdgeInsets.only(left: 8.0),
-                                            child: Text(
-                                              'required',
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                          )
-                                        : Container(),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            TextFormField(
-                              obscureText: showPassword,
-                              textAlign: TextAlign.left,
-                              style: const TextStyle(
-                                  color: Colors.black87,
-                                  fontFamily: 'AvenirNext',
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14),
                               keyboardType: TextInputType.name,
                               decoration: InputDecoration(
-                                suffixIcon: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      showPassword = !showPassword;
-                                    });
-                                  },
-                                  child: !showPassword
-                                      ? const Icon(
-                                          Icons.visibility_off,
-                                          color: Colors.grey,
-                                        )
-                                      : const Icon(
-                                          Icons.visibility,
-                                          color: Colors.grey,
-                                        ),
-                                ),
                                 fillColor: Colors.transparent,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(4),
@@ -419,7 +228,7 @@ class _SignUpState extends State<SignUp> {
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: passwordHasIssue
+                                      color: practitionerNamehasIssue
                                           ? Colors.red
                                           : secondaryColor,
                                       width: 1.6),
@@ -435,115 +244,331 @@ class _SignUpState extends State<SignUp> {
                                   vertical: 5,
                                 ),
                                 filled: true,
-                                hintText: 'Password',
-                                hintStyle: const TextStyle(
-                                    color: Colors.black87,
-                                    fontFamily: 'AvenirNext',
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14),
                               ),
                               onChanged: (value) {
-                                if (passwordController.text.isNotEmpty) {
+                                if (practitionerNameController
+                                    .text.isNotEmpty) {
                                   setState(() {
-                                    passwordHasIssue = false;
+                                    practitionerNamehasIssue = false;
                                   });
                                 }
                               },
-                              controller: passwordController,
+                              controller: practitionerNameController,
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.03,
+                            ),
+                            Row(
+                              children: [
+                                Row(
+                                  children: [
+                                    const Text(
+                                      'Regulator Licence No.',
+                                      style: TextStyle(
+                                          color: Colors.black87,
+                                          fontFamily: 'AvenirNext',
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14),
+                                    ),
+                                    regulatorLicenceIssue
+                                        ? const Padding(
+                                            padding: EdgeInsets.only(left: 8.0),
+                                            child: Text(
+                                              'required',
+                                              style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          )
+                                        : Container(),
+                                  ],
+                                ),
+                              ],
                             ),
                             const SizedBox(
-                              height: 15,
+                              height: 10,
                             ),
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: Transform.translate(
-                                  offset: const Offset(-10.0, 0.0),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Checkbox(
-                                              value: checkBoxValue,
-                                              activeColor: primaryColor,
-                                              onChanged: (bool? newValue) {
-                                                setState(() {
-                                                  checkBoxValue = newValue!;
-                                                });
-                                              }),
-                                          const Text(
-                                            'I have read and do understand the terms of',
-                                            style: TextStyle(
-                                                color: Colors.black87,
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 14),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: const [
-                                          Padding(
-                                            padding:
-                                                EdgeInsets.only(left: 49.0),
+                            TextFormField(
+                              textAlign: TextAlign.left,
+                              style: const TextStyle(
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14),
+                              keyboardType: TextInputType.name,
+                              decoration: InputDecoration(
+                                fillColor: Colors.transparent,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                  borderSide: const BorderSide(
+                                      color: Colors.black12, width: 0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: regulatorLicenceIssue
+                                          ? Colors.red
+                                          : secondaryColor,
+                                      width: 1.6),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: secondaryColor, width: 1.6),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 5,
+                                ),
+                                filled: true,
+                              ),
+                              onChanged: (value) {
+                                if (practitionerNameController
+                                    .text.isNotEmpty) {
+                                  setState(() {
+                                    practitionerNamehasIssue = false;
+                                  });
+                                }
+                              },
+                              controller: regulatorLicenceController,
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.03,
+                            ),
+                            Row(
+                              children: [
+                                Row(
+                                  children: [
+                                    const Text(
+                                      'Country',
+                                      style: TextStyle(
+                                          color: Colors.black87,
+                                          fontFamily: 'AvenirNext',
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14),
+                                    ),
+                                    countryHasIssue
+                                        ? const Padding(
+                                            padding: EdgeInsets.only(left: 8.0),
                                             child: Text(
-                                              'use and privacy policy',
+                                              'required',
                                               style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          )
+                                        : Container(),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                showCountryPicker(
+                                  context: context,
+                                  showPhoneCode:
+                                      false, // optional. Shows phone code before the country name.
+                                  onSelect: (Country country) {
+                                    setState(() {
+                                      selectedCountry =
+                                          country.displayNameNoCountryCode;
+                                    });
+                                  },
+                                );
+                              },
+                              child: Container(
+                                height: 50,
+                                width: MediaQuery.of(context).size.width - 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(
+                                    color: secondaryColor,
+                                    width: 1.6,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    selectedCountry == null
+                                        ? Container()
+                                        : Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 10.0),
+                                            child: Text(
+                                              selectedCountry!,
+                                              style: const TextStyle(
                                                   color: Colors.black87,
-                                                  fontWeight: FontWeight.w400,
+                                                  fontFamily: 'AvenirNext',
+                                                  fontWeight: FontWeight.w500,
                                                   fontSize: 14),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ],
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.1,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.09,
+                                      child: SvgPicture.asset(
+                                          'assets/icons/dropdown.svg',
+                                          color: Colors.black,
+                                          fit: BoxFit.contain),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.03,
+                            ),
+                            Row(
+                              children: [
+                                Row(
+                                  children: [
+                                    const Text(
+                                      'Area of Practice',
+                                      style: TextStyle(
+                                          color: Colors.black87,
+                                          fontFamily: 'AvenirNext',
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14),
+                                    ),
+                                    regulatorLicenceIssue
+                                        ? const Padding(
+                                            padding: EdgeInsets.only(left: 8.0),
+                                            child: Text(
+                                              'required',
+                                              style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          )
+                                        : Container(),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: const [
+                                Text(
+                                  'Select All applicable',
+                                  style: TextStyle(
+                                      color: Color(0xFFBC343E),
+                                      fontFamily: 'AvenirNext',
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width - 20,
+                              height: maxLine * 20.0,
+                              child: Padding(
+                                padding: const EdgeInsets.all(0),
+                                child: TextFormField(
+                                  maxLines: maxLine,
+                                  style: const TextStyle(
+                                      color: Color(0xFF000000),
+                                      fontFamily: 'PublicSans',
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14),
+                                  keyboardType: TextInputType.name,
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    fillColor: Colors.transparent,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                      borderSide: const BorderSide(
+                                          color: Colors.transparent, width: 0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: facilityNamehasIssue
+                                              ? Colors.red
+                                              : secondaryColor,
+                                          width: 1.6),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: secondaryColor, width: 1.6),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                      vertical:
+                                          MediaQuery.of(context).size.height *
+                                              0.0197339,
+                                      horizontal: 20,
+                                    ),
+                                    filled: true,
                                   ),
-                                )),
+                                  onChanged: (value) {
+                                    setState(() {});
+                                  },
+                                  controller: areaofPracticeController,
+                                ),
+                              ),
+                            ),
                             const SizedBox(
                               height: 15,
                             ),
                             InkWell(
                               onTap: () {
-                                if (phoneController.text.isEmpty) {
+                                if (facilityNameController.text.isEmpty) {
                                   setState(() {
-                                    phonehasIssue = true;
+                                    facilityNamehasIssue = true;
                                   });
                                 } else {
                                   setState(() {
-                                    phonehasIssue = false;
+                                    facilityNamehasIssue = false;
                                   });
                                 }
 
-                                if (emailController.text.isEmpty) {
+                                if (practitionerNameController.text.isEmpty) {
                                   setState(() {
-                                    emailhasIssue = true;
+                                    practitionerNamehasIssue = true;
                                   });
                                 } else {
                                   setState(() {
-                                    emailhasIssue = false;
+                                    practitionerNamehasIssue = false;
                                   });
                                 }
 
-                                if (passwordController.text.isEmpty) {
+                                if (regulatorLicenceController.text.isEmpty) {
                                   setState(() {
-                                    passwordHasIssue = true;
+                                    regulatorLicenceIssue = true;
                                   });
                                 } else {
                                   setState(() {
-                                    passwordHasIssue = false;
+                                    regulatorLicenceIssue = false;
                                   });
                                 }
 
-                                if (!phonehasIssue &&
-                                    !emailhasIssue &&
-                                    !passwordHasIssue) {
-                                  if (checkBoxValue == false) {
-                                    showSnackBar(context);
-                                  } else {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const CompleteProfile()));
-                                  }
+                                if (selectedCountry == null) {
+                                  setState(() {
+                                    countryHasIssue = true;
+                                  });
+                                }
+
+                                if (!facilityNamehasIssue &&
+                                    !practitionerNamehasIssue &&
+                                    !regulatorLicenceIssue &&
+                                    !countryHasIssue) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const VerifyOtp()));
                                 }
                               },
                               child: Container(
@@ -555,7 +580,7 @@ class _SignUpState extends State<SignUp> {
                                 ),
                                 child: const Center(
                                   child: Text(
-                                    'Create Account',
+                                    'Complete Profile',
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 17,
@@ -564,39 +589,6 @@ class _SignUpState extends State<SignUp> {
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.02,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const SignIn()));
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Text(
-                                    'Already have an account ?',
-                                    style: TextStyle(
-                                        color: Colors.black87,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text(
-                                    'Login',
-                                    style: TextStyle(
-                                        color: secondaryColor,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w900),
-                                  ),
-                                ],
-                              ),
-                            )
                           ],
                         ),
                       ),
@@ -610,4 +602,11 @@ class _SignUpState extends State<SignUp> {
       ],
     ));
   }
+}
+
+class Animal {
+  final String name;
+  final int id;
+
+  Animal({required this.name, required this.id});
 }

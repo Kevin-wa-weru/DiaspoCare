@@ -1,28 +1,83 @@
+import 'package:diasporacare/screens/auth/complete_profile.dart';
+import 'package:diasporacare/screens/auth/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
 import 'package:diasporacare/services/misc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class BankDetails extends StatefulWidget {
-  const BankDetails({Key? key}) : super(key: key);
+class SignUp extends StatefulWidget {
+  const SignUp({Key? key}) : super(key: key);
 
   @override
-  State<BankDetails> createState() => _BankDetailsState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _BankDetailsState extends State<BankDetails> {
-  final accountNameController = TextEditingController();
-  final bankNameController = TextEditingController();
-  final accountNumberController = TextEditingController();
+class _SignUpState extends State<SignUp> {
+  final phoneController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
   bool hideTopBanner = false;
   bool keyboardVisible = false;
-  bool bankNamehasIssue = false;
-  bool accountNamehasIssue = false;
-  bool accountNumberdHasIssue = false;
+  bool emailhasIssue = false;
+  bool phonehasIssue = false;
+  bool passwordHasIssue = false;
   bool showPassword = true;
-
+  bool emailIsValid = true;
   bool phoneIsValid = true;
   bool checkBoxValue = false;
+
+  void showSnackBar(BuildContext context) {
+    final snackBar = SnackBar(
+      backgroundColor: Colors.black87,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+      duration: const Duration(seconds: 10),
+      content: Row(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(top: 4.0, left: 15.0),
+            child: Text(
+              'Accept privacy policy',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 13),
+            ),
+          ),
+          const SizedBox(
+            width: 60,
+          ),
+          GestureDetector(
+            onTap: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            },
+            child: Container(
+              height: 35,
+              width: 80,
+              color: const Color(0xFF181717),
+              child: const Center(
+                child: Text(
+                  'Okay',
+                  style: TextStyle(
+                      color: primaryColor,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 13),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      // backgroundColor: const Color(0xFF070606),
+      behavior: SnackBarBehavior.floating,
+      elevation: 2,
+      margin: const EdgeInsets.only(
+        left: 20,
+        right: 20,
+        bottom: 5,
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,28 +105,52 @@ class _BankDetailsState extends State<BankDetails> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.06,
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 20.0),
-                child: Text(
-                  'Please add your bank details ',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600),
-                ),
+              Row(
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      'Welcome to DiaspoCare',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ],
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 20.0),
-                child: Text(
-                  'So we know where to pay you!',
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
+              ),
+              Transform.translate(
+                offset: const Offset(-7.0, 0.0),
+                child: const Text(
+                  'Join our DiaspoCare Care Provider Network to be part of \n a movement to provide a quality affordable healthcare in \nAfrica',
                   style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600),
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14),
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.06,
+                height: MediaQuery.of(context).size.height * 0.03,
+              ),
+              Row(
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      'Owner Details',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
               ),
               Row(
                 children: [
@@ -80,14 +159,14 @@ class _BankDetailsState extends State<BankDetails> {
                     child: Row(
                       children: [
                         const Text(
-                          'Bank Name',
+                          'Email Address',
                           style: TextStyle(
                               color: Colors.black87,
                               fontFamily: 'AvenirNext',
                               fontWeight: FontWeight.w500,
                               fontSize: 14),
                         ),
-                        bankNamehasIssue
+                        emailhasIssue
                             ? const Padding(
                                 padding: EdgeInsets.only(left: 8.0),
                                 child: Text(
@@ -125,8 +204,14 @@ class _BankDetailsState extends State<BankDetails> {
                                   fontFamily: 'AvenirNext',
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14),
-                              keyboardType: TextInputType.name,
+                              keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
+                                suffixText: emailIsValid ? '' : 'Invalid email',
+                                suffixStyle: const TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500,
+                                ),
                                 fillColor: Colors.transparent,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(4),
@@ -135,7 +220,7 @@ class _BankDetailsState extends State<BankDetails> {
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: bankNamehasIssue
+                                      color: emailhasIssue
                                           ? Colors.red
                                           : secondaryColor,
                                       width: 1.6),
@@ -153,13 +238,24 @@ class _BankDetailsState extends State<BankDetails> {
                                 filled: true,
                               ),
                               onChanged: (value) {
-                                if (bankNameController.text.isNotEmpty) {
+                                if (emailController.text.isNotEmpty) {
                                   setState(() {
-                                    bankNamehasIssue = false;
+                                    emailhasIssue = false;
+                                  });
+                                }
+
+                                if (Misc.validateEmail(emailController.text) !=
+                                    null) {
+                                  setState(() {
+                                    emailIsValid = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    emailIsValid = true;
                                   });
                                 }
                               },
-                              controller: bankNameController,
+                              controller: emailController,
                             ),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.03,
@@ -169,14 +265,14 @@ class _BankDetailsState extends State<BankDetails> {
                                 Row(
                                   children: [
                                     const Text(
-                                      'Account Name',
+                                      'Phone Number',
                                       style: TextStyle(
                                           color: Colors.black87,
                                           fontFamily: 'AvenirNext',
                                           fontWeight: FontWeight.w500,
                                           fontSize: 14),
                                     ),
-                                    accountNamehasIssue
+                                    phonehasIssue
                                         ? const Padding(
                                             padding: EdgeInsets.only(left: 8.0),
                                             child: Text(
@@ -201,8 +297,14 @@ class _BankDetailsState extends State<BankDetails> {
                                   color: Colors.black87,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14),
-                              keyboardType: TextInputType.name,
+                              keyboardType: TextInputType.phone,
                               decoration: InputDecoration(
+                                suffixText: phoneIsValid ? '' : 'Invalid phone',
+                                suffixStyle: const TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500,
+                                ),
                                 fillColor: Colors.transparent,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(4),
@@ -211,7 +313,7 @@ class _BankDetailsState extends State<BankDetails> {
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: accountNamehasIssue
+                                      color: phonehasIssue
                                           ? Colors.red
                                           : secondaryColor,
                                       width: 1.6),
@@ -229,13 +331,24 @@ class _BankDetailsState extends State<BankDetails> {
                                 filled: true,
                               ),
                               onChanged: (value) {
-                                if (accountNameController.text.isNotEmpty) {
+                                if (phoneController.text.isNotEmpty) {
                                   setState(() {
-                                    accountNamehasIssue = false;
+                                    phonehasIssue = false;
+                                  });
+                                }
+
+                                if (Misc.validateMobile(emailController.text) !=
+                                    null) {
+                                  setState(() {
+                                    phoneIsValid = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    phoneIsValid = true;
                                   });
                                 }
                               },
-                              controller: accountNameController,
+                              controller: phoneController,
                             ),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.03,
@@ -245,14 +358,14 @@ class _BankDetailsState extends State<BankDetails> {
                                 Row(
                                   children: [
                                     const Text(
-                                      'Account Number',
+                                      'Password',
                                       style: TextStyle(
                                           color: Colors.black87,
                                           fontFamily: 'AvenirNext',
                                           fontWeight: FontWeight.w500,
                                           fontSize: 14),
                                     ),
-                                    accountNumberdHasIssue
+                                    passwordHasIssue
                                         ? const Padding(
                                             padding: EdgeInsets.only(left: 8.0),
                                             child: Text(
@@ -272,14 +385,31 @@ class _BankDetailsState extends State<BankDetails> {
                               height: 10,
                             ),
                             TextFormField(
+                              obscureText: showPassword,
                               textAlign: TextAlign.left,
                               style: const TextStyle(
                                   color: Colors.black87,
                                   fontFamily: 'AvenirNext',
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14),
-                              keyboardType: TextInputType.phone,
+                              keyboardType: TextInputType.name,
                               decoration: InputDecoration(
+                                suffixIcon: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      showPassword = !showPassword;
+                                    });
+                                  },
+                                  child: !showPassword
+                                      ? const Icon(
+                                          Icons.visibility_off,
+                                          color: Colors.grey,
+                                        )
+                                      : const Icon(
+                                          Icons.visibility,
+                                          color: Colors.grey,
+                                        ),
+                                ),
                                 fillColor: Colors.transparent,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(4),
@@ -288,7 +418,7 @@ class _BankDetailsState extends State<BankDetails> {
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: accountNumberdHasIssue
+                                      color: passwordHasIssue
                                           ? Colors.red
                                           : secondaryColor,
                                       width: 1.6),
@@ -304,6 +434,7 @@ class _BankDetailsState extends State<BankDetails> {
                                   vertical: 5,
                                 ),
                                 filled: true,
+                                hintText: 'Password',
                                 hintStyle: const TextStyle(
                                     color: Colors.black87,
                                     fontFamily: 'AvenirNext',
@@ -311,47 +442,107 @@ class _BankDetailsState extends State<BankDetails> {
                                     fontSize: 14),
                               ),
                               onChanged: (value) {
-                                if (accountNumberController.text.isNotEmpty) {
+                                if (passwordController.text.isNotEmpty) {
                                   setState(() {
-                                    accountNumberdHasIssue = false;
+                                    passwordHasIssue = false;
                                   });
                                 }
                               },
-                              controller: accountNumberController,
+                              controller: passwordController,
                             ),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.06,
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: Transform.translate(
+                                  offset: const Offset(-10.0, 0.0),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Checkbox(
+                                              value: checkBoxValue,
+                                              activeColor: primaryColor,
+                                              onChanged: (bool? newValue) {
+                                                setState(() {
+                                                  checkBoxValue = newValue!;
+                                                });
+                                              }),
+                                          const Text(
+                                            'I have read and do understand the terms of',
+                                            style: TextStyle(
+                                                color: Colors.black87,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 14),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: const [
+                                          Padding(
+                                            padding:
+                                                EdgeInsets.only(left: 49.0),
+                                            child: Text(
+                                              'use and privacy policy',
+                                              style: TextStyle(
+                                                  color: Colors.black87,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 14),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                            const SizedBox(
+                              height: 15,
                             ),
                             InkWell(
                               onTap: () {
-                                if (accountNameController.text.isEmpty) {
+                                if (phoneController.text.isEmpty) {
                                   setState(() {
-                                    accountNamehasIssue = true;
+                                    phonehasIssue = true;
                                   });
                                 } else {
                                   setState(() {
-                                    accountNamehasIssue = false;
+                                    phonehasIssue = false;
                                   });
                                 }
 
-                                if (bankNameController.text.isEmpty) {
+                                if (emailController.text.isEmpty) {
                                   setState(() {
-                                    bankNamehasIssue = true;
+                                    emailhasIssue = true;
                                   });
                                 } else {
                                   setState(() {
-                                    bankNamehasIssue = false;
+                                    emailhasIssue = false;
                                   });
                                 }
 
-                                if (accountNumberController.text.isEmpty) {
+                                if (passwordController.text.isEmpty) {
                                   setState(() {
-                                    accountNumberdHasIssue = true;
+                                    passwordHasIssue = true;
                                   });
                                 } else {
                                   setState(() {
-                                    accountNumberdHasIssue = false;
+                                    passwordHasIssue = false;
                                   });
+                                }
+
+                                if (!phonehasIssue &&
+                                    !emailhasIssue &&
+                                    !passwordHasIssue) {
+                                  if (checkBoxValue == false) {
+                                    showSnackBar(context);
+                                  } else {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CompleteProfile()));
+                                  }
                                 }
                               },
                               child: Container(
@@ -363,7 +554,7 @@ class _BankDetailsState extends State<BankDetails> {
                                 ),
                                 child: const Center(
                                   child: Text(
-                                    'Save Bank Details',
+                                    'Create Account',
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 17,
@@ -375,6 +566,36 @@ class _BankDetailsState extends State<BankDetails> {
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.02,
                             ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const SignIn()));
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Text(
+                                    'Already have an account ?',
+                                    style: TextStyle(
+                                        color: Colors.black87,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text(
+                                    'Login',
+                                    style: TextStyle(
+                                        color: secondaryColor,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w900),
+                                  ),
+                                ],
+                              ),
+                            )
                           ],
                         ),
                       ),
