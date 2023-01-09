@@ -87,7 +87,7 @@ class _SignUpState extends State<SignUp> {
       child: Column(
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height,
+            // height: MediaQuery.of(context).size.height,
             child: Column(
               children: [
                 SizedBox(
