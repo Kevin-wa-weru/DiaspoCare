@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:diasporacare/models/transaction_type.dart';
 import 'package:diasporacare/screens/transactions/createneworder.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +21,7 @@ class _TransactionState extends State<Transaction> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: const Color(0xFF145DA0),
         title: const Text(
@@ -111,237 +110,120 @@ class _TransactionState extends State<Transaction> {
                   canTapOnHeader: true,
                   backgroundColor: Colors.transparent,
                   value: singleTransactionType.transactionType,
-                  body: Container(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.14,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(10)),
-                                border: Border.all(
-                                  color: Colors.black12,
-                                  width: 1.5,
-                                )),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 8, right: 8, top: 8),
-                                  child: Row(
-                                    children: [
-                                      Transform.translate(
-                                        offset: const Offset(0.0, 0.0),
-                                        child: Container(
-                                          height: 10,
-                                          width: 10,
-                                          decoration: BoxDecoration(
-                                            color: singleTransactionType
-                                                .transactionColor,
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(100)),
-                                          ),
+                  body: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.14,
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              border: Border.all(
+                                color: Colors.black12,
+                                width: 1.5,
+                              )),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 8, right: 8, top: 8),
+                                child: Row(
+                                  children: [
+                                    Transform.translate(
+                                      offset: const Offset(0.0, 0.0),
+                                      child: Container(
+                                        height: 10,
+                                        width: 10,
+                                        decoration: BoxDecoration(
+                                          color: singleTransactionType
+                                              .transactionColor,
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(100)),
                                         ),
                                       ),
-                                      const Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                        ),
-                                        child: Text(
-                                          "a2h4bu34",
-                                          style: TextStyle(
-                                              color: Color(0xFF145DA0),
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600),
-                                        ),
+                                    ),
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 8,
                                       ),
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.26,
-                                      ),
-                                      const Text(
-                                        "12 items for 2,890",
+                                      child: Text(
+                                        "a2h4bu34",
                                         style: TextStyle(
                                             color: Color(0xFF145DA0),
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.26,
+                                    ),
+                                    const Text(
+                                      "12 items for 2,890",
+                                      style: TextStyle(
+                                          color: Color(0xFF145DA0),
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
                                 ),
-                                const Divider(
-                                  color: Colors.grey,
+                              ),
+                              const Divider(
+                                color: Colors.grey,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 2),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: const [
+                                    Text(
+                                      "28th October 2022, 13:56:34 am",
+                                      style: TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600),
+                                    )
+                                  ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 2),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: const [
-                                      Text(
-                                        "28th October 2022, 13:56:34 am",
-                                        style: TextStyle(
-                                            color: Colors.black54,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600),
-                                      )
-                                    ],
-                                  ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 2),
+                                child: Row(
+                                  // ignore: prefer_const_literals_to_create_immutables
+                                  children: [
+                                    const Text(
+                                      "Beneficiary:",
+                                      style: TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 2),
-                                  child: Row(
-                                    // ignore: prefer_const_literals_to_create_immutables
-                                    children: [
-                                      const Text(
-                                        "Beneficiary:",
-                                        style: TextStyle(
-                                            color: Colors.black54,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 2),
+                                child: Row(
+                                  children: const [
+                                    Text(
+                                      "Kelvin Cluishank",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 2),
-                                  child: Row(
-                                    children: const [
-                                      Text(
-                                        "Kelvin Cluishank",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
+                              )
+                            ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.14,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(10)),
-                                border: Border.all(
-                                  color: Colors.black12,
-                                  width: 1.5,
-                                )),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 8, right: 8, top: 8),
-                                  child: Row(
-                                    children: [
-                                      Transform.translate(
-                                        offset: const Offset(0.0, 0.0),
-                                        child: Container(
-                                          height: 10,
-                                          width: 10,
-                                          decoration: BoxDecoration(
-                                            color: singleTransactionType
-                                                .transactionColor,
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(100)),
-                                          ),
-                                        ),
-                                      ),
-                                      const Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                        ),
-                                        child: Text(
-                                          "a2h4bu34",
-                                          style: TextStyle(
-                                              color: Color(0xFF145DA0),
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.26,
-                                      ),
-                                      const Text(
-                                        "12 items for 2,890",
-                                        style: TextStyle(
-                                            color: Color(0xFF145DA0),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const Divider(
-                                  color: Colors.grey,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 2),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: const [
-                                      Text(
-                                        "28th October 2022, 13:56:34 am",
-                                        style: TextStyle(
-                                            color: Colors.black54,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 2),
-                                  child: Row(
-                                    // ignore: prefer_const_literals_to_create_immutables
-                                    children: [
-                                      const Text(
-                                        "Beneficiary:",
-                                        style: TextStyle(
-                                            color: Colors.black54,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 2),
-                                  child: Row(
-                                    children: const [
-                                      Text(
-                                        "Kelvin Cluishank",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   headerBuilder: (BuildContext context, bool isExpanded) {
                     return ListTile(
