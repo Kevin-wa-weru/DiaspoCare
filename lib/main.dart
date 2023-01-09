@@ -1,4 +1,5 @@
 import 'package:diasporacare/screens/auth/sign_up.dart';
+import 'package:diasporacare/screens/auth/verify_otp.dart';
 import 'package:diasporacare/screens/homepage/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -16,8 +17,9 @@ class MyApp extends StatelessWidget {
       title: 'Diaspora Care',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'JosefinSans',
       ),
-      home: const HomeScreen(),
+      home: const SignUp(),
     );
   }
 }

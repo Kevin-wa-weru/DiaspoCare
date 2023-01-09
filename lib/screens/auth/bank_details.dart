@@ -82,7 +82,6 @@ class _BankDetailsState extends State<BankDetails> {
                           'Bank Name',
                           style: TextStyle(
                               color: Colors.black87,
-                              fontFamily: 'AvenirNext',
                               fontWeight: FontWeight.w500,
                               fontSize: 14),
                         ),
@@ -121,7 +120,6 @@ class _BankDetailsState extends State<BankDetails> {
                               textAlign: TextAlign.left,
                               style: const TextStyle(
                                   color: Colors.black87,
-                                  fontFamily: 'AvenirNext',
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14),
                               keyboardType: TextInputType.name,
@@ -171,7 +169,6 @@ class _BankDetailsState extends State<BankDetails> {
                                       'Account Name',
                                       style: TextStyle(
                                           color: Colors.black87,
-                                          fontFamily: 'AvenirNext',
                                           fontWeight: FontWeight.w500,
                                           fontSize: 14),
                                     ),
@@ -247,7 +244,6 @@ class _BankDetailsState extends State<BankDetails> {
                                       'Account Number',
                                       style: TextStyle(
                                           color: Colors.black87,
-                                          fontFamily: 'AvenirNext',
                                           fontWeight: FontWeight.w500,
                                           fontSize: 14),
                                     ),
@@ -274,7 +270,6 @@ class _BankDetailsState extends State<BankDetails> {
                               textAlign: TextAlign.left,
                               style: const TextStyle(
                                   color: Colors.black87,
-                                  fontFamily: 'AvenirNext',
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14),
                               keyboardType: TextInputType.phone,
@@ -305,7 +300,6 @@ class _BankDetailsState extends State<BankDetails> {
                                 filled: true,
                                 hintStyle: const TextStyle(
                                     color: Colors.black87,
-                                    fontFamily: 'AvenirNext',
                                     fontWeight: FontWeight.w500,
                                     fontSize: 14),
                               ),

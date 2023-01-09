@@ -24,10 +24,8 @@ class _ProfileCompleteState extends State<ProfileComplete> {
               Padding(
                 padding: const EdgeInsets.only(left: 15.0),
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.10,
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  child: SvgPicture.asset('assets/images/logo.svg',
-                      fit: BoxFit.contain),
+                  height: 50,
+                  child: Image.asset('assets/images/logo.png'),
                 ),
               ),
             ],
@@ -81,12 +79,15 @@ class _ProfileCompleteState extends State<ProfileComplete> {
                       fontWeight: FontWeight.w400,
                       fontSize: 16),
                 ),
-                const Text(
-                  'we will verify your account within 24 hours',
-                  style: TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16),
+                const Padding(
+                  padding: EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    'we will verify your account within 24 hours',
+                    style: TextStyle(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16),
+                  ),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.04,
@@ -98,12 +99,15 @@ class _ProfileCompleteState extends State<ProfileComplete> {
                       fontWeight: FontWeight.w400,
                       fontSize: 16),
                 ),
-                const Text(
-                  'your end at the moment',
-                  style: TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16),
+                const Padding(
+                  padding: EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    'your end at the moment',
+                    style: TextStyle(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16),
+                  ),
                 ),
               ],
             ),

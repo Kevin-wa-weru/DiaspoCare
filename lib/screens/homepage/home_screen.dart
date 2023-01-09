@@ -1,4 +1,6 @@
+import 'package:diasporacare/screens/homepage/account.dart';
 import 'package:diasporacare/screens/homepage/home_page.dart';
+import 'package:diasporacare/screens/homepage/promotions.dart';
 import 'package:diasporacare/screens/transactions/transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,22 +34,16 @@ class _HomeScreenState extends State<HomeScreen> {
         children: const [
           HomePage(),
           Transaction(),
-          HomePage(),
-          HomePage(),
+          Promotions(),
+          Account(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         selectedLabelStyle: const TextStyle(
-            fontSize: 10,
-            fontFamily: 'AvenirNext',
-            fontWeight: FontWeight.w600,
-            color: Colors.black54),
+            fontSize: 10, fontWeight: FontWeight.w600, color: Colors.black54),
         unselectedLabelStyle: const TextStyle(
-            fontSize: 10,
-            fontFamily: 'AvenirNext',
-            fontWeight: FontWeight.w600,
-            color: Colors.black87),
+            fontSize: 10, fontWeight: FontWeight.w600, color: Colors.black87),
         unselectedItemColor: Colors.black,
         selectedItemColor: Colors.black54,
         showUnselectedLabels: true,

@@ -1,8 +1,8 @@
 import 'package:diasporacare/screens/auth/sign_up.dart';
+import 'package:diasporacare/screens/homepage/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
 import 'package:diasporacare/services/misc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -31,20 +31,22 @@ class _SignInState extends State<SignIn> {
           height: MediaQuery.of(context).size.height,
           child: Column(
             children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.06,
+              ),
               Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 15.0),
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: SvgPicture.asset(
-                        'assets/images/logo.svg',
-                        // fit: BoxFit.contain
-                      ),
+                      height: 50,
+                      child: Image.asset('assets/images/logo.png'),
                     ),
                   ),
                 ],
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.06,
               ),
               Row(
                 children: const [
@@ -82,7 +84,6 @@ class _SignInState extends State<SignIn> {
                               textAlign: TextAlign.left,
                               style: const TextStyle(
                                   color: Colors.black87,
-                                  fontFamily: 'AvenirNext',
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14),
                               keyboardType: TextInputType.emailAddress,
@@ -120,7 +121,6 @@ class _SignInState extends State<SignIn> {
                                 hintText: 'Email Address',
                                 hintStyle: const TextStyle(
                                     color: Colors.black87,
-                                    fontFamily: 'AvenirNext',
                                     fontWeight: FontWeight.w500,
                                     fontSize: 14),
                               ),
@@ -146,8 +146,8 @@ class _SignInState extends State<SignIn> {
                                         child: Text(
                                           'Please enter your Email',
                                           style: TextStyle(
-                                              color: Colors.red,
-                                              fontFamily: 'AvenirNext'),
+                                            color: Colors.red,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -161,7 +161,6 @@ class _SignInState extends State<SignIn> {
                               textAlign: TextAlign.left,
                               style: const TextStyle(
                                   color: Colors.black87,
-                                  fontFamily: 'AvenirNext',
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14),
                               keyboardType: TextInputType.name,
@@ -209,7 +208,6 @@ class _SignInState extends State<SignIn> {
                                 hintText: 'Password',
                                 hintStyle: const TextStyle(
                                     color: Colors.black87,
-                                    fontFamily: 'AvenirNext',
                                     fontWeight: FontWeight.w500,
                                     fontSize: 14),
                               ),
@@ -226,8 +224,8 @@ class _SignInState extends State<SignIn> {
                                         child: Text(
                                           'Please enter a password',
                                           style: TextStyle(
-                                              color: Colors.red,
-                                              fontFamily: 'AvenirNext'),
+                                            color: Colors.red,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -246,7 +244,6 @@ class _SignInState extends State<SignIn> {
                                     'Forgot Password?',
                                     style: TextStyle(
                                         color: secondaryColor,
-                                        fontFamily: 'AvenirNext',
                                         fontSize: 12,
                                         fontWeight: FontWeight.w600),
                                   ),
@@ -277,6 +274,14 @@ class _SignInState extends State<SignIn> {
                                     passwordHasIssue = false;
                                   });
                                 }
+
+                                if (!emailhasIssue && !passwordHasIssue) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const HomeScreen()));
+                                }
                               },
                               child: Container(
                                 height: 50,
@@ -299,7 +304,7 @@ class _SignInState extends State<SignIn> {
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.10,
                             ),
-                            InkWell(
+                            GestureDetector(
                               onTap: () {
                                 Navigator.push(
                                     context,

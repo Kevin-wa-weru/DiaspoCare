@@ -75,15 +75,16 @@ class _VerifyOtpState extends State<VerifyOtp> {
           height: MediaQuery.of(context).size.height,
           child: Column(
             children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
+              ),
               Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 15.0),
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.10,
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: SvgPicture.asset('assets/images/logo.svg',
-                          fit: BoxFit.contain),
+                      height: 50,
+                      child: Image.asset('assets/images/logo.png'),
                     ),
                   ),
                 ],

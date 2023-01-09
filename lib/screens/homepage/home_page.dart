@@ -23,23 +23,26 @@ class HomePage extends StatelessWidget {
           ),
           child: Column(
             children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.025,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 15.0),
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.10,
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: SvgPicture.asset('assets/images/logo.svg',
-                          fit: BoxFit.contain),
+                      height: 50,
+                      child: Image.asset('assets/images/logo.png'),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 15.0, top: 5),
+                    padding: const EdgeInsets.only(
+                      right: 15.0,
+                    ),
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.025,
-                      width: MediaQuery.of(context).size.width * 0.15,
+                      height: MediaQuery.of(context).size.height * 0.027,
+                      width: MediaQuery.of(context).size.width * 0.17,
                       decoration: const BoxDecoration(
                           color: Colors.green,
                           borderRadius: BorderRadius.all(
@@ -99,7 +102,7 @@ class HomePage extends StatelessWidget {
           height: MediaQuery.of(context).size.height * 0.025,
         ),
         Container(
-          height: MediaQuery.of(context).size.height * 0.31,
+          height: MediaQuery.of(context).size.height * 0.33,
           width: MediaQuery.of(context).size.width * 0.95,
           decoration: BoxDecoration(
             color: Colors.transparent,
@@ -139,7 +142,7 @@ class HomePage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 15.0),
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.10,
+                      height: MediaQuery.of(context).size.height * 0.11,
                       width: MediaQuery.of(context).size.width * 0.40,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
@@ -208,7 +211,7 @@ class HomePage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(right: 15.0),
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.10,
+                      height: MediaQuery.of(context).size.height * 0.11,
                       width: MediaQuery.of(context).size.width * 0.40,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
@@ -288,7 +291,7 @@ class HomePage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 15.0),
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.10,
+                      height: MediaQuery.of(context).size.height * 0.11,
                       width: MediaQuery.of(context).size.width * 0.40,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
@@ -360,7 +363,7 @@ class HomePage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(right: 15.0),
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.10,
+                      height: MediaQuery.of(context).size.height * 0.11,
                       width: MediaQuery.of(context).size.width * 0.40,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
