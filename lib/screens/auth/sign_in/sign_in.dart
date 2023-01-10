@@ -1,8 +1,10 @@
-import 'package:diasporacare/screens/auth/sign_up.dart';
+import 'package:diasporacare/screens/auth/sign_in/cubit/sign_in_cubit.dart';
+import 'package:diasporacare/screens/auth/sign_up/sign_up.dart';
 import 'package:diasporacare/screens/homepage/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
 import 'package:diasporacare/services/misc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -21,6 +23,91 @@ class _SignInState extends State<SignIn> {
   bool passwordHasIssue = false;
   bool showPassword = true;
   bool emailIsValid = true;
+
+  void showSnackBar(BuildContext context, message) {
+    final snackBar = SnackBar(
+      backgroundColor: Colors.black87,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+      duration: const Duration(seconds: 10),
+      content: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 4.0, left: 15.0),
+            child: Text(
+              message,
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'JosefinSans',
+                  fontWeight: FontWeight.w800,
+                  fontSize: 13),
+            ),
+          ),
+          const SizedBox(
+            width: 60,
+          ),
+          GestureDetector(
+            onTap: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            },
+            child: Container(
+              height: 35,
+              width: 80,
+              color: const Color(0xFF181717),
+              child: const Center(
+                child: Text(
+                  'Okay',
+                  style: TextStyle(
+                      color: primaryColor,
+                      fontFamily: 'JosefinSans',
+                      fontWeight: FontWeight.w800,
+                      fontSize: 13),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      // backgroundColor: const Color(0xFF070606),
+      behavior: SnackBarBehavior.floating,
+      elevation: 2,
+      margin: const EdgeInsets.only(
+        left: 20,
+        right: 20,
+        bottom: 5,
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void showSnackBarWithoutButton(BuildContext context, message) {
+    final snackBar = SnackBar(
+      backgroundColor: Colors.black87,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+      duration: const Duration(seconds: 3),
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            message,
+            style: const TextStyle(
+                fontFamily: 'JosefinSans',
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+                fontSize: 13),
+          ),
+        ],
+      ),
+      // backgroundColor: const Color(0xFF070606),
+      behavior: SnackBarBehavior.floating,
+      elevation: 2,
+      margin: const EdgeInsets.only(
+        left: 20,
+        right: 20,
+        bottom: 5,
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -276,33 +363,138 @@ class _SignInState extends State<SignIn> {
                                 }
 
                                 if (!emailhasIssue && !passwordHasIssue) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const HomeScreen()));
+                                  context.read<SignInCubit>().signIn(
+                                      emailController.text.trim(),
+                                      passwordController.text.trim());
                                 }
                               },
-                              child: Container(
-                                height: 50,
-                                width: MediaQuery.of(context).size.width - 40,
-                                decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    'Login',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w800),
-                                  ),
+                              child: BlocConsumer<SignInCubit, SignInState>(
+                                listener: (context, state) {
+                                  state.when(
+                                      initial: () {},
+                                      loading: () {},
+                                      loaded: (result) {
+                                        if (result == 'Successfull login') {
+                                          showSnackBarWithoutButton(
+                                              context, result);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const HomeScreen()));
+                                        } else {
+                                          showSnackBarWithoutButton(
+                                              context, result);
+                                        }
+                                      },
+                                      error: (failureMessage) {
+                                        showSnackBarWithoutButton(
+                                            context, failureMessage);
+                                      });
+                                },
+                                builder: (context, state) {
+                                  return state.when(initial: () {
+                                    return Container(
+                                      height: 50,
+                                      width: MediaQuery.of(context).size.width -
+                                          40,
+                                      decoration: BoxDecoration(
+                                        color: primaryColor,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          'Login',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ),
+                                    );
+                                  }, loading: () {
+                                    return Container(
+                                      height: 50,
+                                      width: MediaQuery.of(context).size.width -
+                                          40,
+                                      decoration: BoxDecoration(
+                                        color: loadingButtonColor,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          'Login...',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ),
+                                    );
+                                  }, loaded: (message) {
+                                    return Container(
+                                      height: 50,
+                                      width: MediaQuery.of(context).size.width -
+                                          40,
+                                      decoration: BoxDecoration(
+                                        color: primaryColor,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          'Login',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ),
+                                    );
+                                  }, error: (message) {
+                                    return Container(
+                                      height: 50,
+                                      width: MediaQuery.of(context).size.width -
+                                          40,
+                                      decoration: BoxDecoration(
+                                        color: primaryColor,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          'Login',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ),
+                                    );
+                                  });
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 20.0, left: 10, right: 10),
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: BlocBuilder<SignInCubit, SignInState>(
+                                  builder: (context, state) {
+                                    return state.when(initial: () {
+                                      return Container();
+                                    }, loading: () {
+                                      return const LinearProgressIndicator();
+                                    }, loaded: (message) {
+                                      return Container();
+                                    }, error: (message) {
+                                      return Container();
+                                    });
+                                  },
                                 ),
                               ),
                             ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.10,
+                              height: MediaQuery.of(context).size.height * 0.05,
                             ),
                             GestureDetector(
                               onTap: () {

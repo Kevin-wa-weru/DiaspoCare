@@ -1,5 +1,5 @@
 import 'package:country_picker/country_picker.dart';
-import 'package:diasporacare/screens/auth/verify_otp.dart';
+import 'package:diasporacare/screens/auth/otp/verify_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
