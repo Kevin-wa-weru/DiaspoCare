@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Diaspora Care',
+          title: 'DiaspoCare',
           theme: ThemeData(
             primarySwatch: Colors.blue,
             // fontFamily: 'JosefinSans',
