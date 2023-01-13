@@ -192,6 +192,53 @@ class DiaspoCareAPis {
     }
   }
 
+  static Future assignTagToVendor(
+      String practitionerName, List<String> tags, token) async {
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              'https://healthcare-financing.diaspocare.com/api/method/hcfa_core.remote_procedures.vendors.assign_tags_to_vendor'),
+          body: jsonEncode(
+            {
+              "vendor": practitionerName,
+              "tags": tags,
+            },
+          ),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            'Authorization': "Basic $token",
+          });
+
+      debugPrint('Response bodyyyyyyyyyyyyyyyy');
+      debugPrint(response.body);
+      debugPrint(response.statusCode.toString());
+
+      if (response.body.isNotEmpty) {
+        json.decode(response.body);
+        var data = jsonDecode(response.body);
+        debugPrint('hResponseBody Decoded');
+        if (data.toString().contains('DoesNotExistErro')) {
+          return 'Updated Profile but ';
+        } else if (data.toString().contains('pharmacy_name')) {
+          return 'Profile has been updated';
+        } else if (data.toString().contains('already exists')) {
+          return 'Profile already exists';
+        } else if (data.toString().contains('Duplicate Name')) {
+          return 'Practioner name already in use';
+        } else {
+          return 'Unidentified exception';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
   static Future sendOtp(token) async {
     print('Trying to send otp with this token');
     print(token);
