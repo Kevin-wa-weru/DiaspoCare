@@ -140,7 +140,29 @@ class _SignUpState extends State<SignUp> {
             child: Column(
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.06,
+                  height: MediaQuery.of(context).size.height * 0.03,
+                ),
+                BlocBuilder<SignUpCubit, SignUpState>(
+                  builder: (context, state) {
+                    return state.when(initial: () {
+                      return Container(
+                        height: 4,
+                      );
+                    }, loading: () {
+                      return const LinearProgressIndicator();
+                    }, loaded: (message) {
+                      return Container(
+                        height: 4,
+                      );
+                    }, error: (message) {
+                      return Container(
+                        height: 4,
+                      );
+                    });
+                  },
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
                 ),
                 Row(
                   children: [
@@ -154,7 +176,7 @@ class _SignUpState extends State<SignUp> {
                   ],
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.06,
+                  height: MediaQuery.of(context).size.height * 0.02,
                 ),
                 Row(
                   children: const [
@@ -421,7 +443,7 @@ class _SignUpState extends State<SignUp> {
                                                                   style:
                                                                       TextStyle(
                                                                     fontSize:
-                                                                        16,
+                                                                        12,
                                                                     color: Colors
                                                                         .black87,
                                                                     fontWeight:
@@ -474,7 +496,7 @@ class _SignUpState extends State<SignUp> {
                                                                     style:
                                                                         TextStyle(
                                                                       fontSize:
-                                                                          16,
+                                                                          12,
                                                                       color: Colors
                                                                           .black87,
                                                                       fontWeight:
@@ -525,7 +547,7 @@ class _SignUpState extends State<SignUp> {
                                                                   style:
                                                                       TextStyle(
                                                                     fontSize:
-                                                                        16,
+                                                                        12,
                                                                     color: Colors
                                                                         .black87,
                                                                     fontWeight:
@@ -822,11 +844,11 @@ class _SignUpState extends State<SignUp> {
                                                   });
                                                 }),
                                             const Text(
-                                              'I have read and understood the terms of',
+                                              'I have read and do understand the terms of',
                                               style: TextStyle(
                                                   color: Colors.black87,
                                                   fontWeight: FontWeight.w400,
-                                                  fontSize: 14),
+                                                  fontSize: 12),
                                             ),
                                           ],
                                         ),
@@ -843,7 +865,7 @@ class _SignUpState extends State<SignUp> {
                                                       color: Colors.black87,
                                                       fontWeight:
                                                           FontWeight.w400,
-                                                      fontSize: 14),
+                                                      fontSize: 12),
                                                 ),
                                               ),
                                             ],
@@ -905,10 +927,10 @@ class _SignUpState extends State<SignUp> {
 
                                       // ignore: use_build_context_synchronously
                                       context.read<SignUpCubit>().signUp(
-                                          emailController.text,
+                                          emailController.text.trim(),
                                           countryCode!,
-                                          phoneController.text,
-                                          passwordController.text);
+                                          phoneController.text.trim(),
+                                          passwordController.text.trim());
                                     }
                                   }
                                 },
@@ -1028,7 +1050,7 @@ class _SignUpState extends State<SignUp> {
                               ),
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.02,
+                                    MediaQuery.of(context).size.height * 0.015,
                               ),
                               GestureDetector(
                                 onTap: () {
@@ -1061,23 +1083,6 @@ class _SignUpState extends State<SignUp> {
                                   ],
                                 ),
                               ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.02,
-                              ),
-                              BlocBuilder<SignUpCubit, SignUpState>(
-                                builder: (context, state) {
-                                  return state.when(initial: () {
-                                    return Container();
-                                  }, loading: () {
-                                    return const LinearProgressIndicator();
-                                  }, loaded: (message) {
-                                    return Container();
-                                  }, error: (message) {
-                                    return Container();
-                                  });
-                                },
-                              )
                             ],
                           ),
                         ),

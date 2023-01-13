@@ -14,32 +14,22 @@ class _MybeneficiarysearchState extends State<Mybeneficiarysearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        backgroundColor: const Color(0xFF145DA0),
+        title: const Text(
+          'Create New Order',
+          style: TextStyle(
+              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+        ),
+        centerTitle: false,
+      ),
+      body: Column(
         children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.08,
-            width: MediaQuery.of(context).size.width * 1,
-            decoration: const BoxDecoration(color: Color(0xFF145DA0)),
-            child: Center(
-                child: Row(
-              children: const [
-                Padding(
-                  padding: EdgeInsets.only(left: 16, top: 15),
-                  child: Text(
-                    "Create New Order",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ],
-            )),
-          ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.15,
+            height: MediaQuery.of(context).size.height * 0.1,
           ),
-          // ignore: prefer_const_constructors
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Container(
@@ -84,7 +74,7 @@ class _MybeneficiarysearchState extends State<Mybeneficiarysearch> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      top: 30, left: 16, right: 16),
+                                      top: 20, left: 16, right: 16),
                                   child: SizedBox(
                                     height: MediaQuery.of(context).size.height *
                                         0.06,
@@ -118,12 +108,12 @@ class _MybeneficiarysearchState extends State<Mybeneficiarysearch> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SelectedMember(),
-                                        ));
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //       builder: (context) =>
+                                    //           const SelectedMember(),
+                                    //     ));
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(

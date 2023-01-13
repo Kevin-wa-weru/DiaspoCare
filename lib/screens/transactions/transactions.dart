@@ -12,7 +12,7 @@ class Transaction extends StatefulWidget {
 
 class _TransactionState extends State<Transaction> {
   List<TransactionType> transactionTypes = [
-    TransactionType(Colors.yellow, 'Pending'),
+    TransactionType(Colors.orange, 'Pending'),
     TransactionType(Colors.green, 'Approved'),
     TransactionType(Colors.red, 'Declined')
   ];
@@ -50,7 +50,7 @@ class _TransactionState extends State<Transaction> {
                 children: [
                   Container(
                     height: MediaQuery.of(context).size.height * 0.06,
-                    width: MediaQuery.of(context).size.width * 0.6,
+                    width: MediaQuery.of(context).size.width * 0.57,
                     decoration: BoxDecoration(
                       color: const Color(0xFF145DA0),
                       borderRadius: const BorderRadius.all(
@@ -66,24 +66,26 @@ class _TransactionState extends State<Transaction> {
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.05,
+                            height: MediaQuery.of(context).size.height * 0.04,
                             width: MediaQuery.of(context).size.width * 0.1,
                             child: SvgPicture.asset('assets/icons/bill.svg',
                                 color: Colors.white, fit: BoxFit.contain),
                           ),
                         ),
                         const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
+                          padding: EdgeInsets.only(
+                            left: 4.0,
+                          ),
                           child: Text(
                             'Create New Order',
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
+                          height: MediaQuery.of(context).size.height * 0.015,
                           width: MediaQuery.of(context).size.width * 0.1,
                           child: SvgPicture.asset(
                               'assets/icons/forward_arrow.svg',
@@ -115,7 +117,7 @@ class _TransactionState extends State<Transaction> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          height: MediaQuery.of(context).size.height * 0.14,
+                          height: MediaQuery.of(context).size.height * 0.15,
                           decoration: BoxDecoration(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10)),
@@ -127,7 +129,7 @@ class _TransactionState extends State<Transaction> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    left: 8, right: 8, top: 8),
+                                    left: 15, right: 8, top: 8),
                                 child: Row(
                                   children: [
                                     Transform.translate(
@@ -151,19 +153,19 @@ class _TransactionState extends State<Transaction> {
                                         "a2h4bu34",
                                         style: TextStyle(
                                             color: Color(0xFF145DA0),
-                                            fontSize: 14,
+                                            fontSize: 12,
                                             fontWeight: FontWeight.w600),
                                       ),
                                     ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *
-                                          0.26,
+                                          0.27,
                                     ),
                                     const Text(
                                       "12 items for 2,890",
                                       style: TextStyle(
                                           color: Color(0xFF145DA0),
-                                          fontSize: 14,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.w600),
                                     ),
                                   ],
@@ -182,15 +184,15 @@ class _TransactionState extends State<Transaction> {
                                       "28th October 2022, 13:56:34 am",
                                       style: TextStyle(
                                           color: Colors.black54,
-                                          fontSize: 12,
+                                          fontSize: 10,
                                           fontWeight: FontWeight.w600),
                                     )
                                   ],
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 2),
+                                padding:
+                                    const EdgeInsets.only(left: 15, top: 2),
                                 child: Row(
                                   // ignore: prefer_const_literals_to_create_immutables
                                   children: [
@@ -198,22 +200,22 @@ class _TransactionState extends State<Transaction> {
                                       "Beneficiary:",
                                       style: TextStyle(
                                           color: Colors.black54,
-                                          fontSize: 12,
+                                          fontSize: 10,
                                           fontWeight: FontWeight.w600),
                                     ),
                                   ],
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 2),
+                                padding:
+                                    const EdgeInsets.only(left: 15, top: 2),
                                 child: Row(
                                   children: const [
                                     Text(
                                       "Kelvin Cluishank",
                                       style: TextStyle(
                                           color: Colors.black,
-                                          fontSize: 14,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.w600),
                                     ),
                                   ],
@@ -247,7 +249,7 @@ class _TransactionState extends State<Transaction> {
                             Text(singleTransactionType.transactionType,
                                 style: const TextStyle(
                                   color: Colors.black,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                 )),
                           ],
@@ -270,7 +272,7 @@ class _TransactionState extends State<Transaction> {
                   'Draft Transactions',
                   style: TextStyle(
                       color: Colors.black,
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600),
                 ),
               ),
@@ -304,7 +306,7 @@ class SingleDraftTransaction extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.21,
+        height: MediaQuery.of(context).size.height * 0.22,
         width: MediaQuery.of(context).size.width * 0.9,
         decoration: BoxDecoration(
           color: Colors.transparent,
@@ -327,7 +329,7 @@ class SingleDraftTransaction extends StatelessWidget {
                     'a2h4bu34c',
                     style: TextStyle(
                         color: Color(0xFF145DA0),
-                        fontSize: 14,
+                        fontSize: 12,
                         fontWeight: FontWeight.w600),
                   ),
                 ),
@@ -337,7 +339,7 @@ class SingleDraftTransaction extends StatelessWidget {
                     '12 items for 2,890',
                     style: TextStyle(
                         color: Color(0xFF145DA0),
-                        fontSize: 14,
+                        fontSize: 12,
                         fontWeight: FontWeight.w600),
                   ),
                 ),
@@ -363,7 +365,7 @@ class SingleDraftTransaction extends StatelessWidget {
                     '26th October 2022, 13:56:34 am',
                     style: TextStyle(
                         color: Colors.black54,
-                        fontSize: 12,
+                        fontSize: 10,
                         fontWeight: FontWeight.w600),
                   ),
                 ),
@@ -377,7 +379,7 @@ class SingleDraftTransaction extends StatelessWidget {
                     'Beneficiary:',
                     style: TextStyle(
                         color: Colors.black54,
-                        fontSize: 12,
+                        fontSize: 10,
                         fontWeight: FontWeight.w600),
                   ),
                 ),
@@ -391,7 +393,7 @@ class SingleDraftTransaction extends StatelessWidget {
                     'Jeremy CruickShank',
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 14,
+                        fontSize: 12,
                         fontWeight: FontWeight.w600),
                   ),
                 ),
@@ -422,7 +424,7 @@ class SingleDraftTransaction extends StatelessWidget {
                         'Edit Order',
                         style: TextStyle(
                             color: Color(0xFF145DA0),
-                            fontSize: 12,
+                            fontSize: 10,
                             fontWeight: FontWeight.w600),
                       ),
                     ),
@@ -444,7 +446,7 @@ class SingleDraftTransaction extends StatelessWidget {
                         'Request Payment',
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 12,
+                            fontSize: 10,
                             fontWeight: FontWeight.w600),
                       ),
                     ),

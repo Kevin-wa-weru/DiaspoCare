@@ -1,12 +1,18 @@
-import 'package:country_picker/country_picker.dart';
+import 'package:diasporacare/screens/auth/complete_profile/cubit/complete_profile_cubit.dart';
 import 'package:diasporacare/screens/auth/otp/verify_otp.dart';
+import 'package:diasporacare/screens/auth/sign_up/cubit/country_switcher_cubit.dart';
+import 'package:diasporacare/services/diaspocare_apis.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multiselect/multiselect.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CompleteProfile extends StatefulWidget {
-  const CompleteProfile({Key? key}) : super(key: key);
+  const CompleteProfile({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<CompleteProfile> createState() => _CompleteProfileState();
@@ -32,9 +38,69 @@ class _CompleteProfileState extends State<CompleteProfile> {
   String? selectedCountry;
   int maxLine = 4;
   List<String> selected = [];
+  late String token = '';
+  late String email = '';
 
   List<String> listOFSelectedItem = [];
   String selectedText = "";
+
+  clearSelectedCountry() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('countryCode', "");
+  }
+
+  void showSnackBarWithoutButton(BuildContext context, message) {
+    final snackBar = SnackBar(
+      backgroundColor: Colors.black87,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+      duration: const Duration(seconds: 3),
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            message,
+            style: const TextStyle(
+                fontFamily: 'JosefinSans',
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+                fontSize: 13),
+          ),
+        ],
+      ),
+      // backgroundColor: const Color(0xFF070606),
+      behavior: SnackBarBehavior.floating,
+      elevation: 2,
+      margin: const EdgeInsets.only(
+        left: 20,
+        right: 20,
+        bottom: 5,
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  loginForToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userEmail = prefs.getString('userEmail');
+    String? password = prefs.getString('password');
+    var result = await DiaspoCareAPis.loginForToken(userEmail, password);
+    setState(() {
+      token = result;
+      email = userEmail!;
+    });
+
+    print('Completing Profile With these details');
+    print(email);
+    print(password);
+    print(token);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    clearSelectedCountry();
+    loginForToken();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,22 +111,41 @@ class _CompleteProfileState extends State<CompleteProfile> {
       children: [
         Column(
           children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-            Transform.translate(
-              offset: const Offset(0.0, 0.0),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15.0),
-                    child: SizedBox(
-                      height: 50,
-                      child: Image.asset('assets/images/logo.png'),
-                    ),
-                  ),
-                ],
-              ),
+            // SizedBox(
+            //   height: MediaQuery.of(context).size.height * 0.02,
+            // ),
+            // Transform.translate(
+            //   offset: const Offset(0.0, 0.0),
+            //   child: Row(
+            //     children: [
+            //       Padding(
+            //         padding: const EdgeInsets.only(left: 15.0),
+            //         child: SizedBox(
+            //           height: 50,
+            //           child: Image.asset('assets/images/logo.png'),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            BlocBuilder<CompleteProfileCubit, CompleteProfileState>(
+              builder: (context, state) {
+                return state.when(initial: () {
+                  return Container(
+                    height: 4,
+                  );
+                }, loading: () {
+                  return const LinearProgressIndicator();
+                }, loaded: (message) {
+                  return Container(
+                    height: 4,
+                  );
+                }, error: (message) {
+                  return Container(
+                    height: 4,
+                  );
+                });
+              },
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.02,
@@ -370,23 +455,188 @@ class _CompleteProfileState extends State<CompleteProfile> {
                           ),
                           InkWell(
                             onTap: () {
-                              showCountryPicker(
-                                context: context,
-                                showPhoneCode:
-                                    false, // optional. Shows phone code before the country name.
-                                onSelect: (Country country) {
-                                  setState(() {
-                                    selectedCountry =
-                                        country.displayNameNoCountryCode;
+                              // showCountryPicker(
+                              //   context: context,
+                              //   showPhoneCode:
+                              //       false, // optional. Shows phone code before the country name.
+                              //   onSelect: (Country country) {
+                              //     setState(() {
+                              //       selectedCountry =
+                              //           country.displayNameNoCountryCode;
 
-                                    if (selectedCountry != null) {
-                                      setState(() {
-                                        countryHasIssue = false;
-                                      });
-                                    }
+                              //       if (selectedCountry != null) {
+                              //         setState(() {
+                              //           countryHasIssue = false;
+                              //         });
+                              //       }
+                              //     });
+                              //   },
+                              // );
+                              showModalBottomSheet(
+                                  backgroundColor: Colors.white,
+                                  context: context,
+                                  builder: (builder) {
+                                    return SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.15,
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.04,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  setState(() {
+                                                    countryHasIssue = false;
+                                                  });
+                                                  context
+                                                      .read<
+                                                          CountrySwitcherCubit>()
+                                                      .swithCountries('Kenya');
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.04,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.1,
+                                                      child: SvgPicture.asset(
+                                                          'assets/icons/kenya.svg',
+                                                          fit: BoxFit.contain),
+                                                    ),
+                                                    const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 8.0),
+                                                      child: Text(
+                                                        'Kenya',
+                                                        style: TextStyle(
+                                                          fontSize: 12,
+                                                          color: Colors.black87,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Transform.translate(
+                                                offset: const Offset(0.0, -3.0),
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      countryHasIssue = false;
+                                                    });
+                                                    context
+                                                        .read<
+                                                            CountrySwitcherCubit>()
+                                                        .swithCountries(
+                                                            'Nigeria');
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.06,
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.1,
+                                                        child: SvgPicture.asset(
+                                                            'assets/icons/nigeria.svg',
+                                                            fit:
+                                                                BoxFit.contain),
+                                                      ),
+                                                      const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 0.0),
+                                                        child: Text(
+                                                          'Nigeria',
+                                                          style: TextStyle(
+                                                            fontSize: 12,
+                                                            color:
+                                                                Colors.black87,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  setState(() {
+                                                    countryHasIssue = false;
+                                                  });
+                                                  context
+                                                      .read<
+                                                          CountrySwitcherCubit>()
+                                                      .swithCountries('Ghana');
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.04,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.1,
+                                                      child: SvgPicture.asset(
+                                                          'assets/icons/ghana.svg',
+                                                          fit: BoxFit.contain),
+                                                    ),
+                                                    const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 8.0),
+                                                      child: Text(
+                                                        'Ghana',
+                                                        style: TextStyle(
+                                                          fontSize: 12,
+                                                          color: Colors.black87,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    );
                                   });
-                                },
-                              );
                             },
                             child: Container(
                               height: 50,
@@ -405,19 +655,30 @@ class _CompleteProfileState extends State<CompleteProfile> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  selectedCountry == null
-                                      ? Container()
-                                      : Padding(
+                                  BlocBuilder<CountrySwitcherCubit,
+                                      CountrySwitcherState>(
+                                    builder: (context, state) {
+                                      return state.when(initial: () {
+                                        return Container();
+                                      }, loading: () {
+                                        return Container();
+                                      }, loaded: (country, code) {
+                                        return Padding(
                                           padding:
                                               const EdgeInsets.only(left: 10.0),
                                           child: Text(
-                                            selectedCountry!,
+                                            country,
                                             style: const TextStyle(
                                                 color: Colors.black87,
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: 14),
                                           ),
-                                        ),
+                                        );
+                                      }, error: (message) {
+                                        return Container();
+                                      });
+                                    },
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.only(right: 12.0),
                                     child: SizedBox(
@@ -493,9 +754,10 @@ class _CompleteProfileState extends State<CompleteProfile> {
                               }
                             },
                             options: const [
-                              'Solo Practice',
-                              'Group Practices',
-                              'Employed Physician',
+                              'Pharmacy',
+                              'Dentist',
+                              'Clinic',
+                              '24/7 service'
                             ],
                             icon: SizedBox(
                               height: MediaQuery.of(context).size.height * 0.1,
@@ -544,7 +806,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                             height: 15,
                           ),
                           InkWell(
-                            onTap: () {
+                            onTap: () async {
                               if (facilityNameController.text.isEmpty) {
                                 setState(() {
                                   facilityNamehasIssue = true;
@@ -576,9 +838,17 @@ class _CompleteProfileState extends State<CompleteProfile> {
                               }
 
                               if (selectedCountry == null) {
-                                setState(() {
-                                  countryHasIssue = true;
-                                });
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+
+                                String? countryCode =
+                                    prefs.getString('countryCode');
+
+                                if (countryCode == "") {
+                                  setState(() {
+                                    countryHasIssue = true;
+                                  });
+                                } else {}
                               }
 
                               if (selected.isEmpty) {
@@ -592,33 +862,131 @@ class _CompleteProfileState extends State<CompleteProfile> {
                                   !regulatorLicenceIssue &&
                                   !countryHasIssue &&
                                   !areaOfPracticeHasIssue) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const VerifyOtp()));
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+
+                                String? countryCode =
+                                    prefs.getString('countryCode');
+
+                                // ignore: use_build_context_synchronously
+                                context
+                                    .read<CompleteProfileCubit>()
+                                    .completeProfile(
+                                      email.trim(),
+                                      facilityNameController.text,
+                                      practitionerNameController.text,
+                                      regulatorLicenceController.text,
+                                      countryCode,
+                                      token,
+                                    );
                               }
                             },
-                            child: Container(
-                              height: 50,
-                              width: MediaQuery.of(context).size.width - 40,
-                              decoration: BoxDecoration(
-                                color: primaryColor,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  'Complete Profile',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w800),
-                                ),
-                              ),
+                            child: BlocConsumer<CompleteProfileCubit,
+                                CompleteProfileState>(
+                              listener: (context, state) {
+                                state.when(
+                                    initial: () {},
+                                    loading: () {},
+                                    loaded: (result) {
+                                      if (result ==
+                                          'Profile has been updated') {
+                                        showSnackBarWithoutButton(
+                                            context, result);
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const VerifyOtp()));
+                                      } else {
+                                        showSnackBarWithoutButton(
+                                            context, result);
+                                      }
+                                    },
+                                    error: (message) {});
+                              },
+                              builder: (context, state) {
+                                return state.when(initial: () {
+                                  return Container(
+                                    height: 50,
+                                    width:
+                                        MediaQuery.of(context).size.width - 40,
+                                    decoration: BoxDecoration(
+                                      color: primaryColor,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        'Complete Profile',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w800),
+                                      ),
+                                    ),
+                                  );
+                                }, loading: () {
+                                  return Container(
+                                    height: 50,
+                                    width:
+                                        MediaQuery.of(context).size.width - 40,
+                                    decoration: BoxDecoration(
+                                      color: loadingButtonColor,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        'Updating profile..',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w800),
+                                      ),
+                                    ),
+                                  );
+                                }, loaded: (message) {
+                                  return Container(
+                                    height: 50,
+                                    width:
+                                        MediaQuery.of(context).size.width - 40,
+                                    decoration: BoxDecoration(
+                                      color: primaryColor,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        'Complete Profile',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w800),
+                                      ),
+                                    ),
+                                  );
+                                }, error: (message) {
+                                  return Container(
+                                    height: 50,
+                                    width:
+                                        MediaQuery.of(context).size.width - 40,
+                                    decoration: BoxDecoration(
+                                      color: primaryColor,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        'Complete Profile',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w800),
+                                      ),
+                                    ),
+                                  );
+                                });
+                              },
                             ),
                           ),
                           const SizedBox(
-                            height: 10,
+                            height: 5,
                           ),
                         ],
                       ),

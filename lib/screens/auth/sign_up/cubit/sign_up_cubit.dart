@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:diasporacare/services/diaspocare_apis.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'sign_up_state.dart';
 part 'sign_up_cubit.freezed.dart';
@@ -11,9 +12,21 @@ class SignUpCubit extends Cubit<SignUpState> {
   signUp(String email, String countryCode, String phoneNumber,
       String password) async {
     emit(const SignUpState.loading());
-
+    print('Sign Up with the following details');
+    print(email);
+    print(countryCode);
+    print(phoneNumber);
+    print(password);
     var response =
         await DiaspoCareAPis.signUp(email, countryCode, phoneNumber, password);
+
+    if (response == 'Your Account has been created') {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('userEmail', email);
+      prefs.setString('userPhoneNumber', phoneNumber);
+      prefs.setString('persistentcountryCode', countryCode);
+      prefs.setString('password', password);
+    }
     emit(SignUpState.loaded(response));
   }
 }

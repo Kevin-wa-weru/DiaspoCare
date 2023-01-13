@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ProfileComplete extends StatefulWidget {
   const ProfileComplete({Key? key}) : super(key: key);
@@ -38,7 +37,7 @@ class _ProfileCompleteState extends State<ProfileComplete> {
             child: Text(
               'You have successfully created ',
               style: TextStyle(
-                  color: Colors.black,
+                  color: Colors.black54,
                   fontSize: 18,
                   fontWeight: FontWeight.w600),
             ),
@@ -48,7 +47,7 @@ class _ProfileCompleteState extends State<ProfileComplete> {
             child: Text(
               'your account!',
               style: TextStyle(
-                  color: Colors.black,
+                  color: Colors.black54,
                   fontSize: 18,
                   fontWeight: FontWeight.w600),
             ),
@@ -57,7 +56,7 @@ class _ProfileCompleteState extends State<ProfileComplete> {
             height: MediaQuery.of(context).size.height * 0.06,
           ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.2,
+            height: MediaQuery.of(context).size.height * 0.22,
             width: MediaQuery.of(context).size.width - 40,
             decoration: BoxDecoration(
               color: const Color(0x45F1C4C7),
@@ -75,18 +74,18 @@ class _ProfileCompleteState extends State<ProfileComplete> {
                 const Text(
                   'We are looking at your information and',
                   style: TextStyle(
-                      color: Colors.black87,
+                      color: Colors.black54,
                       fontWeight: FontWeight.w400,
-                      fontSize: 16),
+                      fontSize: 14),
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 8.0),
                   child: Text(
                     'we will verify your account within 24 hours',
                     style: TextStyle(
-                        color: Colors.black87,
+                        color: Colors.black54,
                         fontWeight: FontWeight.w400,
-                        fontSize: 16),
+                        fontSize: 14),
                   ),
                 ),
                 SizedBox(
@@ -95,18 +94,18 @@ class _ProfileCompleteState extends State<ProfileComplete> {
                 const Text(
                   'No further action is required from',
                   style: TextStyle(
-                      color: Colors.black87,
+                      color: Colors.black54,
                       fontWeight: FontWeight.w400,
-                      fontSize: 16),
+                      fontSize: 14),
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 8.0),
                   child: Text(
                     'your end at the moment',
                     style: TextStyle(
-                        color: Colors.black87,
+                        color: Colors.black54,
                         fontWeight: FontWeight.w400,
-                        fontSize: 16),
+                        fontSize: 14),
                   ),
                 ),
               ],

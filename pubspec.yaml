@@ -26,6 +26,7 @@ dependencies:
   freezed_annotation: ^2.1.0
   http: ^0.13.5
   shared_preferences: ^2.0.15
+  google_fonts: ^3.0.1
   # shared_preferences: ^0.5.5
 
 
