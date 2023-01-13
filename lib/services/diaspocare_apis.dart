@@ -194,6 +194,9 @@ class DiaspoCareAPis {
 
   static Future assignTagToVendor(
       String practitionerName, List<String> tags, token) async {
+    print('Assigning tag to vendor');
+    print(tags.toString());
+    print(token);
     try {
       http.Response response = await http.post(
           Uri.parse(

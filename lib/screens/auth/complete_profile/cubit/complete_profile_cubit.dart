@@ -14,6 +14,7 @@ class CompleteProfileCubit extends Cubit<CompleteProfileState> {
     practitionerName,
     licenceNumber,
     countryCode,
+    List<String> areasOfPractice,
     userToken,
   ) async {
     late String countryName = '';
@@ -29,10 +30,18 @@ class CompleteProfileCubit extends Cubit<CompleteProfileState> {
       countryName = 'Ghana';
       currency = "GH";
     }
+
     emit(const CompleteProfileState.loading());
 
     var response = await DiaspoCareAPis.createVendorProfile(email, facilityName,
         practitionerName, licenceNumber, countryName, currency, userToken);
+
+    // await DiaspoCareAPis.assignTagToVendor(
+    //   facilityName,
+    //   areasOfPractice,
+    //   userToken,
+    // );
+
     emit(CompleteProfileState.loaded(response));
   }
 }

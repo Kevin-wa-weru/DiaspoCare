@@ -37,11 +37,10 @@ class _CompleteProfileState extends State<CompleteProfile> {
   bool checkBoxValue = false;
   String? selectedCountry;
   int maxLine = 4;
-  List<String> selected = [];
+  List<String> selectedAreaOfPractice = [];
   late String token = '';
   late String email = '';
 
-  List<String> listOFSelectedItem = [];
   String selectedText = "";
 
   clearSelectedCountry() async {
@@ -744,10 +743,10 @@ class _CompleteProfileState extends State<CompleteProfile> {
                           DropDownMultiSelect(
                             onChanged: (List<String> x) {
                               setState(() {
-                                selected = x;
+                                selectedAreaOfPractice = x;
                               });
 
-                              if (selected.isNotEmpty) {
+                              if (selectedAreaOfPractice.isNotEmpty) {
                                 setState(() {
                                   areaOfPracticeHasIssue = false;
                                 });
@@ -767,7 +766,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                                   color: Colors.black,
                                   fit: BoxFit.contain),
                             ),
-                            selectedValues: selected,
+                            selectedValues: selectedAreaOfPractice,
                             whenEmpty: '',
                             decoration: InputDecoration(
                               suffixText: emailIsValid ? '' : 'Invalid email',
@@ -851,7 +850,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                                 } else {}
                               }
 
-                              if (selected.isEmpty) {
+                              if (selectedAreaOfPractice.isEmpty) {
                                 setState(() {
                                   areaOfPracticeHasIssue = true;
                                 });
@@ -877,6 +876,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                                       practitionerNameController.text,
                                       regulatorLicenceController.text,
                                       countryCode,
+                                      selectedAreaOfPractice,
                                       token,
                                     );
                               }
