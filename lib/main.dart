@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
             // fontFamily: 'JosefinSans',
             textTheme: GoogleFonts.poppinsTextTheme(),
           ),
-          home: const CompleteProfile()),
+          home: const SignUp()),
     );
   }
 }
