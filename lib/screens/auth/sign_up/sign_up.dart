@@ -1,4 +1,3 @@
-import 'package:diasporacare/screens/auth/complete_profile/complete_profile.dart';
 import 'package:diasporacare/screens/auth/sign_in/sign_in.dart';
 import 'package:diasporacare/screens/auth/sign_up/cubit/country_switcher_cubit.dart';
 import 'package:diasporacare/screens/auth/sign_up/cubit/sign_up_cubit.dart';
@@ -35,7 +34,7 @@ class _SignUpState extends State<SignUp> {
   void showSnackBar(BuildContext context, message) {
     final snackBar = SnackBar(
       backgroundColor: Colors.black87,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       duration: const Duration(seconds: 10),
       content: Row(
         children: [
@@ -90,7 +89,7 @@ class _SignUpState extends State<SignUp> {
   void showSnackBarWithoutButton(BuildContext context, message) {
     final snackBar = SnackBar(
       backgroundColor: Colors.black87,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       duration: const Duration(seconds: 3),
       content: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -198,7 +197,7 @@ class _SignUpState extends State<SignUp> {
                 const Padding(
                   padding: EdgeInsets.only(left: 20.0),
                   child: Text(
-                    'Join our DiaspoCare Care Provider Network to be part of a movement to provide a quality affordable healthcare in Africa',
+                    'Join our Health Service Provider Network to be part of a movement to deliver affordable and quality healthcare in Africa',
                     style: TextStyle(
                         color: Colors.black87,
                         fontWeight: FontWeight.w400,
@@ -440,6 +439,56 @@ class _SignUpState extends State<SignUp> {
                                                                             8.0),
                                                                 child: Text(
                                                                   'Kenya',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    color: Colors
+                                                                        .black87,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        InkWell(
+                                                          onTap: () {
+                                                            context
+                                                                .read<
+                                                                    CountrySwitcherCubit>()
+                                                                .swithCountries(
+                                                                    'Uganda');
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Column(
+                                                            children: [
+                                                              SizedBox(
+                                                                height: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height *
+                                                                    0.04,
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width *
+                                                                    0.1,
+                                                                child: SvgPicture.asset(
+                                                                    'assets/icons/uganda.svg',
+                                                                    fit: BoxFit
+                                                                        .contain),
+                                                              ),
+                                                              const Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        top:
+                                                                            8.0),
+                                                                child: Text(
+                                                                  'Uganda',
                                                                   style:
                                                                       TextStyle(
                                                                     fontSize:
@@ -948,7 +997,10 @@ class _SignUpState extends State<SignUp> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        const CompleteProfile()));
+                                                        const SignIn(
+                                                          pageToNavigateTo:
+                                                              'CompleteProfile',
+                                                        )));
                                           } else {
                                             showSnackBarWithoutButton(
                                                 context, result);
@@ -1057,8 +1109,10 @@ class _SignUpState extends State<SignUp> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SignIn()));
+                                          builder: (context) => const SignIn(
+                                                pageToNavigateTo:
+                                                    'DecisionsPage',
+                                              )));
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,

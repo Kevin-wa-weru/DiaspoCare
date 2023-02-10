@@ -5,7 +5,7 @@ description: A new Flutter project.
 publish_to: 'none' 
 
 
-version: 1.0.0+1
+version: 1.1.0+1
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
@@ -27,6 +27,10 @@ dependencies:
   http: ^0.13.5
   shared_preferences: ^2.0.15
   google_fonts: ^3.0.1
+  intl: ^0.17.0
+  jiffy: ^5.0.0
+  shimmer: ^2.0.0
+
   
   # shared_preferences: ^0.5.5
 
@@ -52,15 +56,23 @@ flutter:
   uses-material-design: true
 
   fonts:
-    - family: JosefinSans
+    - family: Poppins
       fonts:
-        - asset: assets/fonts/josefin-sans/JosefinSans-Bold.ttf
-        - asset: assets/fonts/josefin-sans/JosefinSans-BoldItalic.ttf
-        - asset: assets/fonts/josefin-sans/JosefinSans-Italic.ttf
-        - asset: assets/fonts/josefin-sans/JosefinSans-Light.ttf 
-        - asset: assets/fonts/josefin-sans/JosefinSans-LightItalic.ttf
-        - asset: assets/fonts/josefin-sans/JosefinSans-Regular.ttf
-        - asset: assets/fonts/josefin-sans/JosefinSans-SemiBold.ttf
-        - asset: assets/fonts/josefin-sans/JosefinSans-SemiBoldItalic.ttf
-        - asset: assets/fonts/josefin-sans/JosefinSans-Thin.ttf
-        - asset: assets/fonts/josefin-sans/JosefinSans-ThinItalic.ttf
+        - asset: assets/fonts/google_fonts/Poppins-Black.ttf
+        - asset: assets/fonts/google_fonts/Poppins-BlackItalic.ttf
+        - asset: assets/fonts/google_fonts/Poppins-Bold.ttf
+        - asset: assets/fonts/google_fonts/Poppins-BoldItalic.ttf 
+        - asset: assets/fonts/google_fonts/Poppins-ExtraBold.ttf
+        - asset: assets/fonts/google_fonts/Poppins-ExtraBoldItalic.ttf
+        - asset: assets/fonts/google_fonts/Poppins-Extralight.ttf
+        - asset: assets/fonts/google_fonts/Poppins-ExtralightItalic.ttf
+        - asset: assets/fonts/google_fonts/Poppins-Italic.ttf
+        - asset: assets/fonts/google_fonts/Poppins-Light.ttf
+        - asset: assets/fonts/google_fonts/Poppins-LightItalic.ttf
+        - asset: assets/fonts/google_fonts/Poppins-Medium.ttf
+        - asset: assets/fonts/google_fonts/Poppins-MediumItalic.ttf
+        - asset: assets/fonts/google_fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/google_fonts/Poppins-Semibold.ttf
+        - asset: assets/fonts/google_fonts/Poppins-SemiBoldItalic.ttf
+        - asset: assets/fonts/google_fonts/Poppins-Thin.ttf
+        - asset: assets/fonts/google_fonts/Poppins-ThinItalic.ttf

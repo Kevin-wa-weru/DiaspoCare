@@ -1,7 +1,6 @@
 import 'package:diasporacare/screens/auth/bank_details/bank_details.dart';
 import 'package:diasporacare/screens/auth/otp/cubit/cubit/get_phone_n_umber_cubit.dart';
 import 'package:diasporacare/screens/auth/otp/cubit/verify_otp_cubit.dart';
-import 'package:diasporacare/screens/auth/sign_up/cubit/sign_up_cubit.dart';
 import 'package:diasporacare/services/diaspocare_apis.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
@@ -26,7 +25,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
   void showSnackBar(BuildContext context, String message) {
     final snackBar = SnackBar(
       backgroundColor: Colors.black87,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       duration: const Duration(seconds: 10),
       content: Row(
         children: [
@@ -79,7 +78,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
   void showSnackBarWithoutButton(BuildContext context, message) {
     final snackBar = SnackBar(
       backgroundColor: Colors.black87,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       duration: const Duration(seconds: 3),
       content: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -123,7 +122,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
   void initState() {
     super.initState();
     context.read<GetPhoneNUmberCubit>().getPhone();
-    // loginForTokenAndSendOtp();
+    loginForTokenAndSendOtp();
   }
 
   @override

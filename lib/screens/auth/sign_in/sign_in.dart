@@ -1,14 +1,17 @@
 import 'package:diasporacare/screens/auth/sign_in/cubit/sign_in_cubit.dart';
 import 'package:diasporacare/screens/auth/sign_up/sign_up.dart';
-import 'package:diasporacare/screens/homepage/home_screen.dart';
+import 'package:diasporacare/screens/decision/desicion.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
 import 'package:diasporacare/services/misc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
-
+  const SignIn({
+    Key? key,
+    required this.pageToNavigateTo,
+  }) : super(key: key);
+  final String pageToNavigateTo;
   @override
   State<SignIn> createState() => _SignInState();
 }
@@ -27,7 +30,7 @@ class _SignInState extends State<SignIn> {
   void showSnackBar(BuildContext context, message) {
     final snackBar = SnackBar(
       backgroundColor: Colors.black87,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       duration: const Duration(seconds: 10),
       content: Row(
         children: [
@@ -82,7 +85,7 @@ class _SignInState extends State<SignIn> {
   void showSnackBarWithoutButton(BuildContext context, message) {
     final snackBar = SnackBar(
       backgroundColor: Colors.black87,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       duration: const Duration(seconds: 3),
       content: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -377,11 +380,14 @@ class _SignInState extends State<SignIn> {
                                         if (result == 'Successfull login') {
                                           showSnackBarWithoutButton(
                                               context, result);
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const HomeScreen()));
+                                          if (widget.pageToNavigateTo ==
+                                              'DecisionsPage') {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const DesicionsPage()));
+                                          }
                                         } else {
                                           showSnackBarWithoutButton(
                                               context, result);

@@ -2,6 +2,7 @@ import 'package:diasporacare/constants.dart';
 import 'package:diasporacare/screens/auth/bank_details/cubit/bank_names_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class PickBankName extends StatefulWidget {
   const PickBankName({super.key});
@@ -22,11 +23,51 @@ class _PickBankNameState extends State<PickBankName> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: true,
-        // backgroundColor: primaryColor,
-        backgroundColor: Colors.black54,
+        automaticallyImplyLeading: false,
         elevation: 0,
-        title: const Text('Select Your Bank'),
+        backgroundColor: const Color(0xFF145DA0),
+        title: const Text(
+          'Select your bank',
+          style: TextStyle(
+              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+        ),
+        centerTitle: false,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(
+              right: 20.0,
+              bottom: 8,
+              top: 8,
+            ),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                height: 20,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: Colors.black12,
+                  borderRadius: BorderRadius.circular(800),
+                  border: Border.all(
+                    color: Colors.black12,
+                    width: 1.2,
+                  ),
+                ),
+                child: Center(
+                  child: SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: SvgPicture.asset(
+                      'assets/icons/cancel2.svg',
+                      color: Colors.white70,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
       ),
       body: ListView(
         children: [

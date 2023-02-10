@@ -1,18 +1,21 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DiaspoCareAPis {
+  static String baseUrl = 'https://healthcare-financing.diaspocare.com';
+  static String stagingUrl = 'https://staging.diaspocare.com';
+
   static Future login(email, password) async {
     print('These are the emails and password');
     print(email);
     print(password);
+
     try {
       http.Response response = await http.post(
           Uri.parse(
-              'https://healthcare-financing.diaspocare.com/api/method/hcfa_core.remote_procedures.users.login'),
+              '$baseUrl/api/method/hcfa_core.remote_procedures.users.login'),
           body: jsonEncode(
             {
               "usr": email,
@@ -36,6 +39,10 @@ class DiaspoCareAPis {
         } else if (data.toString().contains('Logged In')) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString('userToken', data['token']);
+          prefs.setString('userEmail', email.trim());
+          prefs.setString('vendorName', data['full_name']);
+          prefs.setString('facilityName', data['vendor'][0]['name']);
+
           return 'Successfull login';
         } else {
           return 'An error has occurred';
@@ -56,7 +63,7 @@ class DiaspoCareAPis {
     try {
       http.Response response = await http.post(
           Uri.parse(
-              'https://healthcare-financing.diaspocare.com/api/method/hcfa_core.remote_procedures.users.login'),
+              '$baseUrl/api/method/hcfa_core.remote_procedures.users.login'),
           body: jsonEncode(
             {
               "usr": email.trim(),
@@ -101,7 +108,7 @@ class DiaspoCareAPis {
       // print(password);
       http.Response response = await http.post(
           Uri.parse(
-              'https://healthcare-financing.diaspocare.com/api/method/hcfa_core.remote_procedures.users.create_diaspocare_account_v2'),
+              '$baseUrl/api/method/hcfa_core.remote_procedures.users.create_diaspocare_account_v2'),
           body: jsonEncode(
             {
               "email": email,
@@ -143,21 +150,22 @@ class DiaspoCareAPis {
 
   static Future createVendorProfile(email, facilityName, practitionerName,
       licenceNumber, country, currency, token) async {
+    print(
+        'Completting vendor profile with these details  $email, $facilityName, $practitionerName, $licenceNumber , $country, $currency, $token');
     try {
-      http.Response response = await http.post(
-          Uri.parse(
-              'https://healthcare-financing.diaspocare.com/api/resource/Vendor'),
-          body: jsonEncode(
-            {
-              "user": email,
-              "pharmacy_name": facilityName,
-              "practitioner_name": practitionerName,
-              "licence_number": licenceNumber,
-              "country": country,
-              "currency": currency,
-            },
-          ),
-          headers: {
+      http.Response response =
+          await http.post(Uri.parse('$baseUrl/api/resource/Vendor'),
+              body: jsonEncode(
+                {
+                  "user": email,
+                  "pharmacy_name": facilityName,
+                  "practitioner_name": practitionerName,
+                  "licence_number": licenceNumber,
+                  "country": country,
+                  "currency": currency,
+                },
+              ),
+              headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
             'Authorization': "Basic $token",
@@ -171,16 +179,18 @@ class DiaspoCareAPis {
         json.decode(response.body);
         var data = jsonDecode(response.body);
         debugPrint('hResponseBody Decoded');
-        if (data.toString().contains('Could not find user')) {
-          return 'Could not find user';
-        } else if (data.toString().contains('pharmacy_name')) {
+        if (response.statusCode == 200) {
           return 'Profile has been updated';
-        } else if (data.toString().contains('already exists')) {
-          return 'Profile already exists';
-        } else if (data.toString().contains('Duplicate Name')) {
-          return 'Practioner name already in use';
         } else {
-          return 'Unidentified exception';
+          if (data.toString().contains('Could not find user')) {
+            return 'Could not find user';
+          } else if (data.toString().contains('already exists')) {
+            return 'Profile for $facilityName already exists';
+          } else if (data.toString().contains('Duplicate Name')) {
+            return 'Practioner name already in use';
+          } else {
+            return 'Unidentified exception';
+          }
         }
       } else {
         debugPrint('empty results');
@@ -193,17 +203,17 @@ class DiaspoCareAPis {
   }
 
   static Future assignTagToVendor(
-      String practitionerName, List<String> tags, token) async {
+      String facilityName, List<String> tags, token) async {
     print('Assigning tag to vendor');
     print(tags.toString());
     print(token);
     try {
       http.Response response = await http.post(
           Uri.parse(
-              'https://healthcare-financing.diaspocare.com/api/method/hcfa_core.remote_procedures.vendors.assign_tags_to_vendor'),
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.assign_tags_to_vendor'),
           body: jsonEncode(
             {
-              "vendor": practitionerName,
+              "vendor": facilityName,
               "tags": tags,
             },
           ),
@@ -222,9 +232,9 @@ class DiaspoCareAPis {
         var data = jsonDecode(response.body);
         debugPrint('hResponseBody Decoded');
         if (data.toString().contains('DoesNotExistErro')) {
-          return 'Updated Profile but ';
+          return 'Pharmacy Name does not exist';
         } else if (data.toString().contains('pharmacy_name')) {
-          return 'Profile has been updated';
+          return 'Area of practice saved';
         } else if (data.toString().contains('already exists')) {
           return 'Profile already exists';
         } else if (data.toString().contains('Duplicate Name')) {
@@ -248,7 +258,7 @@ class DiaspoCareAPis {
     try {
       http.Response response = await http.post(
           Uri.parse(
-              'https://healthcare-financing.diaspocare.com/api/method/hcfa_core.remote_procedures.users.generate_phonenumber_verification_OTP'),
+              '$baseUrl/api/method/hcfa_core.remote_procedures.users.generate_phonenumber_verification_OTP'),
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
@@ -280,7 +290,7 @@ class DiaspoCareAPis {
     try {
       http.Response response = await http.post(
           Uri.parse(
-              'https://healthcare-financing.diaspocare.com/api/method/hcfa_core.remote_procedures.users.verify_phonenumber'),
+              '$baseUrl/api/method/hcfa_core.remote_procedures.users.verify_phonenumber'),
           body: jsonEncode(
             {
               "otp": otpCode,
@@ -315,7 +325,7 @@ class DiaspoCareAPis {
     try {
       http.Response response = await http.post(
           Uri.parse(
-              'https://healthcare-financing.diaspocare.com/api/method/hcfa_core.remote_procedures.vendors.get_banks'),
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.get_banks'),
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
@@ -362,7 +372,7 @@ class DiaspoCareAPis {
     try {
       http.Response response = await http.post(
           Uri.parse(
-              'https://healthcare-financing.diaspocare.com/api/method/hcfa_core.remote_procedures.vendors.create_bank_account'),
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.create_bank_account'),
           body: jsonEncode(
             {
               "bank": bankName,
@@ -396,6 +406,809 @@ class DiaspoCareAPis {
         if (!data.toString().contains('server_messages') &&
             response.statusCode == 200) {
           return 'Bank details succesfully updated';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future getRegions(countryName) async {
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.beneficiaries.get_provinces?country=$countryName'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        debugPrint('hResponseBody Decoded');
+
+        if (response.statusCode == 200) {
+          print('Getting regions');
+          print(data['message']);
+          return data['message'];
+        } else {
+          return 'Error getting region names';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future getTown(stateName) async {
+    print('Started getiing towns with $stateName');
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.beneficiaries.get_districts?province=$stateName'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        debugPrint('hResponseBody Decoded');
+
+        if (response.statusCode == 200) {
+          print('Getting regions');
+          print(data['message']);
+          return data['message'];
+        } else {
+          return 'Error getting region names';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future getVendorTransactions(
+      String statusType, int page, String token) async {
+    print('Started getiing transactions with $statusType and $page as inputs');
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.get_vendor_transactions?status=$statusType&page=$page'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            'Authorization': "Basic $token",
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        debugPrint('hResponseBody Decoded');
+
+        if (response.statusCode == 200) {
+          print('Getting transcationssss');
+          print(data['message']);
+          return data['message'];
+        } else {
+          return 'Error getting transcations';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future getAccountDetails(String email, String token) async {
+    print('Started getiing accountDetails with $email');
+    try {
+      http.Response response = await http
+          .get(Uri.parse('$baseUrl/api/resource/User/$email'), headers: {
+        "Content-Type": "application/json",
+        "Access-Control_Allow_Origin": "*",
+        "Authorization": "Basic $token",
+      });
+
+      print(
+          'Reponse from geting informations from accountDetails ${jsonDecode(response.body)}');
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        debugPrint('hResponseBody Decoded');
+
+        if (response.statusCode == 200) {
+          print('Getting account details');
+          print(data['data']);
+          return data['data'];
+        } else {
+          return 'Error getting account details';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future getBankDetails(String token) async {
+    print('Started getiing bank details with $token');
+    try {
+      http.Response response = await http.get(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.get_bank_account'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            'Authorization': "Basic $token",
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        debugPrint('hResponseBody Decoded');
+
+        if (response.statusCode == 200) {
+          print('Getting bank details');
+          print(data['message']);
+          return data['message'];
+        } else {
+          return 'Error getting bank details';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future getFacilityDetails(String vendorName) async {
+    print('Started getiing facilty details with $vendorName');
+    try {
+      http.Response response = await http.post(
+          Uri.parse('$baseUrl/api/resource/Vendor?Vendor%20Name=$vendorName'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        debugPrint('hResponseBody Decoded');
+
+        if (response.statusCode == 200) {
+          print('Getting bank details');
+          print(data['message']);
+          return data['message'];
+        } else {
+          return 'Error getting bank details';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future getDiscounts(token) async {
+    print('Started getiing discounts with');
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.discount_offerings'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            'Authorization': "Basic $token",
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        debugPrint('hResponseBody Decoded');
+
+        if (response.statusCode == 200) {
+          print('Getting discounts');
+          print(data['message']);
+          return data['message'];
+        } else {
+          return 'Error getting discounts';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future getBestSellingItems(token, String facilityName) async {
+    print('Started getiing best selling items with $token');
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.get_best_selling_items?branch=$facilityName'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            'Authorization': "Basic $token",
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        debugPrint('hResponseBody Decoded');
+
+        if (response.statusCode == 200) {
+          print('Getting best selling items');
+          print(data['message']);
+          return data['message'];
+        } else {
+          return 'Error getting best selling items';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future addDiscount(String discountName, int percentage, token) async {
+    print(
+        "Adding discounts with the following $discountName, $percentage, $token");
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.create_discount_offering'),
+          body: jsonEncode(
+            {
+              "name": discountName,
+              "percentage": percentage,
+            },
+          ),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "Basic $token",
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        if (response.statusCode == 200) {
+          return 'Discount added successfully';
+        } else {
+          return 'Error adding discount';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future editDiscount(String discountName, int percentage,
+      String discountid, String token) async {
+    try {
+      http.Response response = await http.put(
+          Uri.parse(
+              '$baseUrl/api/resource/Vendor%20Discount/${discountid.trim()}'),
+          body: jsonEncode(
+            {
+              "name1": discountName,
+              "percentage": percentage,
+            },
+          ),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "Basic $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        if (response.statusCode == 200) {
+          return 'Discount edited successfully';
+        } else {
+          return 'Error adding discount';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future searchBeneficiary(String beneficiaryName, String token) async {
+    try {
+      http.Response response = await http.get(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.beneficiaries.check_beneficiary_exists?beneficiary_name=$beneficiaryName'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "Basic $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        if (response.statusCode == 200) {
+          return data['message'];
+        } else {
+          return 'Error getting beneficiary';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future addBasket(String beneficiaryid, String token) async {
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendor_transactions.add_basket'),
+          body: jsonEncode(
+            {"beneficiary": beneficiaryid},
+          ),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "Basic $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        if (response.statusCode == 200) {
+          return data['message'];
+        } else {
+          return 'Error adding basket';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future addBasketItem(
+      String basketId,
+      String item,
+      int percentageDiscount,
+      int price,
+      int quantity,
+      int isService,
+      String token) async {
+    print(
+        'Adding item with $basketId , $item, $percentageDiscount, $price, $quantity, $isService, $token');
+    try {
+      http.Response response =
+          await http.post(Uri.parse('$baseUrl/api/resource/Order Basket Item'),
+              body: jsonEncode(
+                {
+                  "basket": basketId,
+                  "item": item,
+                  "percentage_discount": percentageDiscount,
+                  "price": price,
+                  "quantity": quantity,
+                  "is_service": isService,
+                },
+              ),
+              headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "Basic $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        if (response.statusCode == 200) {
+          return 'Item added successfully';
+        } else {
+          return 'Error adding items';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future getBasketItems(String basketId, String token) async {
+    print('Getiing basket items with $basketId, $token');
+    try {
+      http.Response response = await http.get(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendor_transactions.get_basket_items?basket=${basketId.trim()}'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "Basic $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        print('REsponse code from getting items');
+        print(response.statusCode.toString());
+        if (response.statusCode == 200) {
+          return data['message'];
+        } else {
+          return 'Error getting basket items';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future generateTransactionOtp(
+    String basketId,
+  ) async {
+    print('generating otp with $basketId,');
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.generate_OTP'),
+          body: jsonEncode(
+            {
+              "basket": basketId,
+            },
+          ),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            // "Authorization": "Basic $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        print('REsponse code from getting items');
+        print(response.statusCode.toString());
+        if (response.statusCode == 200) {
+          return 'Otp sent';
+        } else {
+          return 'Error sending otp';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future verifyTransactionOtp(
+      String basketId, String otpCode, String token) async {
+    print('verifying otp with $basketId,');
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.verify_OTP'),
+          body: jsonEncode({"basket": basketId, "otp": otpCode}),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "Basic $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        print('REsponse code from getting items');
+        print(response.statusCode.toString());
+        if (response.statusCode == 200) {
+          return data['message'];
+        } else {
+          return 'Error sending otp';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future initialiseTransaction(
+    String basketId,
+    String code,
+    String token,
+  ) async {
+    print('initialising  with $basketId,');
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.initialise_transaction'),
+          body: jsonEncode({"basket": basketId, "secure_code": code}),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "Basic $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        print('REsponse code from initialising transaction');
+        print(response.statusCode.toString());
+        if (response.statusCode == 200) {
+          return 'Otp sent';
+        } else {
+          return 'Error sending otp';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future checkIfVeried(String facilityName) async {
+    print('checking if verified with $facilityName,');
+    try {
+      http.Response response = await http.get(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.vendor_is_verified?vendor=$facilityName'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            // "Authorization": "Basic $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        print('REsponse code from getting items');
+        print(response.statusCode.toString());
+        if (response.statusCode == 200) {
+          if (data['message'] == true) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future searchMasterList(String query, String token) async {
+    print('checking if verified with $query,');
+    try {
+      http.Response response = await http.get(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.search_drug_master_list?query=$query&is_service=0'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "Basic $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        print('REsponse code from getting items');
+        print(response.statusCode.toString());
+        if (response.statusCode == 200) {
+          return data['message'];
+        } else {
+          return 'Error searching drugs';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future testMedifinder(String token) async {
+    print('Medifffffffffffffffffffffffffiiiiiiiiiiiiiinder');
+    try {
+      http.Response response = await http.get(
+          Uri.parse(
+              'https://staging.diaspocare.com/api/method/hcfa_core.remote_procedures.medifinder.search.search_master_list?query=calp&is_service=0&country=Kenya'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "Basic $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        print('REsponse code from getting items');
+        print(response.statusCode.toString());
+        if (response.statusCode == 200) {
+          return data['message'];
+        } else {
+          return 'Error searching drugs';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future editBasketItems(String token, String basketItemId,
+      String itemName, int price, int quantity) async {
+    print(
+        "editing basket Item with $token, $basketItemId,  $itemName, $price, $quantity");
+    try {
+      http.Response response = await http.put(
+          Uri.parse('$baseUrl/api/resource/Order Basket Item/$basketItemId'),
+          body: jsonEncode({"item": itemName, "price": price, "quantity": 1}),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "Basic $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        print('REsponse code from editing basket items');
+        print(response.statusCode.toString());
+        if (response.statusCode == 200) {
+          return 'Successfully Edited basket item';
+        } else {
+          return 'Error editing basket item';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future updateLocation(
+      String token, String district, String region, String description) async {
+    print(
+        "updating location with $token, $token,  $district, $region, $description");
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.add_location'),
+          body: jsonEncode({
+            "district": "Kasarani",
+            "region": "Nairobi",
+            "description": "Opposite Kenya House",
+            "lon": 00.00000,
+            "latitude": 00.0000000
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "Basic $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        print('REsponse code from updating location');
+        print(response.statusCode.toString());
+        if (response.statusCode == 200) {
+          return 'Successfully updated location';
+        } else {
+          return 'Error updating location';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future checkBankAccount(String facilityName) async {
+    print("Checking if has bank account with $facilityName");
+    try {
+      http.Response response = await http.get(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.vendor_has_bankaccount?vendor=$facilityName'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            // "Authorization": "Basic $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data);
+        print('REsponse code from checking if has bank account');
+        print(response.statusCode.toString());
+        if (response.statusCode == 200) {
+          if (data['message'] == true) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
         }
       } else {
         debugPrint('empty results');

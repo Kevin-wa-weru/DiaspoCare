@@ -5,7 +5,6 @@ import 'package:diasporacare/services/diaspocare_apis.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:multiselect/multiselect.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,7 +36,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
   bool checkBoxValue = false;
   String? selectedCountry;
   int maxLine = 4;
-  List<String> selectedAreaOfPractice = [];
+  // List<String> selectedAreaOfPractice = [];
   late String token = '';
   late String email = '';
 
@@ -51,7 +50,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
   void showSnackBarWithoutButton(BuildContext context, message) {
     final snackBar = SnackBar(
       backgroundColor: Colors.black87,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       duration: const Duration(seconds: 3),
       content: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -87,11 +86,6 @@ class _CompleteProfileState extends State<CompleteProfile> {
       token = result;
       email = userEmail!;
     });
-
-    print('Completing Profile With these details');
-    print(email);
-    print(password);
-    print(token);
   }
 
   @override
@@ -110,23 +104,6 @@ class _CompleteProfileState extends State<CompleteProfile> {
       children: [
         Column(
           children: [
-            // SizedBox(
-            //   height: MediaQuery.of(context).size.height * 0.02,
-            // ),
-            // Transform.translate(
-            //   offset: const Offset(0.0, 0.0),
-            //   child: Row(
-            //     children: [
-            //       Padding(
-            //         padding: const EdgeInsets.only(left: 15.0),
-            //         child: SizedBox(
-            //           height: 50,
-            //           child: Image.asset('assets/images/logo.png'),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
             BlocBuilder<CompleteProfileCubit, CompleteProfileState>(
               builder: (context, state) {
                 return state.when(initial: () {
@@ -147,21 +124,21 @@ class _CompleteProfileState extends State<CompleteProfile> {
               },
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
+              height: MediaQuery.of(context).size.height * 0.03,
             ),
-            Row(
-              children: const [
-                Padding(
-                  padding: EdgeInsets.only(left: 20.0),
-                  child: Text(
-                    'Account Created',
-                    style: TextStyle(
-                        color: Colors.green,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600),
+            Transform.translate(
+              offset: const Offset(0.0, 0.0),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: SizedBox(
+                      height: 50,
+                      child: Image.asset('assets/images/logo.png'),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.03,
@@ -535,6 +512,50 @@ class _CompleteProfileState extends State<CompleteProfile> {
                                                   ],
                                                 ),
                                               ),
+                                              InkWell(
+                                                onTap: () {
+                                                  setState(() {
+                                                    countryHasIssue = false;
+                                                  });
+                                                  context
+                                                      .read<
+                                                          CountrySwitcherCubit>()
+                                                      .swithCountries('Uganda');
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.04,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.1,
+                                                      child: SvgPicture.asset(
+                                                          'assets/icons/uganda.svg',
+                                                          fit: BoxFit.contain),
+                                                    ),
+                                                    const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 8.0),
+                                                      child: Text(
+                                                        'Uganda',
+                                                        style: TextStyle(
+                                                          fontSize: 12,
+                                                          color: Colors.black87,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                               Transform.translate(
                                                 offset: const Offset(0.0, -3.0),
                                                 child: InkWell(
@@ -699,111 +720,6 @@ class _CompleteProfileState extends State<CompleteProfile> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.03,
                           ),
-                          Row(
-                            children: [
-                              Row(
-                                children: [
-                                  const Text(
-                                    'Area of Practice',
-                                    style: TextStyle(
-                                        color: Colors.black87,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 14),
-                                  ),
-                                  areaOfPracticeHasIssue
-                                      ? const Padding(
-                                          padding: EdgeInsets.only(left: 8.0),
-                                          child: Text(
-                                            'required',
-                                            style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        )
-                                      : Container(),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: const [
-                              Text(
-                                'Select All applicable',
-                                style: TextStyle(
-                                    color: Color(0x99BC343E),
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          DropDownMultiSelect(
-                            onChanged: (List<String> x) {
-                              setState(() {
-                                selectedAreaOfPractice = x;
-                              });
-
-                              if (selectedAreaOfPractice.isNotEmpty) {
-                                setState(() {
-                                  areaOfPracticeHasIssue = false;
-                                });
-                              }
-                            },
-                            options: const [
-                              'Pharmacy',
-                              'Dentist',
-                              'Clinic',
-                              '24/7 service'
-                            ],
-                            icon: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.1,
-                              width: MediaQuery.of(context).size.width * 0.09,
-                              child: SvgPicture.asset(
-                                  'assets/icons/dropdown.svg',
-                                  color: Colors.black,
-                                  fit: BoxFit.contain),
-                            ),
-                            selectedValues: selectedAreaOfPractice,
-                            whenEmpty: '',
-                            decoration: InputDecoration(
-                              suffixText: emailIsValid ? '' : 'Invalid email',
-                              suffixStyle: const TextStyle(
-                                color: Colors.red,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              fillColor: Colors.transparent,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: const BorderSide(
-                                    color: Colors.black12, width: 0),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: areaOfPracticeHasIssue
-                                        ? Colors.red
-                                        : secondaryColor,
-                                    width: 1.6),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: secondaryColor, width: 1.6),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
-                              ),
-                              filled: true,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
                           InkWell(
                             onTap: () async {
                               if (facilityNameController.text.isEmpty) {
@@ -850,17 +766,10 @@ class _CompleteProfileState extends State<CompleteProfile> {
                                 } else {}
                               }
 
-                              if (selectedAreaOfPractice.isEmpty) {
-                                setState(() {
-                                  areaOfPracticeHasIssue = true;
-                                });
-                              }
-
                               if (!facilityNamehasIssue &&
                                   !practitionerNamehasIssue &&
                                   !regulatorLicenceIssue &&
-                                  !countryHasIssue &&
-                                  !areaOfPracticeHasIssue) {
+                                  !countryHasIssue) {
                                 SharedPreferences prefs =
                                     await SharedPreferences.getInstance();
 
@@ -871,12 +780,11 @@ class _CompleteProfileState extends State<CompleteProfile> {
                                 context
                                     .read<CompleteProfileCubit>()
                                     .completeProfile(
-                                      email.trim(),
+                                      // email.trim(),
                                       facilityNameController.text,
                                       practitionerNameController.text,
                                       regulatorLicenceController.text,
                                       countryCode,
-                                      selectedAreaOfPractice,
                                       token,
                                     );
                               }

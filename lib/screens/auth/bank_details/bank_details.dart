@@ -1,5 +1,6 @@
 import 'package:diasporacare/screens/auth/bank_details/cubit/bank_details_cubit.dart';
 import 'package:diasporacare/screens/auth/bank_details/pick_bank_name.dart';
+import 'package:diasporacare/screens/auth/complete_profile/assign_tag.dart';
 import 'package:diasporacare/screens/auth/complete_profile/profile_completed.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
@@ -48,7 +49,7 @@ class _BankDetailsState extends State<BankDetails> {
   void showSnackBarWithoutButton(BuildContext context, message) {
     final snackBar = SnackBar(
       backgroundColor: Colors.black87,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       duration: const Duration(seconds: 3),
       content: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -462,7 +463,7 @@ class _BankDetailsState extends State<BankDetails> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          const ProfileComplete()));
+                                                          const AreaOfSpecialty()));
                                             } else {
                                               showSnackBarWithoutButton(
                                                   context, result);

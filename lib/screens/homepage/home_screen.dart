@@ -1,9 +1,13 @@
 import 'package:diasporacare/screens/homepage/account.dart';
+import 'package:diasporacare/screens/homepage/cubit/check_if_verified_cubit.dart';
+import 'package:diasporacare/screens/homepage/cubit/get_best_selling_items_cubit.dart';
+import 'package:diasporacare/screens/homepage/cubit/get_vendor_details_cubit.dart';
 import 'package:diasporacare/screens/homepage/home_page.dart';
 import 'package:diasporacare/screens/homepage/promotions.dart';
 import 'package:diasporacare/screens/transactions/transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,6 +20,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
   final PageController _pageController = PageController(initialPage: 0);
+
+  @override
+  void initState() {
+    context.read<GetVendorDetailsCubit>().getVendorDetails();
+    context.read<CheckIfVerifiedCubit>().checkIfVerified();
+    context.read<GetBestSellingItemsCubit>().getBestSellingItems();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +44,17 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
         children: const [
-          HomePage(),
+          HomePage(
+            pharmacyName: '',
+            vendorName: '',
+          ),
           Transaction(),
           Promotions(),
           Account(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        // elevation: 0,
         backgroundColor: Colors.white,
         selectedLabelStyle: const TextStyle(
             fontSize: 10, fontWeight: FontWeight.w600, color: Colors.black54),
@@ -65,6 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 20,
                         child: SvgPicture.asset(
                           'assets/icons/home.svg',
+                          color: Colors.black54,
                         ),
                       ),
                       const SizedBox(height: 4)
@@ -106,7 +123,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 20,
                         child: SvgPicture.asset(
                           'assets/icons/transaction.svg',
-                          color: Colors.black87,
                         ),
                       ),
                       const SizedBox(height: 4)
@@ -123,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 20,
                         child: SvgPicture.asset(
                           'assets/icons/promotions.svg',
-                          color: Colors.black,
+                          color: Colors.black54,
                         ),
                       ),
                       const SizedBox(height: 4)
@@ -136,7 +152,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 20,
                         child: SvgPicture.asset(
                           'assets/icons/promotions.svg',
-                          color: Colors.black87,
                         ),
                       ),
                       const SizedBox(height: 4)
@@ -153,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 20,
                         child: SvgPicture.asset(
                           'assets/icons/account.svg',
-                          color: Colors.black,
+                          color: Colors.black54,
                         ),
                       ),
                       const SizedBox(height: 4)
@@ -166,7 +181,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 20,
                         child: SvgPicture.asset(
                           'assets/icons/account.svg',
-                          color: Colors.black87,
                         ),
                       ),
                       const SizedBox(height: 4)

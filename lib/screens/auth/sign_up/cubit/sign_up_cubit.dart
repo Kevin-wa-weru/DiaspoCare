@@ -12,6 +12,7 @@ class SignUpCubit extends Cubit<SignUpState> {
   signUp(String email, String countryCode, String phoneNumber,
       String password) async {
     emit(const SignUpState.loading());
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     print('Sign Up with the following details');
     print(email);
     print(countryCode);
@@ -21,11 +22,13 @@ class SignUpCubit extends Cubit<SignUpState> {
         await DiaspoCareAPis.signUp(email, countryCode, phoneNumber, password);
 
     if (response == 'Your Account has been created') {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('userEmail', email);
       prefs.setString('userPhoneNumber', phoneNumber);
       prefs.setString('persistentcountryCode', countryCode);
       prefs.setString('password', password);
+      prefs.setBool('isRegistered', true);
+    } else {
+      prefs.setBool('isRegistered', false);
     }
     emit(SignUpState.loaded(response));
   }
