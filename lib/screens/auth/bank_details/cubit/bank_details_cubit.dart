@@ -13,16 +13,14 @@ class BankDetailsCubit extends Cubit<BankDetailsState> {
     emit(const BankDetailsState.loading());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? phone = prefs.getString('userPhoneNumber');
-
+    String? userToken = prefs.getString('userToken');
     var result = await DiaspoCareAPis.addBankAccount(
+      userToken!,
       bankName,
       accountHolderName,
       accountNumber,
       phone,
     );
-
-    print('Results in cubit after sending bank details to API');
-    print(result);
 
     emit(BankDetailsState.loaded(result));
   }

@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:diasporacare/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class Spinner extends StatefulWidget {
   const Spinner(
@@ -11,6 +10,7 @@ class Spinner extends StatefulWidget {
   final double heightOfSpinner;
   final double widthofSpinnner;
   @override
+  // ignore: library_private_types_in_public_api
   _SpinnerState createState() => _SpinnerState();
 }
 
@@ -133,6 +133,7 @@ class SpinnerTwo extends StatefulWidget {
   final double heightOfSpinner;
   final double widthofSpinnner;
   @override
+  // ignore: library_private_types_in_public_api
   _SpinnerTwoState createState() => _SpinnerTwoState();
 }
 

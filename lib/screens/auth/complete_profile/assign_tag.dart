@@ -1,12 +1,10 @@
 import 'package:diasporacare/constants.dart';
 import 'package:diasporacare/screens/auth/complete_profile/cubit/assign_tag_cubit.dart';
 import 'package:diasporacare/screens/auth/location/update_location.dart';
-import 'package:diasporacare/services/diaspocare_apis.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multiselect/multiselect.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AreaOfSpecialty extends StatefulWidget {
   const AreaOfSpecialty({super.key});
@@ -18,17 +16,6 @@ class AreaOfSpecialty extends StatefulWidget {
 class _AreaOfSpecialtyState extends State<AreaOfSpecialty> {
   bool areaOfPracticeHasIssue = false;
   List<String> selectedAreaOfPractice = [];
-  String? token;
-
-  loginForToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userEmail = prefs.getString('userEmail');
-    String? password = prefs.getString('password');
-    var result = await DiaspoCareAPis.loginForToken(userEmail, password);
-    setState(() {
-      token = result;
-    });
-  }
 
   void showSnackBarWithoutButton(BuildContext context, message) {
     final snackBar = SnackBar(
@@ -255,9 +242,9 @@ class _AreaOfSpecialtyState extends State<AreaOfSpecialty> {
                       areaOfPracticeHasIssue = false;
                     });
 
-                    context
-                        .read<AssignTagCubit>()
-                        .assignTag(selectedAreaOfPractice, token);
+                    context.read<AssignTagCubit>().assignTag(
+                          selectedAreaOfPractice,
+                        );
                   }
                 },
                 child: BlocConsumer<AssignTagCubit, AssignTagState>(
@@ -290,7 +277,7 @@ class _AreaOfSpecialtyState extends State<AreaOfSpecialty> {
                         ),
                         child: const Center(
                           child: Text(
-                            'Saving Area\'s of Practice ...',
+                            'Save Area of Practice',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -326,7 +313,7 @@ class _AreaOfSpecialtyState extends State<AreaOfSpecialty> {
                         ),
                         child: const Center(
                           child: Text(
-                            'Saving Area\'s of Practice ...',
+                            'Save Area of Practice',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -344,7 +331,7 @@ class _AreaOfSpecialtyState extends State<AreaOfSpecialty> {
                         ),
                         child: const Center(
                           child: Text(
-                            'Save Bank Details',
+                            'Save Area of Practice',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,

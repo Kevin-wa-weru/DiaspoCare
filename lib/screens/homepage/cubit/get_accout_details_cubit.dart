@@ -19,7 +19,6 @@ class GetAccoutDetailsCubit extends Cubit<GetAccoutDetailsState> {
 
     var response =
         await DiaspoCareAPis.getAccountDetails(email!.trim(), token!);
-    print('Helo from getting Account cubit $response');
     emit(GetAccoutDetailsState.loaded(response));
   }
 }

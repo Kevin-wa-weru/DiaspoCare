@@ -290,6 +290,7 @@ class SingleLoadingDiscount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: avoid_unnecessary_containers
     return Container(
       child: Shimmer.fromColors(
         baseColor: const Color(0xFF145DA0),

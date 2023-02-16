@@ -1,7 +1,6 @@
 import 'package:diasporacare/screens/auth/bank_details/cubit/bank_details_cubit.dart';
 import 'package:diasporacare/screens/auth/bank_details/pick_bank_name.dart';
 import 'package:diasporacare/screens/auth/complete_profile/assign_tag.dart';
-import 'package:diasporacare/screens/auth/complete_profile/profile_completed.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

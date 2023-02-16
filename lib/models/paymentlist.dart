@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 class PaymentList {
   String name;
   String amount;
@@ -19,19 +18,18 @@ class PaymentList {
   @override
   bool operator ==(covariant PaymentList other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.name == name &&
-      other.amount == amount &&
-      other.quantity == quantity &&
-      other.discount == discount;
+
+    return other.name == name &&
+        other.amount == amount &&
+        other.quantity == quantity &&
+        other.discount == discount;
   }
 
   @override
   int get hashCode {
     return name.hashCode ^
-      amount.hashCode ^
-      quantity.hashCode ^
-      discount.hashCode;
+        amount.hashCode ^
+        quantity.hashCode ^
+        discount.hashCode;
   }
 }

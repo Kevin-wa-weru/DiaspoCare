@@ -8,10 +8,6 @@ class DiaspoCareAPis {
   static String stagingUrl = 'https://staging.diaspocare.com';
 
   static Future login(email, password) async {
-    print('These are the emails and password');
-    print(email);
-    print(password);
-
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -41,7 +37,11 @@ class DiaspoCareAPis {
           prefs.setString('userToken', data['token']);
           prefs.setString('userEmail', email.trim());
           prefs.setString('vendorName', data['full_name']);
-          prefs.setString('facilityName', data['vendor'][0]['name']);
+
+          if (data['vendor'].isEmpty) {
+          } else {
+            prefs.setString('facilityName', data['vendor'][0]['name']);
+          }
 
           return 'Successfull login';
         } else {
@@ -57,9 +57,6 @@ class DiaspoCareAPis {
   }
 
   static Future loginForToken(email, password) async {
-    print('Trying to login for token with these details');
-    print(email.trim());
-    print(password.trim());
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -81,8 +78,7 @@ class DiaspoCareAPis {
       if (response.body.isNotEmpty) {
         json.decode(response.body);
         var data = jsonDecode(response.body);
-        print('Loggin in For token returned this result');
-        print(data);
+
         if (data.toString().contains('Invalid login credentials')) {
           return 'Invalid login Credentails';
         } else if (data.toString().contains('Logged In')) {
@@ -101,11 +97,6 @@ class DiaspoCareAPis {
 
   static Future signUp(email, regionCode, phone, password) async {
     try {
-      // print('Credentails sent to server');
-      // print(email);
-      // print(regionCode);
-      // print(phone);
-      // print(password);
       http.Response response = await http.post(
           Uri.parse(
               '$baseUrl/api/method/hcfa_core.remote_procedures.users.create_diaspocare_account_v2'),
@@ -150,8 +141,6 @@ class DiaspoCareAPis {
 
   static Future createVendorProfile(email, facilityName, practitionerName,
       licenceNumber, country, currency, token) async {
-    print(
-        'Completting vendor profile with these details  $email, $facilityName, $practitionerName, $licenceNumber , $country, $currency, $token');
     try {
       http.Response response =
           await http.post(Uri.parse('$baseUrl/api/resource/Vendor'),
@@ -204,9 +193,6 @@ class DiaspoCareAPis {
 
   static Future assignTagToVendor(
       String facilityName, List<String> tags, token) async {
-    print('Assigning tag to vendor');
-    print(tags.toString());
-    print(token);
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -229,18 +215,11 @@ class DiaspoCareAPis {
 
       if (response.body.isNotEmpty) {
         json.decode(response.body);
-        var data = jsonDecode(response.body);
         debugPrint('hResponseBody Decoded');
-        if (data.toString().contains('DoesNotExistErro')) {
-          return 'Pharmacy Name does not exist';
-        } else if (data.toString().contains('pharmacy_name')) {
+        if (response.statusCode == 200) {
           return 'Area of practice saved';
-        } else if (data.toString().contains('already exists')) {
-          return 'Profile already exists';
-        } else if (data.toString().contains('Duplicate Name')) {
-          return 'Practioner name already in use';
         } else {
-          return 'Unidentified exception';
+          return 'Error saving practice';
         }
       } else {
         debugPrint('empty results');
@@ -253,8 +232,6 @@ class DiaspoCareAPis {
   }
 
   static Future sendOtp(token) async {
-    print('Trying to send otp with this token');
-    print(token);
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -268,8 +245,6 @@ class DiaspoCareAPis {
       if (response.body.isNotEmpty) {
         json.decode(response.body);
         var data = jsonDecode(response.body);
-        print('OTP API returned this result');
-        print(data);
         debugPrint('hResponseBody Decoded');
         if (data.toString().contains('true')) {
           return 'Otp sent';
@@ -332,15 +307,10 @@ class DiaspoCareAPis {
           });
 
       if (response.body.isNotEmpty) {
-        print(response.body);
         // json.decode(response.body);
         var data = jsonDecode(response.body);
         debugPrint('hResponseBody Decoded');
-        print(response.statusCode);
-        print(data);
         if (response.statusCode == 200) {
-          print('Yess.....');
-          print(data['message']);
           return data['message'];
         } else {
           return 'Error getting bank names';
@@ -356,19 +326,12 @@ class DiaspoCareAPis {
   }
 
   static Future addBankAccount(
+    token,
     bankName,
     accountName,
     accountNumber,
     phoneNumber,
   ) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? email = prefs.getString('userEmail');
-    String? password = prefs.getString('password');
-
-    var token = await loginForToken('kevinmwangi7881@gmail.com', '@Kevin7881');
-    print('Logged In For TOken before sending bank details');
-
-    print(token);
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -429,12 +392,9 @@ class DiaspoCareAPis {
 
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
-        print(data);
         debugPrint('hResponseBody Decoded');
 
         if (response.statusCode == 200) {
-          print('Getting regions');
-          print(data['message']);
           return data['message'];
         } else {
           return 'Error getting region names';
@@ -450,7 +410,6 @@ class DiaspoCareAPis {
   }
 
   static Future getTown(stateName) async {
-    print('Started getiing towns with $stateName');
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -462,12 +421,9 @@ class DiaspoCareAPis {
 
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
-        print(data);
         debugPrint('hResponseBody Decoded');
 
         if (response.statusCode == 200) {
-          print('Getting regions');
-          print(data['message']);
           return data['message'];
         } else {
           return 'Error getting region names';
@@ -484,7 +440,6 @@ class DiaspoCareAPis {
 
   static Future getVendorTransactions(
       String statusType, int page, String token) async {
-    print('Started getiing transactions with $statusType and $page as inputs');
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -497,12 +452,9 @@ class DiaspoCareAPis {
 
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
-        print(data);
         debugPrint('hResponseBody Decoded');
 
         if (response.statusCode == 200) {
-          print('Getting transcationssss');
-          print(data['message']);
           return data['message'];
         } else {
           return 'Error getting transcations';
@@ -518,7 +470,6 @@ class DiaspoCareAPis {
   }
 
   static Future getAccountDetails(String email, String token) async {
-    print('Started getiing accountDetails with $email');
     try {
       http.Response response = await http
           .get(Uri.parse('$baseUrl/api/resource/User/$email'), headers: {
@@ -527,17 +478,11 @@ class DiaspoCareAPis {
         "Authorization": "Basic $token",
       });
 
-      print(
-          'Reponse from geting informations from accountDetails ${jsonDecode(response.body)}');
-
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
-        print(data);
         debugPrint('hResponseBody Decoded');
 
         if (response.statusCode == 200) {
-          print('Getting account details');
-          print(data['data']);
           return data['data'];
         } else {
           return 'Error getting account details';
@@ -553,7 +498,6 @@ class DiaspoCareAPis {
   }
 
   static Future getBankDetails(String token) async {
-    print('Started getiing bank details with $token');
     try {
       http.Response response = await http.get(
           Uri.parse(
@@ -566,12 +510,9 @@ class DiaspoCareAPis {
 
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
-        print(data);
         debugPrint('hResponseBody Decoded');
 
         if (response.statusCode == 200) {
-          print('Getting bank details');
-          print(data['message']);
           return data['message'];
         } else {
           return 'Error getting bank details';
@@ -587,7 +528,6 @@ class DiaspoCareAPis {
   }
 
   static Future getFacilityDetails(String vendorName) async {
-    print('Started getiing facilty details with $vendorName');
     try {
       http.Response response = await http.post(
           Uri.parse('$baseUrl/api/resource/Vendor?Vendor%20Name=$vendorName'),
@@ -598,12 +538,9 @@ class DiaspoCareAPis {
 
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
-        print(data);
         debugPrint('hResponseBody Decoded');
 
         if (response.statusCode == 200) {
-          print('Getting bank details');
-          print(data['message']);
           return data['message'];
         } else {
           return 'Error getting bank details';
@@ -619,7 +556,6 @@ class DiaspoCareAPis {
   }
 
   static Future getDiscounts(token) async {
-    print('Started getiing discounts with');
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -632,12 +568,9 @@ class DiaspoCareAPis {
 
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
-        print(data);
         debugPrint('hResponseBody Decoded');
 
         if (response.statusCode == 200) {
-          print('Getting discounts');
-          print(data['message']);
           return data['message'];
         } else {
           return 'Error getting discounts';
@@ -653,7 +586,6 @@ class DiaspoCareAPis {
   }
 
   static Future getBestSellingItems(token, String facilityName) async {
-    print('Started getiing best selling items with $token');
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -666,12 +598,9 @@ class DiaspoCareAPis {
 
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
-        print(data);
         debugPrint('hResponseBody Decoded');
 
         if (response.statusCode == 200) {
-          print('Getting best selling items');
-          print(data['message']);
           return data['message'];
         } else {
           return 'Error getting best selling items';
@@ -687,8 +616,6 @@ class DiaspoCareAPis {
   }
 
   static Future addDiscount(String discountName, int percentage, token) async {
-    print(
-        "Adding discounts with the following $discountName, $percentage, $token");
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -706,8 +633,6 @@ class DiaspoCareAPis {
           });
 
       if (response.body.isNotEmpty) {
-        var data = jsonDecode(response.body);
-        print(data);
         if (response.statusCode == 200) {
           return 'Discount added successfully';
         } else {
@@ -742,8 +667,6 @@ class DiaspoCareAPis {
           });
 
       if (response.body.isNotEmpty) {
-        var data = jsonDecode(response.body);
-        print(data);
         if (response.statusCode == 200) {
           return 'Discount edited successfully';
         } else {
@@ -772,7 +695,6 @@ class DiaspoCareAPis {
 
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
-        print(data);
         if (response.statusCode == 200) {
           return data['message'];
         } else {
@@ -804,7 +726,6 @@ class DiaspoCareAPis {
 
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
-        print(data);
         if (response.statusCode == 200) {
           return data['message'];
         } else {
@@ -828,8 +749,6 @@ class DiaspoCareAPis {
       int quantity,
       int isService,
       String token) async {
-    print(
-        'Adding item with $basketId , $item, $percentageDiscount, $price, $quantity, $isService, $token');
     try {
       http.Response response =
           await http.post(Uri.parse('$baseUrl/api/resource/Order Basket Item'),
@@ -850,8 +769,6 @@ class DiaspoCareAPis {
           });
 
       if (response.body.isNotEmpty) {
-        var data = jsonDecode(response.body);
-        print(data);
         if (response.statusCode == 200) {
           return 'Item added successfully';
         } else {
@@ -868,7 +785,6 @@ class DiaspoCareAPis {
   }
 
   static Future getBasketItems(String basketId, String token) async {
-    print('Getiing basket items with $basketId, $token');
     try {
       http.Response response = await http.get(
           Uri.parse(
@@ -881,9 +797,6 @@ class DiaspoCareAPis {
 
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
-        print(data);
-        print('REsponse code from getting items');
-        print(response.statusCode.toString());
         if (response.statusCode == 200) {
           return data['message'];
         } else {
@@ -902,7 +815,6 @@ class DiaspoCareAPis {
   static Future generateTransactionOtp(
     String basketId,
   ) async {
-    print('generating otp with $basketId,');
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -919,10 +831,6 @@ class DiaspoCareAPis {
           });
 
       if (response.body.isNotEmpty) {
-        var data = jsonDecode(response.body);
-        print(data);
-        print('REsponse code from getting items');
-        print(response.statusCode.toString());
         if (response.statusCode == 200) {
           return 'Otp sent';
         } else {
@@ -940,7 +848,6 @@ class DiaspoCareAPis {
 
   static Future verifyTransactionOtp(
       String basketId, String otpCode, String token) async {
-    print('verifying otp with $basketId,');
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -954,9 +861,6 @@ class DiaspoCareAPis {
 
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
-        print(data);
-        print('REsponse code from getting items');
-        print(response.statusCode.toString());
         if (response.statusCode == 200) {
           return data['message'];
         } else {
@@ -977,7 +881,6 @@ class DiaspoCareAPis {
     String code,
     String token,
   ) async {
-    print('initialising  with $basketId,');
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -990,10 +893,6 @@ class DiaspoCareAPis {
           });
 
       if (response.body.isNotEmpty) {
-        var data = jsonDecode(response.body);
-        print(data);
-        print('REsponse code from initialising transaction');
-        print(response.statusCode.toString());
         if (response.statusCode == 200) {
           return 'Otp sent';
         } else {
@@ -1010,7 +909,6 @@ class DiaspoCareAPis {
   }
 
   static Future checkIfVeried(String facilityName) async {
-    print('checking if verified with $facilityName,');
     try {
       http.Response response = await http.get(
           Uri.parse(
@@ -1023,9 +921,6 @@ class DiaspoCareAPis {
 
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
-        print(data);
-        print('REsponse code from getting items');
-        print(response.statusCode.toString());
         if (response.statusCode == 200) {
           if (data['message'] == true) {
             return true;
@@ -1046,7 +941,6 @@ class DiaspoCareAPis {
   }
 
   static Future searchMasterList(String query, String token) async {
-    print('checking if verified with $query,');
     try {
       http.Response response = await http.get(
           Uri.parse(
@@ -1059,9 +953,6 @@ class DiaspoCareAPis {
 
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
-        print(data);
-        print('REsponse code from getting items');
-        print(response.statusCode.toString());
         if (response.statusCode == 200) {
           return data['message'];
         } else {
@@ -1078,7 +969,6 @@ class DiaspoCareAPis {
   }
 
   static Future testMedifinder(String token) async {
-    print('Medifffffffffffffffffffffffffiiiiiiiiiiiiiinder');
     try {
       http.Response response = await http.get(
           Uri.parse(
@@ -1091,9 +981,6 @@ class DiaspoCareAPis {
 
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
-        print(data);
-        print('REsponse code from getting items');
-        print(response.statusCode.toString());
         if (response.statusCode == 200) {
           return data['message'];
         } else {
@@ -1111,8 +998,6 @@ class DiaspoCareAPis {
 
   static Future editBasketItems(String token, String basketItemId,
       String itemName, int price, int quantity) async {
-    print(
-        "editing basket Item with $token, $basketItemId,  $itemName, $price, $quantity");
     try {
       http.Response response = await http.put(
           Uri.parse('$baseUrl/api/resource/Order Basket Item/$basketItemId'),
@@ -1124,10 +1009,6 @@ class DiaspoCareAPis {
           });
 
       if (response.body.isNotEmpty) {
-        var data = jsonDecode(response.body);
-        print(data);
-        print('REsponse code from editing basket items');
-        print(response.statusCode.toString());
         if (response.statusCode == 200) {
           return 'Successfully Edited basket item';
         } else {
@@ -1145,8 +1026,6 @@ class DiaspoCareAPis {
 
   static Future updateLocation(
       String token, String district, String region, String description) async {
-    print(
-        "updating location with $token, $token,  $district, $region, $description");
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -1155,8 +1034,8 @@ class DiaspoCareAPis {
             "district": "Kasarani",
             "region": "Nairobi",
             "description": "Opposite Kenya House",
-            "lon": 00.00000,
-            "latitude": 00.0000000
+            "lon": null,
+            "latitude": null
           }),
           headers: {
             "Content-Type": "application/json",
@@ -1165,10 +1044,6 @@ class DiaspoCareAPis {
           });
 
       if (response.body.isNotEmpty) {
-        var data = jsonDecode(response.body);
-        print(data);
-        print('REsponse code from updating location');
-        print(response.statusCode.toString());
         if (response.statusCode == 200) {
           return 'Successfully updated location';
         } else {
@@ -1185,7 +1060,6 @@ class DiaspoCareAPis {
   }
 
   static Future checkBankAccount(String facilityName) async {
-    print("Checking if has bank account with $facilityName");
     try {
       http.Response response = await http.get(
           Uri.parse(
@@ -1198,15 +1072,40 @@ class DiaspoCareAPis {
 
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
-        print(data);
-        print('REsponse code from checking if has bank account');
-        print(response.statusCode.toString());
         if (response.statusCode == 200) {
           if (data['message'] == true) {
             return true;
           } else {
             return false;
           }
+        } else {
+          return false;
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future getDashboardStats(String facilityName, String token) async {
+    try {
+      http.Response response = await http.get(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.get_stats?branch=$facilityName'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "Basic $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        if (response.statusCode == 200) {
+          return data['message'];
         } else {
           return false;
         }

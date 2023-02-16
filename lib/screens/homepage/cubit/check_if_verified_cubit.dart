@@ -15,8 +15,11 @@ class CheckIfVerifiedCubit extends Cubit<CheckIfVerifiedState> {
 
     String? facilityName = prefs.getString('facilityName');
 
-    var response = await DiaspoCareAPis.checkIfVeried(facilityName!);
+    if (facilityName == null) {
+    } else {
+      var response = await DiaspoCareAPis.checkIfVeried(facilityName);
 
-    emit(CheckIfVerifiedState.loaded(response));
+      emit(CheckIfVerifiedState.loaded(response));
+    }
   }
 }

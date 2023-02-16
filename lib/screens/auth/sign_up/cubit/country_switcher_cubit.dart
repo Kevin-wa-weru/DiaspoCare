@@ -11,8 +11,6 @@ class CountrySwitcherCubit extends Cubit<CountrySwitcherState> {
   swithCountries(String country) async {
     emit(const CountrySwitcherState.loading());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var countrycoding = prefs.getString('countryCode');
-    print("Swithing with this from previous memory $countrycoding");
     if (country == 'Kenya') {
       prefs.setString('countryCode', "ke");
       emit(const CountrySwitcherState.loaded('kenya', '+254'));
@@ -32,7 +30,5 @@ class CountrySwitcherCubit extends Cubit<CountrySwitcherState> {
       prefs.setString('countryCode', "ug");
       emit(const CountrySwitcherState.loaded('uganda', '+256'));
     }
-
-    print(prefs);
   }
 }

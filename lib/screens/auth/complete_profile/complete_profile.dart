@@ -1,7 +1,6 @@
 import 'package:diasporacare/screens/auth/complete_profile/cubit/complete_profile_cubit.dart';
 import 'package:diasporacare/screens/auth/otp/verify_otp.dart';
 import 'package:diasporacare/screens/auth/sign_up/cubit/country_switcher_cubit.dart';
-import 'package:diasporacare/services/diaspocare_apis.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -37,8 +36,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
   String? selectedCountry;
   int maxLine = 4;
   // List<String> selectedAreaOfPractice = [];
-  late String token = '';
-  late String email = '';
+  // late String token = '';
+  // late String email = '';
 
   String selectedText = "";
 
@@ -77,28 +76,27 @@ class _CompleteProfileState extends State<CompleteProfile> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  loginForToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userEmail = prefs.getString('userEmail');
-    String? password = prefs.getString('password');
-    var result = await DiaspoCareAPis.loginForToken(userEmail, password);
-    setState(() {
-      token = result;
-      email = userEmail!;
-    });
-  }
+  // loginForToken() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? userEmail = prefs.getString('userEmail');
+  //   String? password = prefs.getString('password');
+  //   var result = await DiaspoCareAPis.loginForToken(userEmail, password);
+  //   setState(() {
+  //     token = result;
+  //     email = userEmail!;
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
     clearSelectedCountry();
-    loginForToken();
+    // loginForToken();
   }
 
   @override
   Widget build(BuildContext context) {
     keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
-    var size = MediaQuery.of(context).size;
     return Scaffold(
         body: ListView(
       children: [
@@ -431,23 +429,6 @@ class _CompleteProfileState extends State<CompleteProfile> {
                           ),
                           InkWell(
                             onTap: () {
-                              // showCountryPicker(
-                              //   context: context,
-                              //   showPhoneCode:
-                              //       false, // optional. Shows phone code before the country name.
-                              //   onSelect: (Country country) {
-                              //     setState(() {
-                              //       selectedCountry =
-                              //           country.displayNameNoCountryCode;
-
-                              //       if (selectedCountry != null) {
-                              //         setState(() {
-                              //           countryHasIssue = false;
-                              //         });
-                              //       }
-                              //     });
-                              //   },
-                              // );
                               showModalBottomSheet(
                                   backgroundColor: Colors.white,
                                   context: context,
@@ -770,12 +751,6 @@ class _CompleteProfileState extends State<CompleteProfile> {
                                   !practitionerNamehasIssue &&
                                   !regulatorLicenceIssue &&
                                   !countryHasIssue) {
-                                SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
-
-                                String? countryCode =
-                                    prefs.getString('countryCode');
-
                                 // ignore: use_build_context_synchronously
                                 context
                                     .read<CompleteProfileCubit>()
@@ -784,8 +759,6 @@ class _CompleteProfileState extends State<CompleteProfile> {
                                       facilityNameController.text,
                                       practitionerNameController.text,
                                       regulatorLicenceController.text,
-                                      countryCode,
-                                      token,
                                     );
                               }
                             },
@@ -917,6 +890,7 @@ class Animal {
   Animal({required this.name, required this.id});
 }
 
+// ignore: must_be_immutable, unused_element
 class _ViewItem extends StatelessWidget {
   String item;
   bool itemSelected;

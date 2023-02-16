@@ -1,9 +1,7 @@
 import 'package:diasporacare/screens/auth/bank_details/bank_details.dart';
 import 'package:diasporacare/screens/auth/complete_profile/profile_completed.dart';
-import 'package:diasporacare/screens/auth/sign_in/sign_in.dart';
 import 'package:diasporacare/screens/decision/cubit/decide_redirect_page_cubit.dart';
 import 'package:diasporacare/screens/homepage/home_screen.dart';
-import 'package:diasporacare/screens/landing/landing_page.dart';
 import 'package:diasporacare/screens/widgets/spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:diasporacare/services/diaspocare_apis.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,9 +13,12 @@ class GetVendorDetailsCubit extends Cubit<GetVendorDetailsState> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? vendorName = prefs.getString('vendorName');
     String? facilityName = prefs.getString('facilityName');
-    emit(GetVendorDetailsState.loaded({
-      "vendorName": vendorName,
-      "facilityName": facilityName,
-    }));
+    if (facilityName == null) {
+    } else {
+      emit(GetVendorDetailsState.loaded({
+        "vendorName": vendorName,
+        "facilityName": facilityName,
+      }));
+    }
   }
 }

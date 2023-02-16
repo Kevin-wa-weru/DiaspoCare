@@ -4,27 +4,24 @@ import 'package:diasporacare/screens/auth/complete_profile/cubit/assign_tag_cubi
 import 'package:diasporacare/screens/auth/location/cubit/get_regions_cubit.dart';
 import 'package:diasporacare/screens/auth/location/cubit/get_towns_cubit.dart';
 import 'package:diasporacare/screens/auth/location/cubit/update_location_cubit.dart';
-import 'package:diasporacare/screens/auth/location/update_location.dart';
 import 'package:diasporacare/screens/auth/otp/cubit/cubit/get_phone_n_umber_cubit.dart';
 import 'package:diasporacare/screens/auth/otp/cubit/verify_otp_cubit.dart';
 import 'package:diasporacare/screens/auth/sign_in/cubit/sign_in_cubit.dart';
-import 'package:diasporacare/screens/auth/sign_in/sign_in.dart';
+import 'package:diasporacare/screens/auth/sign_in/cubit/sign_in_two_cubit.dart';
 import 'package:diasporacare/screens/auth/sign_up/cubit/country_switcher_cubit.dart';
 import 'package:diasporacare/screens/auth/sign_up/cubit/sign_up_cubit.dart';
-import 'package:diasporacare/screens/auth/sign_up/sign_up.dart';
 import 'package:diasporacare/screens/decision/cubit/decide_redirect_page_cubit.dart';
 import 'package:diasporacare/screens/decision/custom_splash_screen.dart';
-import 'package:diasporacare/screens/decision/desicion.dart';
 import 'package:diasporacare/screens/homepage/cubit/add_discount_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/check_if_verified_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/edit_discount_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_accout_details_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_bank_details_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_best_selling_items_cubit.dart';
+import 'package:diasporacare/screens/homepage/cubit/get_dash_board_stats_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_discounts_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_facility_details_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_vendor_details_cubit.dart';
-import 'package:diasporacare/screens/landing/landing_page.dart';
 import 'package:diasporacare/screens/transactions/cubit/add_basket_cubit.dart';
 import 'package:diasporacare/screens/transactions/cubit/add_basket_item_cubit.dart';
 import 'package:diasporacare/screens/transactions/cubit/edit_basket_item_cubit.dart';
@@ -117,6 +114,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => GetVendorDetailsCubit()),
         BlocProvider(create: (context) => DecideRedirectPageCubit()),
         BlocProvider(create: (context) => GetBestSellingItemsCubit()),
+        BlocProvider(create: (context) => GetDashBoardStatsCubit()),
+        BlocProvider(create: (context) => SignInTwoCubit()),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -125,8 +124,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
             textTheme: GoogleFonts.poppinsTextTheme(),
           ),
-          // ignore: prefer_const_constructors
-          home: CustomSplashScreen()),
+          home: const CustomSplashScreen()),
     );
   }
 }

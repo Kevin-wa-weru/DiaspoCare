@@ -15,20 +15,20 @@ class GetPhoneNUmberCubit extends Cubit<GetPhoneNUmberState> {
 
     String? countryCode = prefs.getString('persistentcountryCode');
 
-    print('Phone Number from sharePrefference');
-    print(phone);
-    print(countryCode);
-
     if (countryCode == 'ke') {
       emit(GetPhoneNUmberState.loaded('+254$phone'));
     }
 
     if (countryCode == 'gh') {
-      emit(GetPhoneNUmberState.loaded('+234$phone'));
+      emit(GetPhoneNUmberState.loaded('+233$phone'));
     }
 
     if (countryCode == 'ng') {
-      emit(GetPhoneNUmberState.loaded('+233$phone'));
+      emit(GetPhoneNUmberState.loaded('+234$phone'));
+    }
+
+    if (countryCode == 'ug') {
+      emit(GetPhoneNUmberState.loaded('+256$phone'));
     }
   }
 }

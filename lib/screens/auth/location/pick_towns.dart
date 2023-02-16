@@ -1,5 +1,4 @@
 import 'package:diasporacare/constants.dart';
-import 'package:diasporacare/screens/auth/location/cubit/get_regions_cubit.dart';
 import 'package:diasporacare/screens/auth/location/cubit/get_towns_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +13,6 @@ class PickTown extends StatefulWidget {
 
 class _PickTownState extends State<PickTown> {
   getTowns() async {
-    print('Picking towns with ${widget.stateName}');
     context.read<GetTownsCubit>().getTowns(widget.stateName);
   }
 

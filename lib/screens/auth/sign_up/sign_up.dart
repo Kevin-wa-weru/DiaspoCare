@@ -1,4 +1,5 @@
 import 'package:diasporacare/screens/auth/sign_in/sign_in.dart';
+import 'package:diasporacare/screens/auth/sign_in/sign_in_two.dart';
 import 'package:diasporacare/screens/auth/sign_up/cubit/country_switcher_cubit.dart';
 import 'package:diasporacare/screens/auth/sign_up/cubit/sign_up_cubit.dart';
 import 'package:flutter/material.dart';
@@ -893,11 +894,11 @@ class _SignUpState extends State<SignUp> {
                                                   });
                                                 }),
                                             const Text(
-                                              'I have read and do understand the terms of',
+                                              'I have read and understood terms of',
                                               style: TextStyle(
                                                   color: Colors.black87,
                                                   fontWeight: FontWeight.w400,
-                                                  fontSize: 12),
+                                                  fontSize: 14),
                                             ),
                                           ],
                                         ),
@@ -914,7 +915,7 @@ class _SignUpState extends State<SignUp> {
                                                       color: Colors.black87,
                                                       fontWeight:
                                                           FontWeight.w400,
-                                                      fontSize: 12),
+                                                      fontSize: 14),
                                                 ),
                                               ),
                                             ],
@@ -965,19 +966,9 @@ class _SignUpState extends State<SignUp> {
                                       showSnackBar(
                                           context, 'Accept privacy policy');
                                     } else {
-                                      SharedPreferences prefs =
-                                          await SharedPreferences.getInstance();
-
-                                      String? countryCode =
-                                          prefs.getString('countryCode');
-
-                                      debugPrint('CountryCoooooooooooooode');
-                                      debugPrint(countryCode);
-
                                       // ignore: use_build_context_synchronously
                                       context.read<SignUpCubit>().signUp(
                                           emailController.text.trim(),
-                                          countryCode!,
                                           phoneController.text.trim(),
                                           passwordController.text.trim());
                                     }
@@ -997,10 +988,7 @@ class _SignUpState extends State<SignUp> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        const SignIn(
-                                                          pageToNavigateTo:
-                                                              'CompleteProfile',
-                                                        )));
+                                                        const SignIntTwo()));
                                           } else {
                                             showSnackBarWithoutButton(
                                                 context, result);
@@ -1109,10 +1097,8 @@ class _SignUpState extends State<SignUp> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => const SignIn(
-                                                pageToNavigateTo:
-                                                    'DecisionsPage',
-                                              )));
+                                          builder: (context) =>
+                                              const SignIn()));
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,

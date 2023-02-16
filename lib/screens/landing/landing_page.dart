@@ -51,13 +51,13 @@ class _LandingScreenState extends State<LandingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: currentTabs,
         controller: pageController,
         onPageChanged: (int index) {
           setState(() {
             currentIndex = index;
           });
         },
+        children: currentTabs,
       ),
     );
   }

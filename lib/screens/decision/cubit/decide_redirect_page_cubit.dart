@@ -13,18 +13,21 @@ class DecideRedirectPageCubit extends Cubit<DecideRedirectPageState> {
     emit(const DecideRedirectPageState.loading());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var facilityName = prefs.getString('facilityName');
-
-    var response = await DiaspoCareAPis.checkIfVeried(facilityName!);
-
-    if (response == true) {
+    if (facilityName == null) {
       emit(const DecideRedirectPageState.loaded('HomePage'));
     } else {
-      var response = await DiaspoCareAPis.checkBankAccount(facilityName);
+      var response = await DiaspoCareAPis.checkIfVeried(facilityName);
 
       if (response == true) {
-        emit(const DecideRedirectPageState.loaded('ProfileComplete'));
+        emit(const DecideRedirectPageState.loaded('HomePage'));
       } else {
-        emit(const DecideRedirectPageState.loaded('BankAccount'));
+        var response = await DiaspoCareAPis.checkBankAccount(facilityName);
+
+        if (response == true) {
+          emit(const DecideRedirectPageState.loaded('ProfileComplete'));
+        } else {
+          emit(const DecideRedirectPageState.loaded('BankAccount'));
+        }
       }
     }
   }

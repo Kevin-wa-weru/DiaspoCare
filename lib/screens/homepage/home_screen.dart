@@ -1,6 +1,7 @@
 import 'package:diasporacare/screens/homepage/account.dart';
 import 'package:diasporacare/screens/homepage/cubit/check_if_verified_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_best_selling_items_cubit.dart';
+import 'package:diasporacare/screens/homepage/cubit/get_dash_board_stats_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_vendor_details_cubit.dart';
 import 'package:diasporacare/screens/homepage/home_page.dart';
 import 'package:diasporacare/screens/homepage/promotions.dart';
@@ -25,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     context.read<GetVendorDetailsCubit>().getVendorDetails();
     context.read<CheckIfVerifiedCubit>().checkIfVerified();
+    context.read<GetDashBoardStatsCubit>().getDashboardStats();
     context.read<GetBestSellingItemsCubit>().getBestSellingItems();
     super.initState();
   }

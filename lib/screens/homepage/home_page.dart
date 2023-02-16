@@ -1,5 +1,6 @@
 import 'package:diasporacare/screens/homepage/cubit/check_if_verified_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_best_selling_items_cubit.dart';
+import 'package:diasporacare/screens/homepage/cubit/get_dash_board_stats_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_vendor_details_cubit.dart';
 import 'package:diasporacare/screens/transactions/search_beneficiary.dart';
 import 'package:diasporacare/screens/widgets/loading_container_animation.dart';
@@ -317,346 +318,23 @@ class HomePage extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.025,
           ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.33,
-            width: MediaQuery.of(context).size.width * 0.95,
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(6.0),
-              ),
-              border: Border.all(
-                color: Colors.black12,
-                width: 1.0,
-              ),
-            ),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.015,
-                ),
-                Row(
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.only(left: 15.0),
-                      child: Text(
-                        'Overview',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.015,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.11,
-                        width: MediaQuery.of(context).size.width * 0.40,
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                          border: Border.all(
-                            color: Colors.black12,
-                            width: 1.0,
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 15.0, top: 10),
-                                  child: Text(
-                                    'Total Sales',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.005,
-                            ),
-                            Row(
-                              children: [
-                                Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 20.0, top: 10),
-                                    child: RichText(
-                                      text: TextSpan(children: [
-                                        WidgetSpan(
-                                          child: Transform.translate(
-                                            offset: const Offset(-2, -4),
-                                            child: const Text(
-                                              'KES',
-                                              textScaleFactor: 0.7,
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          ),
-                                        ),
-                                        const TextSpan(
-                                          text: '0.00',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ]),
-                                    )),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 15.0),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.11,
-                        width: MediaQuery.of(context).size.width * 0.40,
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                          border: Border.all(
-                            color: Colors.black12,
-                            width: 1.0,
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 15.0, top: 10),
-                                  child: Text(
-                                    'Approved Transact..',
-                                    style: TextStyle(
-                                        overflow: TextOverflow.ellipsis,
-                                        color: Colors.black,
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.005,
-                            ),
-                            Row(
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 15.0, top: 10),
-                                  child: Text(
-                                    '0',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Transform.translate(
-                              offset: const Offset(0.0, -5.0),
-                              child: Align(
-                                alignment: Alignment.bottomRight,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    right: 8.0,
-                                  ),
-                                  child: SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.020,
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.1,
-                                    child: SvgPicture.asset(
-                                        'assets/icons/arrow.svg',
-                                        fit: BoxFit.contain),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.025,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.11,
-                        width: MediaQuery.of(context).size.width * 0.40,
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                          border: Border.all(
-                            color: Colors.black12,
-                            width: 1.0,
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 15.0, top: 10),
-                                  child: Text(
-                                    'Pending Transactions',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.005,
-                            ),
-                            Row(
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 15.0, top: 10),
-                                  child: Text(
-                                    '0',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Transform.translate(
-                              offset: const Offset(0.0, -5.0),
-                              child: Align(
-                                alignment: Alignment.bottomRight,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    right: 8.0,
-                                  ),
-                                  child: SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.020,
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.1,
-                                    child: SvgPicture.asset(
-                                        'assets/icons/arrow.svg',
-                                        fit: BoxFit.contain),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 15.0),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.11,
-                        width: MediaQuery.of(context).size.width * 0.40,
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                          border: Border.all(
-                            color: Colors.black12,
-                            width: 1.0,
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 15.0, top: 10),
-                                  child: Text(
-                                    'Transactions Today',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.005,
-                            ),
-                            Row(
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 15.0, top: 10),
-                                  child: Text(
-                                    '0',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Transform.translate(
-                              offset: const Offset(0.0, -5.0),
-                              child: Align(
-                                alignment: Alignment.bottomRight,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    right: 8.0,
-                                  ),
-                                  child: SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.020,
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.1,
-                                    child: SvgPicture.asset(
-                                        'assets/icons/arrow.svg',
-                                        fit: BoxFit.contain),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
+          BlocBuilder<GetDashBoardStatsCubit, GetDashBoardStatsState>(
+            builder: (context, state) {
+              return state.when(initial: () {
+                return const DashboardStatsLoading();
+              }, loading: () {
+                return const DashboardStatsLoading();
+              }, loaded: (Map<String, dynamic> stats) {
+                return DashboardStats(
+                  totalTranscations: stats['no_of_transactions'].toString(),
+                  pendingTransactions: stats['total_pending'].toString(),
+                  approvedTranscations: stats['total_approved'].toString(),
+                  totalSales: stats['total_revenue'].toString(),
+                );
+              }, error: (message) {
+                return const DashboardStatsLoading();
+              });
+            },
           ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.02,
@@ -1107,5 +785,689 @@ class HomePage extends StatelessWidget {
         ],
       ),
     ));
+  }
+}
+
+class DashboardStats extends StatelessWidget {
+  const DashboardStats({
+    Key? key,
+    required this.approvedTranscations,
+    required this.pendingTransactions,
+    required this.totalSales,
+    required this.totalTranscations,
+  }) : super(key: key);
+  final String totalSales;
+  final String approvedTranscations;
+  final String pendingTransactions;
+  final String totalTranscations;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.33,
+      width: MediaQuery.of(context).size.width * 0.95,
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(6.0),
+        ),
+        border: Border.all(
+          color: Colors.black12,
+          width: 1.0,
+        ),
+      ),
+      child: Column(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.015,
+          ),
+          Row(
+            children: const [
+              Padding(
+                padding: EdgeInsets.only(left: 15.0),
+                child: Text(
+                  'Overview',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.015,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.11,
+                  width: MediaQuery.of(context).size.width * 0.40,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    border: Border.all(
+                      color: Colors.black12,
+                      width: 1.0,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.only(left: 15.0, top: 10),
+                            child: Text(
+                              'Total Sales',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.005,
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20.0, top: 10),
+                              child: RichText(
+                                text: TextSpan(children: [
+                                  WidgetSpan(
+                                    child: Transform.translate(
+                                      offset: const Offset(-2, -4),
+                                      child: const Text(
+                                        'KES',
+                                        textScaleFactor: 0.7,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: totalSales,
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ]),
+                              )),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 15.0),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.11,
+                  width: MediaQuery.of(context).size.width * 0.40,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    border: Border.all(
+                      color: Colors.black12,
+                      width: 1.0,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.only(left: 15.0, top: 10),
+                            child: Text(
+                              'Approved Transact..',
+                              style: TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Colors.black,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.005,
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15.0, top: 10),
+                            child: Text(
+                              approvedTranscations,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Transform.translate(
+                        offset: const Offset(0.0, -5.0),
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              right: 8.0,
+                            ),
+                            child: SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.020,
+                              width: MediaQuery.of(context).size.width * 0.1,
+                              child: SvgPicture.asset('assets/icons/arrow.svg',
+                                  fit: BoxFit.contain),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.025,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.11,
+                  width: MediaQuery.of(context).size.width * 0.40,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    border: Border.all(
+                      color: Colors.black12,
+                      width: 1.0,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.only(left: 15.0, top: 10),
+                            child: Text(
+                              'Pending Transactions',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.005,
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15.0, top: 10),
+                            child: Text(
+                              pendingTransactions,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Transform.translate(
+                        offset: const Offset(0.0, -5.0),
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              right: 8.0,
+                            ),
+                            child: SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.020,
+                              width: MediaQuery.of(context).size.width * 0.1,
+                              child: SvgPicture.asset('assets/icons/arrow.svg',
+                                  fit: BoxFit.contain),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 15.0),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.11,
+                  width: MediaQuery.of(context).size.width * 0.40,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    border: Border.all(
+                      color: Colors.black12,
+                      width: 1.0,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.only(left: 15.0, top: 10),
+                            child: Text(
+                              'Transactions Today',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.005,
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15.0, top: 10),
+                            child: Text(
+                              totalTranscations,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Transform.translate(
+                        offset: const Offset(0.0, -5.0),
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              right: 8.0,
+                            ),
+                            child: SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.020,
+                              width: MediaQuery.of(context).size.width * 0.1,
+                              child: SvgPicture.asset('assets/icons/arrow.svg',
+                                  fit: BoxFit.contain),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class DashboardStatsLoading extends StatelessWidget {
+  const DashboardStatsLoading({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.33,
+      width: MediaQuery.of(context).size.width * 0.95,
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(6.0),
+        ),
+        border: Border.all(
+          color: Colors.black12,
+          width: 1.0,
+        ),
+      ),
+      child: Column(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.015,
+          ),
+          Row(
+            children: const [
+              Padding(
+                padding: EdgeInsets.only(left: 15.0),
+                child: Text(
+                  'Overview',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.015,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.11,
+                  width: MediaQuery.of(context).size.width * 0.40,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    border: Border.all(
+                      color: Colors.black12,
+                      width: 1.0,
+                    ),
+                  ),
+                  child: Shimmer.fromColors(
+                    baseColor: const Color(0xFF145DA0),
+                    highlightColor: Colors.black12,
+                    period: const Duration(milliseconds: 500),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 15.0, top: 10),
+                              child: Container(
+                                color: Colors.black12,
+                                width: 100,
+                                height: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.005,
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 20.0, top: 10),
+                                child: Container(
+                                  color: Colors.black12,
+                                  width: 60,
+                                  height: 15,
+                                )),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 15.0),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.11,
+                  width: MediaQuery.of(context).size.width * 0.40,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    border: Border.all(
+                      color: Colors.black12,
+                      width: 1.0,
+                    ),
+                  ),
+                  child: Shimmer.fromColors(
+                    baseColor: const Color(0xFF145DA0),
+                    highlightColor: Colors.black12,
+                    period: const Duration(milliseconds: 500),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 15.0, top: 10),
+                                child: Container(
+                                  color: Colors.black12,
+                                  width: 100,
+                                  height: 15,
+                                )),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.005,
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 15.0, top: 10),
+                                child: Container(
+                                  color: Colors.black12,
+                                  width: 60,
+                                  height: 15,
+                                )),
+                          ],
+                        ),
+                        Transform.translate(
+                          offset: const Offset(0.0, -5.0),
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                right: 8.0,
+                              ),
+                              child: SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.020,
+                                width: MediaQuery.of(context).size.width * 0.1,
+                                child: SvgPicture.asset(
+                                    'assets/icons/arrow.svg',
+                                    color: Colors.black12,
+                                    fit: BoxFit.contain),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.025,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.11,
+                  width: MediaQuery.of(context).size.width * 0.40,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    border: Border.all(
+                      color: Colors.black12,
+                      width: 1.0,
+                    ),
+                  ),
+                  child: Shimmer.fromColors(
+                    baseColor: const Color(0xFF145DA0),
+                    highlightColor: Colors.black12,
+                    period: const Duration(milliseconds: 500),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 15.0, top: 10),
+                                child: Container(
+                                  color: Colors.black12,
+                                  width: 100,
+                                  height: 15,
+                                )),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.005,
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 15.0, top: 10),
+                              child: Container(
+                                color: Colors.black12,
+                                width: 60,
+                                height: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Transform.translate(
+                          offset: const Offset(0.0, -5.0),
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                right: 8.0,
+                              ),
+                              child: SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.020,
+                                width: MediaQuery.of(context).size.width * 0.1,
+                                child: SvgPicture.asset(
+                                    'assets/icons/arrow.svg',
+                                    color: Colors.black12,
+                                    fit: BoxFit.contain),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 15.0),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.11,
+                  width: MediaQuery.of(context).size.width * 0.40,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    border: Border.all(
+                      color: Colors.black12,
+                      width: 1.0,
+                    ),
+                  ),
+                  child: Shimmer.fromColors(
+                    baseColor: const Color(0xFF145DA0),
+                    highlightColor: Colors.black12,
+                    period: const Duration(milliseconds: 500),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 15.0, top: 10),
+                                child: Container(
+                                  color: Colors.black12,
+                                  width: 100,
+                                  height: 15,
+                                )),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.005,
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 15.0, top: 10),
+                                child: Container(
+                                  color: Colors.black12,
+                                  width: 60,
+                                  height: 15,
+                                )),
+                          ],
+                        ),
+                        Transform.translate(
+                          offset: const Offset(0.0, -5.0),
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                right: 8.0,
+                              ),
+                              child: SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.020,
+                                width: MediaQuery.of(context).size.width * 0.1,
+                                child: SvgPicture.asset(
+                                    'assets/icons/arrow.svg',
+                                    color: Colors.black12,
+                                    fit: BoxFit.contain),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 }

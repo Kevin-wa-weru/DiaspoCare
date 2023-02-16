@@ -14,10 +14,11 @@ class CompleteProfileCubit extends Cubit<CompleteProfileState> {
     facilityName,
     practitionerName,
     licenceNumber,
-    countryCode,
-    // List<String> areasOfPractice,
-    userToken,
+    // countryCode,
   ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? countryCode = prefs.getString('countryCode');
+
     late String countryName = '';
     late String currency = '';
 
@@ -27,13 +28,16 @@ class CompleteProfileCubit extends Cubit<CompleteProfileState> {
     } else if (countryCode == 'ng') {
       countryName = 'Nigeria';
       currency = "NGN";
-    } else {
+    } else if (countryCode == 'gh') {
       countryName = 'Ghana';
-      currency = "GH";
+      currency = "GHS";
+    } else {
+      countryName = 'Uganda';
+      currency = "UGX";
     }
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userEmail = prefs.getString('userEmail');
+    String? userToken = prefs.getString('userToken');
 
     emit(const CompleteProfileState.loading());
 

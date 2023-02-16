@@ -105,16 +105,12 @@ class _VerifyOtpState extends State<VerifyOtp> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  loginForTokenAndSendOtp() async {
+  sendOtp() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? email = prefs.getString('userEmail');
-    String? password = prefs.getString('password');
-
-    var result = await DiaspoCareAPis.loginForToken(email, password);
+    String? userToken = prefs.getString('userToken');
     setState(() {
-      token = result;
+      token = userToken;
     });
-
     DiaspoCareAPis.sendOtp(token);
   }
 
@@ -122,7 +118,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
   void initState() {
     super.initState();
     context.read<GetPhoneNUmberCubit>().getPhone();
-    loginForTokenAndSendOtp();
+    sendOtp();
   }
 
   @override

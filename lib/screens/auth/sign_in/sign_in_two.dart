@@ -1,22 +1,21 @@
+import 'package:diasporacare/screens/auth/complete_profile/complete_profile.dart';
 import 'package:diasporacare/screens/auth/sign_in/cubit/sign_in_cubit.dart';
-import 'package:diasporacare/screens/auth/sign_in/cubit/sign_in_two_cubit.dart';
 import 'package:diasporacare/screens/auth/sign_up/sign_up.dart';
-import 'package:diasporacare/screens/decision/desicion.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
 import 'package:diasporacare/services/misc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({
+class SignIntTwo extends StatefulWidget {
+  const SignIntTwo({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<SignIntTwo> createState() => _SignIntTwoState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignIntTwoState extends State<SignIntTwo> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool hideTopBanner = false;
@@ -366,13 +365,12 @@ class _SignInState extends State<SignIn> {
                                 }
 
                                 if (!emailhasIssue && !passwordHasIssue) {
-                                  context.read<SignInTwoCubit>().signIn(
+                                  context.read<SignInCubit>().signIn(
                                       emailController.text.trim(),
                                       passwordController.text.trim());
                                 }
                               },
-                              child:
-                                  BlocConsumer<SignInTwoCubit, SignInTwoState>(
+                              child: BlocConsumer<SignInCubit, SignInState>(
                                 listener: (context, state) {
                                   state.when(
                                       initial: () {},
@@ -385,7 +383,7 @@ class _SignInState extends State<SignIn> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const DesicionsPage()));
+                                                      const CompleteProfile()));
                                         } else {
                                           showSnackBarWithoutButton(
                                               context, result);

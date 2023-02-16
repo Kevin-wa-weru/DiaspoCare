@@ -14,16 +14,12 @@ class CustomSplashScreen extends StatefulWidget {
 class _CustomSplashScreenState extends State<CustomSplashScreen> {
   checkifFirstTimeUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? isRegistered = prefs.getBool('isRegistered');
+    bool? isFirstTimeUSer = prefs.getBool('isFirstTimeUser');
 
-    if (isRegistered == true) {
+    if (isFirstTimeUSer == false) {
       Future.delayed(const Duration(seconds: 2), () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const SignIn(
-                      pageToNavigateTo: 'DecisionsPage',
-                    )));
+            context, MaterialPageRoute(builder: (context) => const SignIn()));
       });
     } else {
       Future.delayed(const Duration(seconds: 2), () {

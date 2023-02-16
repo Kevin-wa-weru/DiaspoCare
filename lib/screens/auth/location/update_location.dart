@@ -1,9 +1,7 @@
-import 'package:diasporacare/screens/auth/complete_profile/complete_profile.dart';
 import 'package:diasporacare/screens/auth/complete_profile/profile_completed.dart';
 import 'package:diasporacare/screens/auth/location/cubit/update_location_cubit.dart';
 import 'package:diasporacare/screens/auth/location/pick_region.dart';
 import 'package:diasporacare/screens/auth/location/pick_towns.dart';
-import 'package:diasporacare/screens/auth/sign_up/cubit/sign_up_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

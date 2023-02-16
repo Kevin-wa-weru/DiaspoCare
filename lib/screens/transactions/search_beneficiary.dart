@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_unnecessary_containers
 
 import 'package:diasporacare/constants.dart';
-import 'package:diasporacare/screens/transactions/beneficiary_not_found.dart';
 import 'package:diasporacare/screens/transactions/beneficiary_found.dart';
 import 'package:diasporacare/screens/transactions/cubit/search_beneficiary_cubit.dart';
 import 'package:diasporacare/screens/widgets/spinner.dart';

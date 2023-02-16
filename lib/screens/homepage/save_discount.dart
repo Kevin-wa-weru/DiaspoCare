@@ -1,5 +1,4 @@
 import 'package:diasporacare/constants.dart';
-import 'package:diasporacare/screens/homepage/cubit/add_discount_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/edit_discount_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_discounts_cubit.dart';
 import 'package:diasporacare/screens/widgets/spinner.dart';

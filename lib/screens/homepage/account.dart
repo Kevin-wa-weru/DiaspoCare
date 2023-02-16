@@ -2,11 +2,9 @@ import 'package:diasporacare/models/user_detail_type.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_accout_details_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_bank_details_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_facility_details_cubit.dart';
-
 import 'package:diasporacare/screens/widgets/loading_container_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shimmer/shimmer.dart';
 
 class Account extends StatefulWidget {
   const Account({super.key});
@@ -20,7 +18,6 @@ class _AccountState extends State<Account> {
   void initState() {
     context.read<GetAccoutDetailsCubit>().getAccountDetails();
     context.read<GetBankDetailsCubit>().getBankDetails();
-    // context.read<GetFacilityDetailsCubit>().getBankDetails();
     super.initState();
   }
 

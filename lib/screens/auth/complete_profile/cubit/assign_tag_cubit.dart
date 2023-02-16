@@ -9,16 +9,19 @@ part 'assign_tag_cubit.freezed.dart';
 class AssignTagCubit extends Cubit<AssignTagState> {
   AssignTagCubit() : super(const AssignTagState.initial());
 
-  assignTag(List<String> tags, userToken) async {
+  assignTag(
+    List<String> tags,
+  ) async {
     emit(const AssignTagState.loading());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? facilityName = prefs.getString('facilityName');
+    String? userToken = prefs.getString('userToken');
 
-    var resonse = await DiaspoCareAPis.assignTagToVendor(
+    var response = await DiaspoCareAPis.assignTagToVendor(
       facilityName!,
       tags,
       userToken,
     );
-    emit(AssignTagState.loaded(resonse));
+    emit(AssignTagState.loaded(response));
   }
 }

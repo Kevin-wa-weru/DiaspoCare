@@ -3,14 +3,14 @@ import 'package:diasporacare/services/diaspocare_apis.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-part 'get_best_selling_items_state.dart';
-part 'get_best_selling_items_cubit.freezed.dart';
+part 'get_dash_board_stats_state.dart';
+part 'get_dash_board_stats_cubit.freezed.dart';
 
-class GetBestSellingItemsCubit extends Cubit<GetBestSellingItemsState> {
-  GetBestSellingItemsCubit() : super(const GetBestSellingItemsState.initial());
+class GetDashBoardStatsCubit extends Cubit<GetDashBoardStatsState> {
+  GetDashBoardStatsCubit() : super(const GetDashBoardStatsState.initial());
 
-  getBestSellingItems() async {
-    emit(const GetBestSellingItemsState.loading());
+  getDashboardStats() async {
+    emit(const GetDashBoardStatsState.loading());
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String? token = prefs.getString('userToken');
@@ -18,9 +18,9 @@ class GetBestSellingItemsCubit extends Cubit<GetBestSellingItemsState> {
     if (facilityName == null) {
     } else {
       var response =
-          await DiaspoCareAPis.getBestSellingItems(token, facilityName);
+          await DiaspoCareAPis.getDashboardStats(facilityName, token!);
 
-      emit(GetBestSellingItemsState.loaded(response));
+      emit(GetDashBoardStatsState.loaded(response));
       return response;
     }
   }

@@ -3,17 +3,17 @@ import 'package:diasporacare/services/diaspocare_apis.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-part 'sign_in_state.dart';
-part 'sign_in_cubit.freezed.dart';
+part 'sign_in_two_state.dart';
+part 'sign_in_two_cubit.freezed.dart';
 
-class SignInCubit extends Cubit<SignInState> {
-  SignInCubit() : super(const SignInState.initial());
+class SignInTwoCubit extends Cubit<SignInTwoState> {
+  SignInTwoCubit() : super(const SignInTwoState.initial());
 
   signIn(String email, String password) async {
-    emit(const SignInState.loading());
+    emit(const SignInTwoState.loading());
     var response = await DiaspoCareAPis.login(email, password);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('isFirstTimeUser', false);
-    emit(SignInState.loaded(response));
+    emit(SignInTwoState.loaded(response));
   }
 }
