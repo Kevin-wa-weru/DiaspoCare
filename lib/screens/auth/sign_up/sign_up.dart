@@ -990,6 +990,9 @@ class _SignUpState extends State<SignUp> {
                                                     builder: (context) =>
                                                         const SignIntTwo()));
                                           } else {
+                                            emailController.clear();
+                                            phoneController.clear();
+                                            passwordController.clear();
                                             showSnackBarWithoutButton(
                                                 context, result);
                                           }

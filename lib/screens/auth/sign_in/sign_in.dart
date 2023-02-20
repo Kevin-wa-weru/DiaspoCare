@@ -482,7 +482,8 @@ class _SignInState extends State<SignIn> {
                                   top: 20.0, left: 10, right: 10),
                               child: Align(
                                 alignment: Alignment.bottomCenter,
-                                child: BlocBuilder<SignInCubit, SignInState>(
+                                child:
+                                    BlocBuilder<SignInTwoCubit, SignInTwoState>(
                                   builder: (context, state) {
                                     return state.when(initial: () {
                                       return Container();

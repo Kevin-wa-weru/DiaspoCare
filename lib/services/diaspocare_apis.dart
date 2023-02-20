@@ -8,6 +8,8 @@ class DiaspoCareAPis {
   static String stagingUrl = 'https://staging.diaspocare.com';
 
   static Future login(email, password) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('facilityName', '');
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -33,13 +35,17 @@ class DiaspoCareAPis {
         if (data.toString().contains('Invalid login credentials')) {
           return 'Invalid login Credentails';
         } else if (data.toString().contains('Logged In')) {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString('userToken', data['token']);
           prefs.setString('userEmail', email.trim());
           prefs.setString('vendorName', data['full_name']);
 
           if (data['vendor'].isEmpty) {
+            prefs.setString('facilityName', '');
+            print(
+                'SUccessflull login and persited nothing to facility name in login API ');
           } else {
+            print(
+                'SUccessflull login and persited this to facility name in login API ${data['vendor'][0]['name']} ');
             prefs.setString('facilityName', data['vendor'][0]['name']);
           }
 
@@ -96,6 +102,8 @@ class DiaspoCareAPis {
   }
 
   static Future signUp(email, regionCode, phone, password) async {
+    print('Sign in with $regionCode, $phone, $email $password');
+    print(phone.runtimeType);
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -103,7 +111,7 @@ class DiaspoCareAPis {
           body: jsonEncode(
             {
               "email": email,
-              "region_code": 'ke',
+              "region_code": regionCode,
               "mobile_no": phone,
               "new_password": password,
             },
@@ -120,6 +128,7 @@ class DiaspoCareAPis {
       if (response.body.isNotEmpty) {
         json.decode(response.body);
         var data = jsonDecode(response.body);
+        print(data);
         debugPrint('hResponseBody Decoded');
         if (data.toString().contains('Phone number has already been used')) {
           return 'Phone number is already in use';
@@ -127,6 +136,8 @@ class DiaspoCareAPis {
             .toString()
             .contains('User with that email already exists')) {
           return 'Email is already in use';
+        } else if (data.toString().contains('Invalid phone number')) {
+          return 'Invalid phone number';
         } else if (data.toString().contains('send_welcome_email')) {
           return 'Your Account has been created';
         }
@@ -1031,9 +1042,9 @@ class DiaspoCareAPis {
           Uri.parse(
               '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.add_location'),
           body: jsonEncode({
-            "district": "Kasarani",
-            "region": "Nairobi",
-            "description": "Opposite Kenya House",
+            "district": district,
+            "region": region,
+            "description": description,
             "lon": null,
             "latitude": null
           }),
