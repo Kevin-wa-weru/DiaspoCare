@@ -253,7 +253,7 @@ class _SignInState extends State<SignIn> {
                                   color: Colors.black87,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14),
-                              keyboardType: TextInputType.none,
+                              keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 suffixIcon: InkWell(
                                   onTap: () {
