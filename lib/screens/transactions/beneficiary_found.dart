@@ -103,18 +103,36 @@ class _BeneficiaryFoundState extends State<BeneficiaryFound> {
                             initial: () {},
                             loading: () {},
                             loaded: (message) async {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AddingToBssket(
-                                      basketDetails: message,
-                                      discounts: discounts,
-                                      initialDropdownValue: discounts[0],
-                                      beneficiaryName:
-                                          widget.beneficiaryDetails['user'][0]
-                                              ['full_name'],
-                                    ),
-                                  ));
+                              if (discounts.isEmpty) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AddingToBssket(
+                                        basketDetails: message,
+                                        discounts: const [
+                                          'No discounts available'
+                                        ],
+                                        initialDropdownValue:
+                                            'No discounts available',
+                                        beneficiaryName:
+                                            widget.beneficiaryDetails['user'][0]
+                                                ['full_name'],
+                                      ),
+                                    ));
+                              } else {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AddingToBssket(
+                                        basketDetails: message,
+                                        discounts: discounts,
+                                        initialDropdownValue: discounts[0],
+                                        beneficiaryName:
+                                            widget.beneficiaryDetails['user'][0]
+                                                ['full_name'],
+                                      ),
+                                    ));
+                              }
                             },
                             error: (message) {});
                       },

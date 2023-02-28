@@ -393,10 +393,16 @@ class _EditBasketState extends State<EditBasket> {
                                           child: DropdownButton(
                                             isDense: true,
                                             isExpanded: true,
-                                            style: const TextStyle(
-                                                color: Colors.black87,
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 14),
+                                            style: widget.discounts[0] ==
+                                                    'No discounts available'
+                                                ? const TextStyle(
+                                                    color: Colors.black87,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 12)
+                                                : const TextStyle(
+                                                    color: Colors.black87,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 14),
                                             value: dropdownvalue,
                                             icon: Container(),
                                             underline: Container(),

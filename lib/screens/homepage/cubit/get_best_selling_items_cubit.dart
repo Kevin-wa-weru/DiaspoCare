@@ -20,7 +20,16 @@ class GetBestSellingItemsCubit extends Cubit<GetBestSellingItemsState> {
       var response =
           await DiaspoCareAPis.getBestSellingItems(token, facilityName);
 
-      emit(GetBestSellingItemsState.loaded(response));
+      if (response.length > 4) {
+        int startIndex = 0;
+        int endIndex = 4;
+
+        List subList = response.sublist(startIndex, endIndex);
+        emit(GetBestSellingItemsState.loaded(subList));
+      } else {
+        emit(GetBestSellingItemsState.loaded(response));
+      }
+
       return response;
     }
   }

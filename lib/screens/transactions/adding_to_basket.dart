@@ -13,6 +13,7 @@ import 'package:diasporacare/screens/widgets/spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
 class AddingToBssket extends StatefulWidget {
@@ -145,12 +146,16 @@ class _AddingToBssketState extends State<AddingToBssket> {
                 BlocBuilder<GetBasketItemsCubit, GetBasketItemsState>(
                   builder: (context, state) {
                     return state.when(initial: () {
-                      return const Text("KES 0.00",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ));
+                      return LoadingContainerAnimation(
+                        targetContainer: Container(
+                          height: MediaQuery.of(context).size.width * 0.04,
+                          width: MediaQuery.of(context).size.width * 0.15,
+                          decoration: const BoxDecoration(
+                            color: Colors.black12,
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
+                      );
                     }, loading: () {
                       return LoadingContainerAnimation(
                         targetContainer: Container(
@@ -162,10 +167,10 @@ class _AddingToBssketState extends State<AddingToBssket> {
                           ),
                         ),
                       );
-                    }, loaded: (List items) {
+                    }, loaded: (List items, String currency) {
                       if (items.isEmpty) {
-                        return const Text("KES 0.00",
-                            style: TextStyle(
+                        return Text("$currency 0.00",
+                            style: const TextStyle(
                               color: Colors.black,
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -180,7 +185,7 @@ class _AddingToBssketState extends State<AddingToBssket> {
                           }
                           amounts = [];
                         }
-                        return Text(sum.toString(),
+                        return Text("$currency ${sum.toString()}",
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 14,
@@ -211,10 +216,11 @@ class _AddingToBssketState extends State<AddingToBssket> {
               children: [
                 InkWell(
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const HomeScreen()));
+                            builder: (BuildContext context) =>
+                                const HomeScreen()));
                   },
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.05,
@@ -286,7 +292,7 @@ class _AddingToBssketState extends State<AddingToBssket> {
                           ),
                         ),
                       );
-                    }, loaded: (List items) {
+                    }, loaded: (List items, currency) {
                       if (items.isEmpty) {
                         return GestureDetector(
                           onTap: () {
@@ -329,6 +335,7 @@ class _AddingToBssketState extends State<AddingToBssket> {
                                     basketDetails: widget.basketDetails,
                                     beneficiaryName: widget.beneficiaryName,
                                     totalAmount: sum.toString(),
+                                    currency: currency,
                                   ),
                                 ));
                           },
@@ -624,10 +631,16 @@ class _AddingToBssketState extends State<AddingToBssket> {
                                           child: DropdownButton(
                                             isDense: true,
                                             isExpanded: true,
-                                            style: const TextStyle(
-                                                color: Colors.black87,
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 14),
+                                            style: widget.discounts[0] ==
+                                                    'No discounts available'
+                                                ? const TextStyle(
+                                                    color: Colors.black87,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 12)
+                                                : const TextStyle(
+                                                    color: Colors.black87,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 14),
                                             value: dropdownvalue,
                                             icon: Container(),
                                             underline: Container(),
@@ -802,13 +815,24 @@ class _AddingToBssketState extends State<AddingToBssket> {
                       }
 
                       if (!itemHasIssue && !qtyHasIssue && !priceHasIssue) {
-                        context.read<AddBasketItemCubit>().addBasketItems(
-                              widget.basketDetails['name'],
-                              itemPicked,
-                              int.parse(dropdownvalue.split(" ")[0]),
-                              int.parse(priceController.text),
-                              int.parse(qtyController.text),
-                            );
+                        if (dropdownvalue == 'No discounts available') {
+                          context.read<AddBasketItemCubit>().addBasketItems(
+                                widget.basketDetails['name'],
+                                itemPicked,
+                                0,
+                                int.parse(priceController.text),
+                                int.parse(qtyController.text),
+                              );
+                        } else {
+                          context.read<AddBasketItemCubit>().addBasketItems(
+                                widget.basketDetails['name'],
+                                itemPicked,
+                                int.parse(dropdownvalue.split(" ")[0]),
+                                int.parse(priceController.text),
+                                int.parse(qtyController.text),
+                              );
+                        }
+
                         setState(() {
                           itemPicked = '';
                         });
@@ -1010,7 +1034,7 @@ class _AddingToBssketState extends State<AddingToBssket> {
                         return const SingleLoadingBasketItem();
                       },
                     );
-                  }, loaded: (List basketItems) {
+                  }, loaded: (List basketItems, currency) {
                     return ListView.builder(
                       shrinkWrap: true,
                       itemCount: basketItems.length,
@@ -1021,6 +1045,7 @@ class _AddingToBssketState extends State<AddingToBssket> {
                           beneficiaryName: widget.beneficiaryName,
                           discounts: widget.discounts,
                           initialDropdownValue: widget.initialDropdownValue,
+                          currency: currency,
                         );
                       },
                     );
@@ -1047,6 +1072,7 @@ class SingleBasketItem extends StatelessWidget {
     required this.discounts,
     required this.beneficiaryName,
     required this.initialDropdownValue,
+    required this.currency,
   }) : super(key: key);
 
   final Map<String, dynamic> itemDetails;
@@ -1055,6 +1081,7 @@ class SingleBasketItem extends StatelessWidget {
   final List<String> discounts;
   final String beneficiaryName;
   final String initialDropdownValue;
+  final String currency;
 
   @override
   Widget build(BuildContext context) {
@@ -1101,7 +1128,7 @@ class SingleBasketItem extends StatelessWidget {
                 ],
               ),
               Text(
-                "KES ${itemDetails['price']}",
+                "$currency ${itemDetails['price']}",
                 style: const TextStyle(
                   fontWeight: FontWeight.w700,
                   color: Colors.black,

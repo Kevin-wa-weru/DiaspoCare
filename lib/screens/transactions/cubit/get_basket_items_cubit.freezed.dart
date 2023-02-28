@@ -20,7 +20,8 @@ mixin _$GetBasketItemsState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<dynamic> basketItems) loaded,
+    required TResult Function(List<dynamic> basketItems, String currency)
+        loaded,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +29,7 @@ mixin _$GetBasketItemsState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<dynamic> basketItems)? loaded,
+    TResult? Function(List<dynamic> basketItems, String currency)? loaded,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +37,7 @@ mixin _$GetBasketItemsState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<dynamic> basketItems)? loaded,
+    TResult Function(List<dynamic> basketItems, String currency)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -125,7 +126,8 @@ class _$_Initial implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<dynamic> basketItems) loaded,
+    required TResult Function(List<dynamic> basketItems, String currency)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -136,7 +138,7 @@ class _$_Initial implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<dynamic> basketItems)? loaded,
+    TResult? Function(List<dynamic> basketItems, String currency)? loaded,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -147,7 +149,7 @@ class _$_Initial implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<dynamic> basketItems)? loaded,
+    TResult Function(List<dynamic> basketItems, String currency)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -238,7 +240,8 @@ class _$_Loading implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<dynamic> basketItems) loaded,
+    required TResult Function(List<dynamic> basketItems, String currency)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -249,7 +252,7 @@ class _$_Loading implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<dynamic> basketItems)? loaded,
+    TResult? Function(List<dynamic> basketItems, String currency)? loaded,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -260,7 +263,7 @@ class _$_Loading implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<dynamic> basketItems)? loaded,
+    TResult Function(List<dynamic> basketItems, String currency)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -317,7 +320,7 @@ abstract class _$$_LoadedCopyWith<$Res> {
   factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
       __$$_LoadedCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<dynamic> basketItems});
+  $Res call({List<dynamic> basketItems, String currency});
 }
 
 /// @nodoc
@@ -331,12 +334,17 @@ class __$$_LoadedCopyWithImpl<$Res>
   @override
   $Res call({
     Object? basketItems = null,
+    Object? currency = null,
   }) {
     return _then(_$_Loaded(
       null == basketItems
           ? _value._basketItems
           : basketItems // ignore: cast_nullable_to_non_nullable
               as List<dynamic>,
+      null == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -344,7 +352,8 @@ class __$$_LoadedCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Loaded implements _Loaded {
-  const _$_Loaded(final List<dynamic> basketItems) : _basketItems = basketItems;
+  const _$_Loaded(final List<dynamic> basketItems, this.currency)
+      : _basketItems = basketItems;
 
   final List<dynamic> _basketItems;
   @override
@@ -354,8 +363,11 @@ class _$_Loaded implements _Loaded {
   }
 
   @override
+  final String currency;
+
+  @override
   String toString() {
-    return 'GetBasketItemsState.loaded(basketItems: $basketItems)';
+    return 'GetBasketItemsState.loaded(basketItems: $basketItems, currency: $currency)';
   }
 
   @override
@@ -364,12 +376,14 @@ class _$_Loaded implements _Loaded {
         (other.runtimeType == runtimeType &&
             other is _$_Loaded &&
             const DeepCollectionEquality()
-                .equals(other._basketItems, _basketItems));
+                .equals(other._basketItems, _basketItems) &&
+            (identical(other.currency, currency) ||
+                other.currency == currency));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_basketItems));
+      runtimeType, const DeepCollectionEquality().hash(_basketItems), currency);
 
   @JsonKey(ignore: true)
   @override
@@ -382,10 +396,11 @@ class _$_Loaded implements _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<dynamic> basketItems) loaded,
+    required TResult Function(List<dynamic> basketItems, String currency)
+        loaded,
     required TResult Function(String message) error,
   }) {
-    return loaded(basketItems);
+    return loaded(basketItems, currency);
   }
 
   @override
@@ -393,10 +408,10 @@ class _$_Loaded implements _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<dynamic> basketItems)? loaded,
+    TResult? Function(List<dynamic> basketItems, String currency)? loaded,
     TResult? Function(String message)? error,
   }) {
-    return loaded?.call(basketItems);
+    return loaded?.call(basketItems, currency);
   }
 
   @override
@@ -404,12 +419,12 @@ class _$_Loaded implements _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<dynamic> basketItems)? loaded,
+    TResult Function(List<dynamic> basketItems, String currency)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(basketItems);
+      return loaded(basketItems, currency);
     }
     return orElse();
   }
@@ -453,9 +468,11 @@ class _$_Loaded implements _Loaded {
 }
 
 abstract class _Loaded implements GetBasketItemsState {
-  const factory _Loaded(final List<dynamic> basketItems) = _$_Loaded;
+  const factory _Loaded(
+      final List<dynamic> basketItems, final String currency) = _$_Loaded;
 
   List<dynamic> get basketItems;
+  String get currency;
   @JsonKey(ignore: true)
   _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -525,7 +542,8 @@ class _$_Error implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<dynamic> basketItems) loaded,
+    required TResult Function(List<dynamic> basketItems, String currency)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -536,7 +554,7 @@ class _$_Error implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<dynamic> basketItems)? loaded,
+    TResult? Function(List<dynamic> basketItems, String currency)? loaded,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -547,7 +565,7 @@ class _$_Error implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<dynamic> basketItems)? loaded,
+    TResult Function(List<dynamic> basketItems, String currency)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

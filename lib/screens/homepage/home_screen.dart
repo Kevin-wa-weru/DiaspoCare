@@ -36,8 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: PageView(
-        // physics: const ClampingScrollPhysics(),
-        physics: const NeverScrollableScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
+        // physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
         allowImplicitScrolling: true,
         onPageChanged: (int page) {

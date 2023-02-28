@@ -46,10 +46,10 @@ class _DesicionsPageState extends State<DesicionsPage> {
               }
 
               if (message == 'HomePage') {
-                Navigator.push(
+                Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const HomeScreen()));
+                        builder: (BuildContext context) => const HomeScreen()));
               }
             },
             error: (message) {});

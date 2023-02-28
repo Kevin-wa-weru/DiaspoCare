@@ -11,10 +11,12 @@ class RequestPayment extends StatefulWidget {
       {super.key,
       required this.basketDetails,
       required this.totalAmount,
-      required this.beneficiaryName});
+      required this.beneficiaryName,
+      required this.currency});
   final Map<String, dynamic> basketDetails;
   final String totalAmount;
   final String beneficiaryName;
+  final String currency;
   @override
   State<RequestPayment> createState() => _RequestPaymentState();
 }
@@ -161,7 +163,7 @@ class _RequestPaymentState extends State<RequestPayment> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
-                      'KES ${widget.totalAmount}',
+                      '${widget.currency} ${widget.totalAmount}',
                       style: const TextStyle(
                           color: Colors.black,
                           fontSize: 12,

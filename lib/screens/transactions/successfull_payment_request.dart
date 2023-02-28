@@ -49,10 +49,11 @@ class _SuccessfullRequestState extends State<SuccessfullRequest> {
                   context
                       .read<GetDraftTransactionsCubit>()
                       .getDraftTransaction();
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const HomeScreen()));
+                          builder: (BuildContext context) =>
+                              const HomeScreen()));
                 });
               },
               error: (message) {});

@@ -621,65 +621,39 @@ class HomePage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15.0, top: 10),
-                                    child: Text(
-                                      '1. ${items[0]}',
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15.0, top: 10),
-                                    child: Text(
-                                      '2. ${items[1]}',
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15.0, top: 10),
-                                    child: Text(
-                                      '3. ${items[2]}',
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15.0, top: 10),
-                                    child: Text(
-                                      '4. ${items[3]}',
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ),
-                                ],
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 10.0),
+                                child: Column(
+                                    children: items
+                                        .map(
+                                          (e) => Row(
+                                            children: [
+                                              Container(
+                                                color: Colors.transparent,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.35,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 15.0, top: 10),
+                                                  child: Text(
+                                                    '${(items.indexOf(e) + 1).toString()}${'. $e'}',
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 11,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                        .toList()),
                               ),
                             ],
                           ),

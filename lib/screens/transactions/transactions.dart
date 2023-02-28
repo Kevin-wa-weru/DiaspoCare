@@ -9,6 +9,7 @@ import 'package:diasporacare/screens/transactions/cubit/get_pending_transactions
 import 'package:diasporacare/screens/transactions/request_for_payment.dart';
 import 'package:diasporacare/screens/transactions/search_beneficiary.dart';
 import 'package:diasporacare/screens/widgets/loading_container_animation.dart';
+import 'package:diasporacare/services/diaspocare_apis.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -31,7 +32,7 @@ class _TransactionState extends State<Transaction> {
   ];
 
   List<String> discounts = [];
-
+  String currency = '';
   @override
   void initState() {
     context.read<GetDraftTransactionsCubit>().getDraftTransaction();
@@ -39,6 +40,7 @@ class _TransactionState extends State<Transaction> {
     context.read<GetApprovedTransactionsCubit>().getApprovedTransaction();
     context.read<GetDeclinedTransactionsCubit>().getDeclinedTransaction();
     prepareDiscounts();
+    getCurrency();
     super.initState();
   }
 
@@ -48,6 +50,13 @@ class _TransactionState extends State<Transaction> {
     for (var i in response) {
       discounts.add('${i['percentage']} % off - ${i['name1'].split(" ")[0]} ');
     }
+  }
+
+  getCurrency() async {
+    var response = await DiaspoCareAPis.getCountry();
+    setState(() {
+      currency = response;
+    });
   }
 
   Widget resolveBodyOfTransaction(
@@ -644,6 +653,7 @@ class _TransactionState extends State<Transaction> {
                           .map((singleTransaction) => SingleDraftTransaction(
                                 singleDraftTransaction: singleTransaction,
                                 discount: discounts,
+                                currency: currency,
                               ))
                           .toList());
                 }, error: (error) {
@@ -923,8 +933,10 @@ class SingleDraftTransaction extends StatelessWidget {
     Key? key,
     required this.singleDraftTransaction,
     required this.discount,
+    required this.currency,
   }) : super(key: key);
   final List<String> discount;
+  final String currency;
 
   final Map<String, dynamic> singleDraftTransaction;
 
@@ -1036,17 +1048,32 @@ class SingleDraftTransaction extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 15.0),
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddingToBssket(
-                                  basketDetails:
-                                      singleDraftTransaction['basket'],
-                                  initialDropdownValue: discount[0],
-                                  discounts: discount,
-                                  beneficiaryName:
-                                      singleDraftTransaction['basket']
-                                          ['beneficiary'])));
+                      if (discount.isEmpty) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AddingToBssket(
+                                    basketDetails:
+                                        singleDraftTransaction['basket'],
+                                    discounts: const ['No discounts available'],
+                                    initialDropdownValue:
+                                        'No discounts available',
+                                    beneficiaryName:
+                                        singleDraftTransaction['basket']
+                                            ['beneficiary'])));
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AddingToBssket(
+                                    basketDetails:
+                                        singleDraftTransaction['basket'],
+                                    initialDropdownValue: discount[0],
+                                    discounts: discount,
+                                    beneficiaryName:
+                                        singleDraftTransaction['basket']
+                                            ['beneficiary'])));
+                      }
                     },
                     child: Container(
                       height: MediaQuery.of(context).size.height * 0.04,
@@ -1086,6 +1113,7 @@ class SingleDraftTransaction extends StatelessWidget {
                                   ['beneficiary'],
                               totalAmount: singleDraftTransaction['items_price']
                                   .toString(),
+                              currency: currency,
                             ),
                           ));
                     },

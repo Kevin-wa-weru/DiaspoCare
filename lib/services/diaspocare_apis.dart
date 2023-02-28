@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:diasporacare/services/country_code.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DiaspoCareAPis {
@@ -41,11 +44,7 @@ class DiaspoCareAPis {
 
           if (data['vendor'].isEmpty) {
             prefs.setString('facilityName', '');
-            print(
-                'SUccessflull login and persited nothing to facility name in login API ');
           } else {
-            print(
-                'SUccessflull login and persited this to facility name in login API ${data['vendor'][0]['name']} ');
             prefs.setString('facilityName', data['vendor'][0]['name']);
           }
 
@@ -102,8 +101,6 @@ class DiaspoCareAPis {
   }
 
   static Future signUp(email, regionCode, phone, password) async {
-    print('Sign in with $regionCode, $phone, $email $password');
-    print(phone.runtimeType);
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -128,7 +125,6 @@ class DiaspoCareAPis {
       if (response.body.isNotEmpty) {
         json.decode(response.body);
         var data = jsonDecode(response.body);
-        print(data);
         debugPrint('hResponseBody Decoded');
         if (data.toString().contains('Phone number has already been used')) {
           return 'Phone number is already in use';
@@ -1128,5 +1124,20 @@ class DiaspoCareAPis {
       debugPrint(e.toString());
       return 'Server busy try again later';
     }
+  }
+
+  static Future<String> getCountry() async {
+    Network n = Network("http://ip-api.com/json");
+    var locationSTR = (await n.getData());
+    var locationx = jsonDecode(locationSTR);
+
+    List<Country> country = countryList
+        .where((element) => element.name == locationx["country"])
+        .toList();
+
+    String countryName = locationx["country"];
+    String currency = country.first.currency;
+
+    return currency;
   }
 }

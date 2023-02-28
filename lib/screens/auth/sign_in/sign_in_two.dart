@@ -377,8 +377,8 @@ class _SignIntTwoState extends State<SignIntTwo> {
                                       loading: () {},
                                       loaded: (result) {
                                         if (result == 'Successfull login') {
-                                          showSnackBarWithoutButton(
-                                              context, result);
+                                          // showSnackBarWithoutButton(
+                                          //     context, result);
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(

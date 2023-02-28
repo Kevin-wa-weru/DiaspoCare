@@ -19,6 +19,8 @@ class GetBasketItemsCubit extends Cubit<GetBasketItemsState> {
 
     var response = await DiaspoCareAPis.getBasketItems(basketId, userToken!);
 
-    emit(GetBasketItemsState.loaded(response));
+    var currency = await DiaspoCareAPis.getCountry();
+
+    emit(GetBasketItemsState.loaded(response, currency));
   }
 }

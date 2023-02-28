@@ -1,4 +1,3 @@
-import 'package:diasporacare/screens/auth/sign_in/cubit/sign_in_cubit.dart';
 import 'package:diasporacare/screens/auth/sign_in/cubit/sign_in_two_cubit.dart';
 import 'package:diasporacare/screens/auth/sign_up/sign_up.dart';
 import 'package:diasporacare/screens/decision/desicion.dart';
@@ -379,8 +378,8 @@ class _SignInState extends State<SignIn> {
                                       loading: () {},
                                       loaded: (result) {
                                         if (result == 'Successfull login') {
-                                          showSnackBarWithoutButton(
-                                              context, result);
+                                          // showSnackBarWithoutButton(
+                                          //     context, result);
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(

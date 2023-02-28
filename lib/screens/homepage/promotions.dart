@@ -127,19 +127,23 @@ class _PromotionsState extends State<Promotions> {
                       ],
                     );
                   }, loaded: (m) {
-                    return Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0),
-                          child: Text('Discounts (${m.length})',
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              )),
-                        ),
-                      ],
-                    );
+                    if (m.isEmpty) {
+                      return Container();
+                    } else {
+                      return Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15.0),
+                            child: Text('Discounts (${m.length})',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                )),
+                          ),
+                        ],
+                      );
+                    }
                   }, error: (m) {
                     return Text(m);
                   });
@@ -165,14 +169,36 @@ class _PromotionsState extends State<Promotions> {
                             )
                             .toList());
                   }, loaded: (List discounts) {
-                    return Column(
-                        children: discounts
-                            .map(
-                              (e) => SingleDiscount(
-                                singleDiscount: e,
-                              ),
-                            )
-                            .toList());
+                    if (discounts.isEmpty) {
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.15,
+                            child: SvgPicture.asset(
+                                'assets/images/discountss.svg',
+                                fit: BoxFit.contain),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 25.0),
+                            child: Text('Empty discounts',
+                                style: TextStyle(
+                                  color: Colors.black26,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                )),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Column(
+                          children: discounts
+                              .map(
+                                (e) => SingleDiscount(
+                                  singleDiscount: e,
+                                ),
+                              )
+                              .toList());
+                    }
                   }, error: (message) {
                     return Text(message);
                   });

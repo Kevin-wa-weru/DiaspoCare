@@ -22,6 +22,7 @@ import 'package:diasporacare/screens/homepage/cubit/get_dash_board_stats_cubit.d
 import 'package:diasporacare/screens/homepage/cubit/get_discounts_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_facility_details_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_vendor_details_cubit.dart';
+import 'package:diasporacare/screens/test.dart';
 import 'package:diasporacare/screens/transactions/cubit/add_basket_cubit.dart';
 import 'package:diasporacare/screens/transactions/cubit/add_basket_item_cubit.dart';
 import 'package:diasporacare/screens/transactions/cubit/edit_basket_item_cubit.dart';
@@ -124,7 +125,10 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
             textTheme: GoogleFonts.poppinsTextTheme(),
           ),
-          home: const CustomSplashScreen()),
+          home: const CustomSplashScreen()
+          // home: const MyCustomWidget()
+
+          ),
     );
   }
 }
