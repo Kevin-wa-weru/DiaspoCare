@@ -15,6 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Transaction extends StatefulWidget {
@@ -53,9 +54,14 @@ class _TransactionState extends State<Transaction> {
   }
 
   getCurrency() async {
-    var response = await DiaspoCareAPis.getCountry();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('userToken');
+    String? facilityName = prefs.getString('facilityName');
+
+    var currency =
+        await DiaspoCareAPis.getFacilityDetails(facilityName!, token!);
     setState(() {
-      currency = response;
+      currency = currency['currency'];
     });
   }
 

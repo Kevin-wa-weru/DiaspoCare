@@ -324,12 +324,13 @@ class HomePage extends StatelessWidget {
                 return const DashboardStatsLoading();
               }, loading: () {
                 return const DashboardStatsLoading();
-              }, loaded: (Map<String, dynamic> stats) {
+              }, loaded: (Map<String, dynamic> stats, String currency) {
                 return DashboardStats(
                   totalTranscations: stats['no_of_transactions'].toString(),
                   pendingTransactions: stats['total_pending'].toString(),
                   approvedTranscations: stats['total_approved'].toString(),
                   totalSales: stats['total_revenue'].toString(),
+                  currency: currency,
                 );
               }, error: (message) {
                 return const DashboardStatsLoading();
@@ -769,11 +770,13 @@ class DashboardStats extends StatelessWidget {
     required this.pendingTransactions,
     required this.totalSales,
     required this.totalTranscations,
+    required this.currency,
   }) : super(key: key);
   final String totalSales;
   final String approvedTranscations;
   final String pendingTransactions;
   final String totalTranscations;
+  final String currency;
 
   @override
   Widget build(BuildContext context) {
@@ -859,10 +862,10 @@ class DashboardStats extends StatelessWidget {
                                   WidgetSpan(
                                     child: Transform.translate(
                                       offset: const Offset(-2, -4),
-                                      child: const Text(
-                                        'KES',
+                                      child: Text(
+                                        currency,
                                         textScaleFactor: 0.7,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 15,
                                             fontWeight: FontWeight.w600),

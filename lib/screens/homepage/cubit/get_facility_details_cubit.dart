@@ -9,11 +9,13 @@ part 'get_facility_details_cubit.freezed.dart';
 class GetFacilityDetailsCubit extends Cubit<GetFacilityDetailsState> {
   GetFacilityDetailsCubit() : super(const GetFacilityDetailsState.initial());
 
-  getBankDetails() async {
+  getFacilityDetails() async {
     emit(const GetFacilityDetailsState.loading());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('vendorName');
-    var response = await DiaspoCareAPis.getFacilityDetails(token!);
+    String? facilityName = prefs.getString('facilityName');
+    String? token = prefs.getString('userToken');
+    var response =
+        await DiaspoCareAPis.getFacilityDetails(facilityName!, token!);
     emit(GetFacilityDetailsState.loaded(response));
   }
 }

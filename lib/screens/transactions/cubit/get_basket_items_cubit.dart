@@ -16,11 +16,13 @@ class GetBasketItemsCubit extends Cubit<GetBasketItemsState> {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userToken = prefs.getString('userToken');
+    String? facilityName = prefs.getString('facilityName');
 
     var response = await DiaspoCareAPis.getBasketItems(basketId, userToken!);
 
-    var currency = await DiaspoCareAPis.getCountry();
+    var currency =
+        await DiaspoCareAPis.getFacilityDetails(facilityName!, userToken);
 
-    emit(GetBasketItemsState.loaded(response, currency));
+    emit(GetBasketItemsState.loaded(response, currency['currency']));
   }
 }

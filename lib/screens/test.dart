@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:diasporacare/screens/transactions/search_beneficiary.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

@@ -68,7 +68,7 @@ class _VerifyOtpForPaymentState extends State<VerifyOtpForPayment> {
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              "Enter OTP to initilize transaction",
+              "Enter OTP to initialize transaction",
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
             ),
           ),

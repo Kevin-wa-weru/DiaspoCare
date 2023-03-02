@@ -20,7 +20,9 @@ mixin _$GetDashBoardStatsState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(Map<String, dynamic> dashboardStats) loaded,
+    required TResult Function(
+            Map<String, dynamic> dashboardStats, String currency)
+        loaded,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +30,8 @@ mixin _$GetDashBoardStatsState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Map<String, dynamic> dashboardStats)? loaded,
+    TResult? Function(Map<String, dynamic> dashboardStats, String currency)?
+        loaded,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +39,8 @@ mixin _$GetDashBoardStatsState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Map<String, dynamic> dashboardStats)? loaded,
+    TResult Function(Map<String, dynamic> dashboardStats, String currency)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -126,7 +130,9 @@ class _$_Initial implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(Map<String, dynamic> dashboardStats) loaded,
+    required TResult Function(
+            Map<String, dynamic> dashboardStats, String currency)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -137,7 +143,8 @@ class _$_Initial implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Map<String, dynamic> dashboardStats)? loaded,
+    TResult? Function(Map<String, dynamic> dashboardStats, String currency)?
+        loaded,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -148,7 +155,8 @@ class _$_Initial implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Map<String, dynamic> dashboardStats)? loaded,
+    TResult Function(Map<String, dynamic> dashboardStats, String currency)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -239,7 +247,9 @@ class _$_Loading implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(Map<String, dynamic> dashboardStats) loaded,
+    required TResult Function(
+            Map<String, dynamic> dashboardStats, String currency)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -250,7 +260,8 @@ class _$_Loading implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Map<String, dynamic> dashboardStats)? loaded,
+    TResult? Function(Map<String, dynamic> dashboardStats, String currency)?
+        loaded,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -261,7 +272,8 @@ class _$_Loading implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Map<String, dynamic> dashboardStats)? loaded,
+    TResult Function(Map<String, dynamic> dashboardStats, String currency)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -318,7 +330,7 @@ abstract class _$$_LoadedCopyWith<$Res> {
   factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
       __$$_LoadedCopyWithImpl<$Res>;
   @useResult
-  $Res call({Map<String, dynamic> dashboardStats});
+  $Res call({Map<String, dynamic> dashboardStats, String currency});
 }
 
 /// @nodoc
@@ -332,12 +344,17 @@ class __$$_LoadedCopyWithImpl<$Res>
   @override
   $Res call({
     Object? dashboardStats = null,
+    Object? currency = null,
   }) {
     return _then(_$_Loaded(
       null == dashboardStats
           ? _value._dashboardStats
           : dashboardStats // ignore: cast_nullable_to_non_nullable
               as Map<String, dynamic>,
+      null == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -345,7 +362,7 @@ class __$$_LoadedCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Loaded implements _Loaded {
-  const _$_Loaded(final Map<String, dynamic> dashboardStats)
+  const _$_Loaded(final Map<String, dynamic> dashboardStats, this.currency)
       : _dashboardStats = dashboardStats;
 
   final Map<String, dynamic> _dashboardStats;
@@ -356,8 +373,11 @@ class _$_Loaded implements _Loaded {
   }
 
   @override
+  final String currency;
+
+  @override
   String toString() {
-    return 'GetDashBoardStatsState.loaded(dashboardStats: $dashboardStats)';
+    return 'GetDashBoardStatsState.loaded(dashboardStats: $dashboardStats, currency: $currency)';
   }
 
   @override
@@ -366,12 +386,14 @@ class _$_Loaded implements _Loaded {
         (other.runtimeType == runtimeType &&
             other is _$_Loaded &&
             const DeepCollectionEquality()
-                .equals(other._dashboardStats, _dashboardStats));
+                .equals(other._dashboardStats, _dashboardStats) &&
+            (identical(other.currency, currency) ||
+                other.currency == currency));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_dashboardStats));
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_dashboardStats), currency);
 
   @JsonKey(ignore: true)
   @override
@@ -384,10 +406,12 @@ class _$_Loaded implements _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(Map<String, dynamic> dashboardStats) loaded,
+    required TResult Function(
+            Map<String, dynamic> dashboardStats, String currency)
+        loaded,
     required TResult Function(String message) error,
   }) {
-    return loaded(dashboardStats);
+    return loaded(dashboardStats, currency);
   }
 
   @override
@@ -395,10 +419,11 @@ class _$_Loaded implements _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Map<String, dynamic> dashboardStats)? loaded,
+    TResult? Function(Map<String, dynamic> dashboardStats, String currency)?
+        loaded,
     TResult? Function(String message)? error,
   }) {
-    return loaded?.call(dashboardStats);
+    return loaded?.call(dashboardStats, currency);
   }
 
   @override
@@ -406,12 +431,13 @@ class _$_Loaded implements _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Map<String, dynamic> dashboardStats)? loaded,
+    TResult Function(Map<String, dynamic> dashboardStats, String currency)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(dashboardStats);
+      return loaded(dashboardStats, currency);
     }
     return orElse();
   }
@@ -455,9 +481,12 @@ class _$_Loaded implements _Loaded {
 }
 
 abstract class _Loaded implements GetDashBoardStatsState {
-  const factory _Loaded(final Map<String, dynamic> dashboardStats) = _$_Loaded;
+  const factory _Loaded(
+          final Map<String, dynamic> dashboardStats, final String currency) =
+      _$_Loaded;
 
   Map<String, dynamic> get dashboardStats;
+  String get currency;
   @JsonKey(ignore: true)
   _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -527,7 +556,9 @@ class _$_Error implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(Map<String, dynamic> dashboardStats) loaded,
+    required TResult Function(
+            Map<String, dynamic> dashboardStats, String currency)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -538,7 +569,8 @@ class _$_Error implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Map<String, dynamic> dashboardStats)? loaded,
+    TResult? Function(Map<String, dynamic> dashboardStats, String currency)?
+        loaded,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -549,7 +581,8 @@ class _$_Error implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Map<String, dynamic> dashboardStats)? loaded,
+    TResult Function(Map<String, dynamic> dashboardStats, String currency)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

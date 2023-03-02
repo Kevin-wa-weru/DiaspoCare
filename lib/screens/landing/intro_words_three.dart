@@ -1,4 +1,4 @@
-import 'package:diasporacare/screens/widgets/spinner.dart';
+import 'package:diasporacare/constants.dart';
 import 'package:flutter/material.dart';
 
 class IntroWordsThree extends StatefulWidget {
@@ -25,54 +25,48 @@ class _IntroWordsThreeState extends State<IntroWordsThree> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: const [
               Padding(
                 padding: EdgeInsets.only(left: 15.0),
                 child: Text(
                   'Access to a wide pool',
                   style: TextStyle(
-                      color: Color(0xFF145DA0),
-                      fontSize: 22,
+                      color: primaryColor,
+                      fontSize: 20,
                       fontWeight: FontWeight.w600),
                 ),
               ),
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: const [
               Padding(
                 padding: EdgeInsets.only(left: 15.0, top: 2),
                 child: Text(
                   'of customers',
                   style: TextStyle(
-                      color: Color(0xFF145DA0),
-                      fontSize: 22,
+                      color: primaryColor,
+                      fontSize: 20,
                       fontWeight: FontWeight.w600),
                 ),
               ),
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Padding(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Padding(
                 padding: EdgeInsets.only(left: 15.0, top: 2),
                 child: Text(
                   'real-time',
                   style: TextStyle(
-                      color: Color(0xFF145DA0),
-                      fontSize: 22,
+                      color: primaryColor,
+                      fontSize: 20,
                       fontWeight: FontWeight.w600),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: AnimatedOpacity(
-                    opacity: visible ? 1.0 : 0.0,
-                    duration: const Duration(seconds: 2),
-                    child: const SpinnerTwo(
-                        heightOfSpinner: 20, widthofSpinnner: 20)),
-              )
             ],
           ),
         ],

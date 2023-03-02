@@ -20,7 +20,9 @@ class GetDashBoardStatsCubit extends Cubit<GetDashBoardStatsState> {
       var response =
           await DiaspoCareAPis.getDashboardStats(facilityName, token!);
 
-      emit(GetDashBoardStatsState.loaded(response));
+      var currency =
+          await DiaspoCareAPis.getFacilityDetails(facilityName, token);
+      emit(GetDashBoardStatsState.loaded(response, currency['currency']));
       return response;
     }
   }

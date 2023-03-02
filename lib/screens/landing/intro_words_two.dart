@@ -1,3 +1,4 @@
+import 'package:diasporacare/constants.dart';
 import 'package:flutter/material.dart';
 
 class IntroWordsTwo extends StatefulWidget {
@@ -15,42 +16,45 @@ class _IntroWordsTwoState extends State<IntroWordsTwo> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: const [
               Padding(
                 padding: EdgeInsets.only(left: 15.0),
                 child: Text(
                   'Manage your patient',
                   style: TextStyle(
-                      color: Color(0xFF145DA0),
-                      fontSize: 22,
+                      color: primaryColor,
+                      fontSize: 20,
                       fontWeight: FontWeight.w600),
                 ),
               ),
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: const [
               Padding(
                 padding: EdgeInsets.only(left: 15.0, top: 2),
                 child: Text(
                   'refill reminders',
                   style: TextStyle(
-                      color: Color(0xFF145DA0),
-                      fontSize: 22,
+                      color: primaryColor,
+                      fontSize: 20,
                       fontWeight: FontWeight.w600),
                 ),
               ),
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: const [
               Padding(
                 padding: EdgeInsets.only(left: 15.0, top: 2),
                 child: Text(
                   'real-time',
                   style: TextStyle(
-                      color: Color(0xFF145DA0),
-                      fontSize: 22,
+                      color: primaryColor,
+                      fontSize: 20,
                       fontWeight: FontWeight.w600),
                 ),
               ),

@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:diasporacare/services/country_code.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DiaspoCareAPis {
@@ -534,21 +532,21 @@ class DiaspoCareAPis {
     }
   }
 
-  static Future getFacilityDetails(String vendorName) async {
+  static Future getFacilityDetails(String vendorName, String token) async {
     try {
-      http.Response response = await http.post(
-          Uri.parse('$baseUrl/api/resource/Vendor?Vendor%20Name=$vendorName'),
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control_Allow_Origin": "*",
-          });
+      http.Response response = await http
+          .get(Uri.parse('$baseUrl/api/resource/Vendor/$vendorName'), headers: {
+        "Content-Type": "application/json",
+        "Access-Control_Allow_Origin": "*",
+        'Authorization': "Basic $token",
+      });
 
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
         debugPrint('hResponseBody Decoded');
 
         if (response.statusCode == 200) {
-          return data['message'];
+          return data['data'];
         } else {
           return 'Error getting bank details';
         }
@@ -1135,7 +1133,6 @@ class DiaspoCareAPis {
         .where((element) => element.name == locationx["country"])
         .toList();
 
-    String countryName = locationx["country"];
     String currency = country.first.currency;
 
     return currency;

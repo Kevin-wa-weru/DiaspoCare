@@ -1,4 +1,5 @@
 import 'package:diasporacare/models/user_detail_type.dart';
+import 'package:diasporacare/screens/auth/sign_in/sign_in.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_accout_details_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_bank_details_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/get_facility_details_cubit.dart';
@@ -17,6 +18,7 @@ class _AccountState extends State<Account> {
   @override
   void initState() {
     context.read<GetAccoutDetailsCubit>().getAccountDetails();
+    context.read<GetFacilityDetailsCubit>().getFacilityDetails();
     context.read<GetBankDetailsCubit>().getBankDetails();
     super.initState();
   }
@@ -63,11 +65,11 @@ class _AccountState extends State<Account> {
               return const DetailPanelLoading();
             }, loading: () {
               return const DetailPanelLoading();
-            }, loaded: (accountDetails) {
-              return const DetailPanelLoading();
-              // return FacilityDetailPanel(
-              //   facilityDetails: accountDetails,
-              // );
+            }, loaded: (facilityDetails) {
+              // return const DetailPanelLoading();
+              return FacilityDetailPanel(
+                facilityDetails: facilityDetails,
+              );
             }, error: (error) {
               return Text(error);
             });
@@ -377,12 +379,20 @@ class UserDetailPanel extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.2,
               ),
-              const Text('Logout',
-                  style: TextStyle(
-                    color: Color(0xFF145DA0),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  )),
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => const SignIn()));
+                },
+                child: const Text('Logout',
+                    style: TextStyle(
+                      color: Color(0xFF145DA0),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    )),
+              ),
             ],
           ),
         )
@@ -673,7 +683,7 @@ class FacilityDetailPanel extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      facilityDetails['full_name'],
+                      facilityDetails['name'],
                       style: const TextStyle(
                           color: Colors.black54,
                           fontSize: 12,
@@ -698,7 +708,7 @@ class FacilityDetailPanel extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      facilityDetails['email'],
+                      facilityDetails['user'],
                       style: const TextStyle(
                           color: Colors.black54,
                           fontSize: 12,
@@ -723,7 +733,7 @@ class FacilityDetailPanel extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      facilityDetails['mobile_no'],
+                      facilityDetails['business_phone'] ?? '0000000000',
                       style: const TextStyle(
                           color: Colors.black54,
                           fontSize: 12,
