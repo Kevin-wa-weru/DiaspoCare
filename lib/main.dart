@@ -124,10 +124,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
             textTheme: GoogleFonts.poppinsTextTheme(),
           ),
-          // home: const LandingScreen(),
-          home: const CustomSplashScreen()
-          // home: const MyCustomWidget()
-          ),
+          home: const CustomSplashScreen()),
     );
   }
 }
