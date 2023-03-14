@@ -14,6 +14,9 @@ class InitialiseTransactionCubit extends Cubit<InitialiseTransactionState> {
     emit(const InitialiseTransactionState.loading());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userToken = prefs.getString('userToken');
+
+    print(
+        'Inside initialsing transactionCubit with these $userToken $basketid $secureCode');
     var response = await DiaspoCareAPis.initialiseTransaction(
         basketid, secureCode, userToken!);
 

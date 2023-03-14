@@ -9,13 +9,14 @@ part 'update_location_cubit.freezed.dart';
 class UpdateLocationCubit extends Cubit<UpdateLocationState> {
   UpdateLocationCubit() : super(const UpdateLocationState.initial());
 
-  updateLocation(String district, String region, String description) async {
+  updateLocation(String district, String region, String description, latitude,
+      longitude) async {
     emit(const UpdateLocationState.loading());
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String? token = prefs.getString('userToken');
     var response = await DiaspoCareAPis.updateLocation(
-        token!, district, region, description);
+        token!, district, region, description, latitude, longitude);
     emit(UpdateLocationState.loaded(response));
   }
 }

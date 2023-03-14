@@ -17,6 +17,9 @@ class SuccessfullRequest extends StatefulWidget {
 class _SuccessfullRequestState extends State<SuccessfullRequest> {
   @override
   void initState() {
+    print('INitial state in SuccessfullPayment ');
+    print(widget.basketDetails['name']);
+    print(widget.secureCode);
     context
         .read<InitialiseTransactionCubit>()
         .initialiseTransaction(widget.basketDetails['name'], widget.secureCode);
@@ -49,7 +52,7 @@ class _SuccessfullRequestState extends State<SuccessfullRequest> {
                   context
                       .read<GetDraftTransactionsCubit>()
                       .getDraftTransaction();
-                  Navigator.pushReplacement(
+                  Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (BuildContext context) =>

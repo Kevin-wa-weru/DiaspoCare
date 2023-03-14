@@ -99,6 +99,7 @@ class DiaspoCareAPis {
   }
 
   static Future signUp(email, regionCode, phone, password) async {
+    print('signUp with is $email $regionCode $phone, $password');
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -132,6 +133,8 @@ class DiaspoCareAPis {
           return 'Email is already in use';
         } else if (data.toString().contains('Invalid phone number')) {
           return 'Invalid phone number';
+        } else if (data.toString().contains("not a valid email address")) {
+          return 'Email provided is not valid';
         } else if (data.toString().contains('send_welcome_email')) {
           return 'Your Account has been created';
         }
@@ -255,6 +258,84 @@ class DiaspoCareAPis {
           return 'Otp sent';
         } else {
           return 'Error sending otp';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future sendPasswordlessLoginOtp(phoneNumber) async {
+    try {
+      http.Response response = await http.post(
+        Uri.parse(
+            '$baseUrl/api/method/hcfa_core.remote_procedures.auth.get_otp'),
+        body: jsonEncode(
+          {
+            "mobile_no": phoneNumber,
+          },
+        ),
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control_Allow_Origin": "*",
+          // 'Authorization': "Basic $token",
+        },
+      );
+
+      if (response.body.isNotEmpty) {
+        json.decode(response.body);
+        var data = jsonDecode(response.body);
+        print('Sending otp code with $phoneNumber returned $data');
+        debugPrint('hResponseBody Decoded');
+        if (response.statusCode == 200) {
+          return 'Otp sent';
+        } else {
+          return 'User not found try registering that number';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future verifyPasswordLessLoginOtp(
+    otpCode,
+    phoneNumber,
+  ) async {
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.auth.authenticate_otp'),
+          body: jsonEncode({
+            "mobile_no": phoneNumber,
+            "otp": otpCode,
+            "client_id": "a317891682"
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            // 'Authorization': "Basic $token",
+          });
+
+      if (response.body.isNotEmpty) {
+        json.decode(response.body);
+        var data = jsonDecode(response.body);
+        debugPrint('hResponseBody Decoded');
+
+        print(
+            'Verifying passwordlss otp with $phoneNumber $otpCode "a317891682" returned $data');
+        if (response.statusCode == 200) {
+          return 'Otp verified';
+        } else {
+          return 'OTP code does not match';
         }
       } else {
         debugPrint('empty results');
@@ -886,6 +967,8 @@ class DiaspoCareAPis {
     String code,
     String token,
   ) async {
+    print('Initialising with these');
+    print('$basketId $code $token');
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -898,6 +981,10 @@ class DiaspoCareAPis {
           });
 
       if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print('Initialising and returned this');
+        print(data);
+        print(response.statusCode);
         if (response.statusCode == 200) {
           return 'Otp sent';
         } else {
@@ -1029,8 +1116,8 @@ class DiaspoCareAPis {
     }
   }
 
-  static Future updateLocation(
-      String token, String district, String region, String description) async {
+  static Future updateLocation(String token, String district, String region,
+      String description, num longitude, num latitude) async {
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -1039,8 +1126,8 @@ class DiaspoCareAPis {
             "district": district,
             "region": region,
             "description": description,
-            "lon": null,
-            "latitude": null
+            "lon": longitude,
+            "latitude": latitude
           }),
           headers: {
             "Content-Type": "application/json",

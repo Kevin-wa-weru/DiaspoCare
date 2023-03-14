@@ -18,12 +18,12 @@ class _CustomSplashScreenState extends State<CustomSplashScreen> {
 
     if (isFirstTimeUSer == false) {
       Future.delayed(const Duration(seconds: 2), () {
-        Navigator.push(
+        Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => const SignIn()));
       });
     } else {
       Future.delayed(const Duration(seconds: 2), () {
-        Navigator.push(context,
+        Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const LandingScreen()));
       });
     }

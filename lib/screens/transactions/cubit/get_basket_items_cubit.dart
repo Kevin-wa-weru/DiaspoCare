@@ -23,6 +23,7 @@ class GetBasketItemsCubit extends Cubit<GetBasketItemsState> {
     var currency =
         await DiaspoCareAPis.getFacilityDetails(facilityName!, userToken);
 
+    print('Get BasketItemCubit $response');
     emit(GetBasketItemsState.loaded(response, currency['currency']));
   }
 }

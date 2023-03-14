@@ -178,7 +178,7 @@ class _AddingToBssketState extends State<AddingToBssket> {
                         List amounts = [];
                         num sum = 0;
                         for (var i in items) {
-                          amounts.add(i['price']);
+                          amounts.add(i['price'] * i['quantity']);
                           for (var e in amounts) {
                             sum += e;
                           }
@@ -319,7 +319,7 @@ class _AddingToBssketState extends State<AddingToBssket> {
                         List amounts = [];
                         num sum = 0;
                         for (var i in items) {
-                          amounts.add(i['price']);
+                          amounts.add(i['price'] * i['quantity']);
                           for (var e in amounts) {
                             sum += e;
                           }
@@ -1127,7 +1127,7 @@ class SingleBasketItem extends StatelessWidget {
                 ],
               ),
               Text(
-                "$currency ${itemDetails['price']}",
+                "$currency ${itemDetails['price'] * itemDetails['quantity']}",
                 style: const TextStyle(
                   fontWeight: FontWeight.w700,
                   color: Colors.black,

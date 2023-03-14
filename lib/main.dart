@@ -1,6 +1,8 @@
 import 'package:diasporacare/screens/auth/bank_details/cubit/bank_details_cubit.dart';
 import 'package:diasporacare/screens/auth/bank_details/cubit/bank_names_cubit.dart';
 import 'package:diasporacare/screens/auth/complete_profile/cubit/assign_tag_cubit.dart';
+import 'package:diasporacare/screens/auth/forgot_password/cubit/send_passwordless_otp_cubit.dart';
+import 'package:diasporacare/screens/auth/forgot_password/forgot_password.dart';
 import 'package:diasporacare/screens/auth/location/cubit/get_regions_cubit.dart';
 import 'package:diasporacare/screens/auth/location/cubit/get_towns_cubit.dart';
 import 'package:diasporacare/screens/auth/location/cubit/update_location_cubit.dart';
@@ -39,6 +41,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'screens/auth/complete_profile/cubit/complete_profile_cubit.dart';
+import 'screens/auth/forgot_password/cubit/verify_passwordless_login_otp_cubit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -116,6 +119,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => GetBestSellingItemsCubit()),
         BlocProvider(create: (context) => GetDashBoardStatsCubit()),
         BlocProvider(create: (context) => SignInTwoCubit()),
+        BlocProvider(create: (context) => SendPasswordlessOtpCubit()),
+        BlocProvider(create: (context) => VerifyPasswordlessLoginOtpCubit()),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -124,7 +129,8 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
             textTheme: GoogleFonts.poppinsTextTheme(),
           ),
-          home: const CustomSplashScreen()),
+          // home: const CustomSplashScreen()
+          home: const ForgotPassword()),
     );
   }
 }
