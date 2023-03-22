@@ -15,6 +15,8 @@ class UpdateLocationCubit extends Cubit<UpdateLocationState> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String? token = prefs.getString('userToken');
+    print(
+        'Updating location with this $token $district $region $description $latitude $longitude');
     var response = await DiaspoCareAPis.updateLocation(
         token!, district, region, description, latitude, longitude);
     emit(UpdateLocationState.loaded(response));

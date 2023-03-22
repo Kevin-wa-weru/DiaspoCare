@@ -1,3 +1,4 @@
+import 'package:diasporacare/screens/auth/forgot_password/forgot_password.dart';
 import 'package:diasporacare/screens/auth/sign_in/cubit/sign_in_two_cubit.dart';
 import 'package:diasporacare/screens/auth/sign_up/sign_up.dart';
 import 'package:diasporacare/screens/decision/desicion.dart';
@@ -326,7 +327,13 @@ class _SignInState extends State<SignIn> {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ForgotPassword()));
+                                },
                                 child: const Padding(
                                   padding: EdgeInsets.only(right: 2.0),
                                   child: Text(

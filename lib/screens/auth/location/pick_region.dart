@@ -100,15 +100,24 @@ class _PickRegionState extends State<PickRegion> {
                 return Container();
               }, loading: () {
                 return Container();
-              }, loaded: (bankNames) {
+              }, loaded: (regions) {
+                List regionNames = [];
+                for (var b in regions) {
+                  regionNames.add(b['name']);
+                }
+
+                regionNames.sort((a, b) {
+                  return a.compareTo(b);
+                });
+
                 return Column(
-                  children: bankNames
+                  children: regionNames
                       .map(
                         (e) => InkWell(
                           onTap: () {
                             Navigator.pop(
                               context,
-                              e['name'],
+                              e,
                             );
                           },
                           child: Padding(
@@ -120,7 +129,7 @@ class _PickRegionState extends State<PickRegion> {
                                   height: 15,
                                   width: 15,
                                   decoration: BoxDecoration(
-                                    color: widget.selectedRegion == e['name']
+                                    color: widget.selectedRegion == e
                                         ? Colors.green
                                         : Colors.transparent,
                                     borderRadius: BorderRadius.circular(4),
@@ -133,7 +142,7 @@ class _PickRegionState extends State<PickRegion> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 15.0),
                                   child: Text(
-                                    e['name'],
+                                    e,
                                     style: const TextStyle(
                                       fontSize: 14,
                                       overflow: TextOverflow.ellipsis,

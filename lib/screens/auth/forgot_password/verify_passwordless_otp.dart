@@ -1,7 +1,5 @@
-import 'package:diasporacare/screens/auth/bank_details/bank_details.dart';
 import 'package:diasporacare/screens/auth/forgot_password/cubit/verify_passwordless_login_otp_cubit.dart';
-import 'package:diasporacare/screens/auth/otp/cubit/cubit/get_phone_n_umber_cubit.dart';
-import 'package:diasporacare/screens/auth/otp/cubit/verify_otp_cubit.dart';
+import 'package:diasporacare/screens/decision/desicion.dart';
 import 'package:diasporacare/services/diaspocare_apis.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
@@ -257,11 +255,11 @@ class _VerifyPasswordlessOtpState extends State<VerifyPasswordlessOtp> {
                                             if (result == 'Otp verified') {
                                               showSnackBarWithoutButton(
                                                   context, result);
-                                              // Navigator.push(
-                                              //     context,
-                                              //     MaterialPageRoute(
-                                              //         builder: (context) =>
-                                              //             const BankDetails()));
+                                              Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const DesicionsPage()));
                                             } else {
                                               showSnackBarWithoutButton(
                                                   context, result);

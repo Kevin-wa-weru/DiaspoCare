@@ -95,7 +95,15 @@ class _PickTownState extends State<PickTown> {
                 return Container();
               }, loading: () {
                 return Container();
-              }, loaded: (townNames) {
+              }, loaded: (towns) {
+                List townNames = [];
+                for (var b in towns) {
+                  townNames.add(b['name']);
+                }
+
+                townNames.sort((a, b) {
+                  return a.compareTo(b);
+                });
                 return Column(
                   children: townNames
                       .map(
@@ -103,7 +111,7 @@ class _PickTownState extends State<PickTown> {
                           onTap: () {
                             Navigator.pop(
                               context,
-                              e['name'],
+                              e,
                             );
                           },
                           child: Padding(
@@ -126,7 +134,7 @@ class _PickTownState extends State<PickTown> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 15.0),
                                   child: Text(
-                                    e['name'],
+                                    e,
                                     style: const TextStyle(
                                       fontSize: 14,
                                       overflow: TextOverflow.ellipsis,

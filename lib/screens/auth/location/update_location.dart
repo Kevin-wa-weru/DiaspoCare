@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:diasporacare/screens/auth/complete_profile/profile_completed.dart';
 import 'package:diasporacare/screens/auth/location/cubit/update_location_cubit.dart';
 import 'package:diasporacare/screens/auth/location/pick_region.dart';
@@ -28,7 +30,6 @@ class _UpdateLocationState extends State<UpdateLocation> {
   String? regionName = '';
   String? townName = '';
 
-  String? _currentAddress;
   Position? _currentPosition;
 
   Future<bool> _handleLocationPermission() async {
@@ -37,6 +38,7 @@ class _UpdateLocationState extends State<UpdateLocation> {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
               'Location services are disabled. Please enable the services')));
@@ -78,10 +80,7 @@ class _UpdateLocationState extends State<UpdateLocation> {
             _currentPosition!.latitude, _currentPosition!.longitude)
         .then((List<Placemark> placemarks) {
       Placemark place = placemarks[0];
-      setState(() {
-        _currentAddress =
-            '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
-      });
+      setState(() {});
     }).catchError((e) {
       debugPrint(e);
     });

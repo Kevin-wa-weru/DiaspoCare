@@ -47,6 +47,12 @@ class _VerifyOtpForPaymentState extends State<VerifyOtpForPayment> {
   }
 
   @override
+  void initState() {
+    print('${widget.basketDetail}');
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -163,7 +169,7 @@ class _VerifyOtpForPaymentState extends State<VerifyOtpForPayment> {
                     loading: () {},
                     loaded: (message) {
                       if (message['status'] == true) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => SuccessfullRequest(

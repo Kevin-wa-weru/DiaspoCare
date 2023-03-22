@@ -39,6 +39,7 @@ class DiaspoCareAPis {
           prefs.setString('userToken', data['token']);
           prefs.setString('userEmail', email.trim());
           prefs.setString('vendorName', data['full_name']);
+          prefs.setString('tokenType', 'Basic');
 
           if (data['vendor'].isEmpty) {
             prefs.setString('facilityName', '');
@@ -85,6 +86,8 @@ class DiaspoCareAPis {
         if (data.toString().contains('Invalid login credentials')) {
           return 'Invalid login Credentails';
         } else if (data.toString().contains('Logged In')) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('tokenType', 'Basic');
           return data['token'];
         } else {
           return 'An error has occurred';
@@ -135,6 +138,8 @@ class DiaspoCareAPis {
           return 'Invalid phone number';
         } else if (data.toString().contains("not a valid email address")) {
           return 'Email provided is not valid';
+        } else if (data.toString().contains("Invalid paswword")) {
+          return 'Provide a strong password';
         } else if (data.toString().contains('send_welcome_email')) {
           return 'Your Account has been created';
         }
@@ -149,6 +154,10 @@ class DiaspoCareAPis {
 
   static Future createVendorProfile(email, facilityName, practitionerName,
       licenceNumber, country, currency, token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response =
           await http.post(Uri.parse('$baseUrl/api/resource/Vendor'),
@@ -165,7 +174,7 @@ class DiaspoCareAPis {
               headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            'Authorization': "Basic $token",
+            'Authorization': "$tokenType $token",
           });
 
       debugPrint('Response bodyyyyyyyyyyyyyyyy');
@@ -201,6 +210,10 @@ class DiaspoCareAPis {
 
   static Future assignTagToVendor(
       String facilityName, List<String> tags, token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -214,7 +227,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            'Authorization': "Basic $token",
+            'Authorization': "$tokenType $token",
           });
 
       debugPrint('Response bodyyyyyyyyyyyyyyyy');
@@ -240,6 +253,10 @@ class DiaspoCareAPis {
   }
 
   static Future sendOtp(token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -247,7 +264,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            'Authorization': "Basic $token",
+            'Authorization': "$tokenType $token",
           });
 
       if (response.body.isNotEmpty) {
@@ -282,7 +299,7 @@ class DiaspoCareAPis {
         headers: {
           "Content-Type": "application/json",
           "Access-Control_Allow_Origin": "*",
-          // 'Authorization': "Basic $token",
+          // 'Authorization': "$tokenType $token",
         },
       );
 
@@ -317,12 +334,12 @@ class DiaspoCareAPis {
           body: jsonEncode({
             "mobile_no": phoneNumber,
             "otp": otpCode,
-            "client_id": "a317891682"
+            "client_id": "541fd264dc"
           }),
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            // 'Authorization': "Basic $token",
+            // 'Authorization': "$tokenType $token",
           });
 
       if (response.body.isNotEmpty) {
@@ -333,7 +350,18 @@ class DiaspoCareAPis {
         print(
             'Verifying passwordlss otp with $phoneNumber $otpCode "a317891682" returned $data');
         if (response.statusCode == 200) {
-          return 'Otp verified';
+          if (data['is_vendor'] == false) {
+            return 'Download supporter app to use the account';
+          } else {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setString('facilityName', data['profile']['name']);
+            prefs.setString('userToken', data['access_token']);
+            prefs.setString('userEmail', data['email']);
+            prefs.setString('vendorName', data['full_name']);
+            prefs.setString('tokenType', 'Bearer');
+
+            return 'Otp verified';
+          }
         } else {
           return 'OTP code does not match';
         }
@@ -348,6 +376,10 @@ class DiaspoCareAPis {
   }
 
   static Future verifyOtp(otpCode, token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -360,7 +392,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            'Authorization': "Basic $token",
+            'Authorization': "$tokenType $token",
           });
 
       if (response.body.isNotEmpty) {
@@ -418,6 +450,10 @@ class DiaspoCareAPis {
     accountNumber,
     phoneNumber,
   ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -433,7 +469,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            'Authorization': "Basic $token",
+            'Authorization': "$tokenType $token",
           });
 
       debugPrint(
@@ -526,6 +562,10 @@ class DiaspoCareAPis {
 
   static Future getVendorTransactions(
       String statusType, int page, String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -533,7 +573,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            'Authorization': "Basic $token",
+            'Authorization': "$tokenType $token",
           });
 
       if (response.body.isNotEmpty) {
@@ -556,12 +596,16 @@ class DiaspoCareAPis {
   }
 
   static Future getAccountDetails(String email, String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http
           .get(Uri.parse('$baseUrl/api/resource/User/$email'), headers: {
         "Content-Type": "application/json",
         "Access-Control_Allow_Origin": "*",
-        "Authorization": "Basic $token",
+        "Authorization": "$tokenType $token",
       });
 
       if (response.body.isNotEmpty) {
@@ -584,6 +628,10 @@ class DiaspoCareAPis {
   }
 
   static Future getBankDetails(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.get(
           Uri.parse(
@@ -591,7 +639,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            'Authorization': "Basic $token",
+            'Authorization': "$tokenType $token",
           });
 
       if (response.body.isNotEmpty) {
@@ -614,12 +662,16 @@ class DiaspoCareAPis {
   }
 
   static Future getFacilityDetails(String vendorName, String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http
           .get(Uri.parse('$baseUrl/api/resource/Vendor/$vendorName'), headers: {
         "Content-Type": "application/json",
         "Access-Control_Allow_Origin": "*",
-        'Authorization': "Basic $token",
+        'Authorization': "$tokenType $token",
       });
 
       if (response.body.isNotEmpty) {
@@ -642,6 +694,10 @@ class DiaspoCareAPis {
   }
 
   static Future getDiscounts(token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -649,7 +705,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            'Authorization': "Basic $token",
+            'Authorization': "$tokenType $token",
           });
 
       if (response.body.isNotEmpty) {
@@ -672,6 +728,10 @@ class DiaspoCareAPis {
   }
 
   static Future getBestSellingItems(token, String facilityName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -679,7 +739,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            'Authorization': "Basic $token",
+            'Authorization': "$tokenType $token",
           });
 
       if (response.body.isNotEmpty) {
@@ -702,6 +762,10 @@ class DiaspoCareAPis {
   }
 
   static Future addDiscount(String discountName, int percentage, token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -715,7 +779,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            "Authorization": "Basic $token",
+            "Authorization": "$tokenType $token",
           });
 
       if (response.body.isNotEmpty) {
@@ -736,6 +800,10 @@ class DiaspoCareAPis {
 
   static Future editDiscount(String discountName, int percentage,
       String discountid, String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.put(
           Uri.parse(
@@ -749,7 +817,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            "Authorization": "Basic $token"
+            "Authorization": "$tokenType $token"
           });
 
       if (response.body.isNotEmpty) {
@@ -769,6 +837,10 @@ class DiaspoCareAPis {
   }
 
   static Future searchBeneficiary(String beneficiaryName, String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.get(
           Uri.parse(
@@ -776,7 +848,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            "Authorization": "Basic $token"
+            "Authorization": "$tokenType $token"
           });
 
       if (response.body.isNotEmpty) {
@@ -797,6 +869,10 @@ class DiaspoCareAPis {
   }
 
   static Future addBasket(String beneficiaryid, String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -807,7 +883,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            "Authorization": "Basic $token"
+            "Authorization": "$tokenType $token"
           });
 
       if (response.body.isNotEmpty) {
@@ -835,6 +911,10 @@ class DiaspoCareAPis {
       int quantity,
       int isService,
       String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response =
           await http.post(Uri.parse('$baseUrl/api/resource/Order Basket Item'),
@@ -851,7 +931,7 @@ class DiaspoCareAPis {
               headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            "Authorization": "Basic $token"
+            "Authorization": "$tokenType $token"
           });
 
       if (response.body.isNotEmpty) {
@@ -871,6 +951,10 @@ class DiaspoCareAPis {
   }
 
   static Future getBasketItems(String basketId, String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.get(
           Uri.parse(
@@ -878,7 +962,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            "Authorization": "Basic $token"
+            "Authorization": "$tokenType $token"
           });
 
       if (response.body.isNotEmpty) {
@@ -913,7 +997,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            // "Authorization": "Basic $token"
+            // "Authorization": "$tokenType $token"
           });
 
       if (response.body.isNotEmpty) {
@@ -934,6 +1018,10 @@ class DiaspoCareAPis {
 
   static Future verifyTransactionOtp(
       String basketId, String otpCode, String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -942,7 +1030,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            "Authorization": "Basic $token"
+            "Authorization": "$tokenType $token"
           });
 
       if (response.body.isNotEmpty) {
@@ -967,6 +1055,10 @@ class DiaspoCareAPis {
     String code,
     String token,
   ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     print('Initialising with these');
     print('$basketId $code $token');
     try {
@@ -977,7 +1069,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            "Authorization": "Basic $token"
+            "Authorization": "$tokenType $token"
           });
 
       if (response.body.isNotEmpty) {
@@ -1008,7 +1100,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            // "Authorization": "Basic $token"
+            // "Authorization": "$tokenType $token"
           });
 
       if (response.body.isNotEmpty) {
@@ -1033,6 +1125,10 @@ class DiaspoCareAPis {
   }
 
   static Future searchMasterList(String query, String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.get(
           Uri.parse(
@@ -1040,7 +1136,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            "Authorization": "Basic $token"
+            "Authorization": "$tokenType $token"
           });
 
       if (response.body.isNotEmpty) {
@@ -1061,6 +1157,10 @@ class DiaspoCareAPis {
   }
 
   static Future testMedifinder(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.get(
           Uri.parse(
@@ -1068,7 +1168,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            "Authorization": "Basic $token"
+            "Authorization": "$tokenType $token"
           });
 
       if (response.body.isNotEmpty) {
@@ -1090,6 +1190,10 @@ class DiaspoCareAPis {
 
   static Future editBasketItems(String token, String basketItemId,
       String itemName, int price, int quantity) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.put(
           Uri.parse('$baseUrl/api/resource/Order Basket Item/$basketItemId'),
@@ -1097,7 +1201,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            "Authorization": "Basic $token"
+            "Authorization": "$tokenType $token"
           });
 
       if (response.body.isNotEmpty) {
@@ -1117,7 +1221,11 @@ class DiaspoCareAPis {
   }
 
   static Future updateLocation(String token, String district, String region,
-      String description, num longitude, num latitude) async {
+      String description, longitude, latitude) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -1132,10 +1240,11 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            "Authorization": "Basic $token"
+            "Authorization": "$tokenType $token"
           });
 
       if (response.body.isNotEmpty) {
+        print(response.body);
         if (response.statusCode == 200) {
           return 'Successfully updated location';
         } else {
@@ -1159,7 +1268,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            // "Authorization": "Basic $token"
+            // "Authorization": "$tokenType $token"
           });
 
       if (response.body.isNotEmpty) {
@@ -1184,6 +1293,10 @@ class DiaspoCareAPis {
   }
 
   static Future getDashboardStats(String facilityName, String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
     try {
       http.Response response = await http.get(
           Uri.parse(
@@ -1191,7 +1304,7 @@ class DiaspoCareAPis {
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
-            "Authorization": "Basic $token"
+            "Authorization": "$tokenType $token"
           });
 
       if (response.body.isNotEmpty) {

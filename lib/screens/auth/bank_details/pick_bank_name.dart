@@ -92,7 +92,15 @@ class _PickBankNameState extends State<PickBankName> {
                 return Container();
               }, loading: () {
                 return Container();
-              }, loaded: (bankNames) {
+              }, loaded: (banks) {
+                List bankNames = [];
+                for (var b in banks) {
+                  bankNames.add(b['name']);
+                }
+
+                bankNames.sort((a, b) {
+                  return a.compareTo(b);
+                });
                 return Column(
                   children: bankNames
                       .map(
@@ -100,7 +108,7 @@ class _PickBankNameState extends State<PickBankName> {
                           onTap: () {
                             Navigator.pop(
                               context,
-                              e['name'],
+                              e,
                             );
                           },
                           child: Padding(
@@ -123,7 +131,7 @@ class _PickBankNameState extends State<PickBankName> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 15.0),
                                   child: Text(
-                                    e['name'],
+                                    e,
                                     style: const TextStyle(
                                       fontSize: 14,
                                       overflow: TextOverflow.ellipsis,

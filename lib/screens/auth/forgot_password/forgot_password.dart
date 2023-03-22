@@ -1,12 +1,9 @@
 import 'package:diasporacare/screens/auth/forgot_password/cubit/send_passwordless_otp_cubit.dart';
 import 'package:diasporacare/screens/auth/forgot_password/verify_passwordless_otp.dart';
 import 'package:diasporacare/screens/auth/sign_in/sign_in.dart';
-import 'package:diasporacare/screens/auth/sign_in/sign_in_two.dart';
 import 'package:diasporacare/screens/auth/sign_up/cubit/country_switcher_cubit.dart';
-import 'package:diasporacare/screens/auth/sign_up/cubit/sign_up_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:diasporacare/constants.dart';
-import 'package:diasporacare/services/misc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -187,7 +184,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       fontWeight: FontWeight.w600),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.03,
+                  height: MediaQuery.of(context).size.height * 0.06,
                 ),
                 Center(
                   child: Column(
@@ -212,7 +209,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                   border: Border.all(
                                     color: phonehasIssue
                                         ? Colors.red
-                                        : secondaryColor,
+                                        : textFieldBorder,
                                     width: 1.6,
                                   ),
                                 ),
@@ -748,7 +745,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               ),
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.03,
+                                    MediaQuery.of(context).size.height * 0.06,
                               ),
                               GestureDetector(
                                 onTap: () {

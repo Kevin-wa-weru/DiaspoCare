@@ -84,8 +84,17 @@ class _TransactionState extends State<Transaction> {
                         (singleTransaction) => const SingleLoadingTransaction())
                     .toList());
           }, loaded: (List pendingTransactions) {
+            List newPendingTransactions = [];
+
+            for (var i in pendingTransactions) {
+              newPendingTransactions.add(i);
+            }
+
+            newPendingTransactions.sort((a, b) {
+              return b['basket']['created'].compareTo(a['basket']['created']);
+            });
             return Column(
-                children: pendingTransactions
+                children: newPendingTransactions
                     .map((singleTransaction) => SingleTransaction(
                         transactionColor: transactionColor,
                         singleTransaction: singleTransaction))
@@ -114,8 +123,17 @@ class _TransactionState extends State<Transaction> {
                         (singleTransaction) => const SingleLoadingTransaction())
                     .toList());
           }, loaded: (List approvedTransactions) {
+            List newapprovedTransactions = [];
+
+            for (var i in approvedTransactions) {
+              newapprovedTransactions.add(i);
+            }
+
+            newapprovedTransactions.sort((a, b) {
+              return b['basket']['created'].compareTo(a['basket']['created']);
+            });
             return Column(
-                children: approvedTransactions
+                children: newapprovedTransactions
                     .map((singleTransaction) => SingleTransaction(
                         transactionColor: transactionColor,
                         singleTransaction: singleTransaction))
@@ -143,9 +161,18 @@ class _TransactionState extends State<Transaction> {
                     .map(
                         (singleTransaction) => const SingleLoadingTransaction())
                     .toList());
-          }, loaded: (List approvedTransactions) {
+          }, loaded: (List declinedTransactions) {
+            List newDeclinedTransactions = [];
+
+            for (var i in declinedTransactions) {
+              newDeclinedTransactions.add(i);
+            }
+
+            newDeclinedTransactions.sort((a, b) {
+              return b['basket']['created'].compareTo(a['basket']['created']);
+            });
             return Column(
-                children: approvedTransactions
+                children: newDeclinedTransactions
                     .map((singleTransaction) => SingleTransaction(
                         transactionColor: transactionColor,
                         singleTransaction: singleTransaction))
@@ -649,13 +676,19 @@ class _TransactionState extends State<Transaction> {
                               const SingleDraftTransactionLoading())
                           .toList());
                 }, loaded: (List draftTransactions) {
-                  // return Column(
-                  //     children: transactionTypes
-                  //         .map((singleTransaction) =>
-                  //             const SingleDraftTransactionLoading())
-                  //         .toList());
+                  List newdraftTransactions = [];
+
+                  for (var i in draftTransactions) {
+                    newdraftTransactions.add(i);
+                  }
+
+                  newdraftTransactions.sort((a, b) {
+                    return b['basket']['created']
+                        .compareTo(a['basket']['created']);
+                  });
+
                   return Column(
-                      children: draftTransactions
+                      children: newdraftTransactions
                           .map((singleTransaction) => SingleDraftTransaction(
                                 singleDraftTransaction: singleTransaction,
                                 discount: discounts,

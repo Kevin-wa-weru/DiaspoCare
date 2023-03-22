@@ -756,9 +756,9 @@ class _CompleteProfileState extends State<CompleteProfile> {
                                     .read<CompleteProfileCubit>()
                                     .completeProfile(
                                       // email.trim(),
-                                      facilityNameController.text,
-                                      practitionerNameController.text,
-                                      regulatorLicenceController.text,
+                                      facilityNameController.text.trim(),
+                                      practitionerNameController.text.trim(),
+                                      regulatorLicenceController.text.trim(),
                                     );
                               }
                             },

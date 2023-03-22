@@ -6,6 +6,7 @@ import 'package:diasporacare/screens/auth/forgot_password/forgot_password.dart';
 import 'package:diasporacare/screens/auth/location/cubit/get_regions_cubit.dart';
 import 'package:diasporacare/screens/auth/location/cubit/get_towns_cubit.dart';
 import 'package:diasporacare/screens/auth/location/cubit/update_location_cubit.dart';
+import 'package:diasporacare/screens/auth/location/update_location.dart';
 import 'package:diasporacare/screens/auth/otp/cubit/cubit/get_phone_n_umber_cubit.dart';
 import 'package:diasporacare/screens/auth/otp/cubit/verify_otp_cubit.dart';
 import 'package:diasporacare/screens/auth/sign_in/cubit/sign_in_cubit.dart';
@@ -13,7 +14,6 @@ import 'package:diasporacare/screens/auth/sign_in/cubit/sign_in_two_cubit.dart';
 import 'package:diasporacare/screens/auth/sign_up/cubit/country_switcher_cubit.dart';
 import 'package:diasporacare/screens/auth/sign_up/cubit/sign_up_cubit.dart';
 import 'package:diasporacare/screens/decision/cubit/decide_redirect_page_cubit.dart';
-import 'package:diasporacare/screens/decision/custom_splash_screen.dart';
 import 'package:diasporacare/screens/homepage/cubit/add_discount_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/check_if_verified_cubit.dart';
 import 'package:diasporacare/screens/homepage/cubit/edit_discount_cubit.dart';
@@ -42,6 +42,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'screens/auth/complete_profile/cubit/complete_profile_cubit.dart';
 import 'screens/auth/forgot_password/cubit/verify_passwordless_login_otp_cubit.dart';
+import 'screens/decision/custom_splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -129,8 +130,9 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
             textTheme: GoogleFonts.poppinsTextTheme(),
           ),
-          // home: const CustomSplashScreen()
-          home: const ForgotPassword()),
+          home: const CustomSplashScreen()
+          // home: const UpdateLocation(),
+          ),
     );
   }
 }

@@ -16,6 +16,7 @@ class GetDraftTransactionsCubit extends Cubit<GetDraftTransactionsState> {
     String? userToken = prefs.getString('userToken');
     var response =
         await DiaspoCareAPis.getVendorTransactions('draft', 1, userToken!);
+    print('Draft transactions $response');
     emit(GetDraftTransactionsState.loaded(response));
   }
 }
