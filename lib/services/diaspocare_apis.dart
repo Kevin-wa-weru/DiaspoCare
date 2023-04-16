@@ -36,6 +36,7 @@ class DiaspoCareAPis {
         if (data.toString().contains('Invalid login credentials')) {
           return 'Invalid login Credentails';
         } else if (data.toString().contains('Logged In')) {
+          print('Logged in token ${data['token']}');
           prefs.setString('userToken', data['token']);
           prefs.setString('userEmail', email.trim());
           prefs.setString('vendorName', data['full_name']);
@@ -1313,6 +1314,142 @@ class DiaspoCareAPis {
           return data['message'];
         } else {
           return false;
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future getVendorQuoteRequests(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
+    try {
+      http.Response response = await http.get(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.medifinder.search.get_quote_requests'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "$tokenType $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        if (response.statusCode == 200) {
+          return data['message'];
+        } else {
+          return 'Error getting quotes';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future respondToQuote(String token, String requestID) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.medifinder.search.respond_to_quote'),
+          body: jsonEncode({"request": requestID}),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "$tokenType $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        if (response.statusCode == 200) {
+          return data['message'];
+        } else {
+          return 'Error getting quotes';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future getBasketDetails(String token, String basketID) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
+    try {
+      http.Response response = await http.get(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.medifinder.search.get_basket_details?basket=$basketID'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "$tokenType $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        if (response.statusCode == 200) {
+          return data['message'];
+        } else {
+          return 'Error getting basketDetails';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future createQuoteForBasketItem(
+      String token, String basketID, num price, int qty) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.medifinder.search.create_quotation_for_item'),
+          body: {
+            "response": "75c16ce859",
+            "item": "90e02391ec",
+            "price": price,
+            "qty": qty
+          },
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "$tokenType $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        if (response.statusCode == 200) {
+          return data['message'];
+        } else {
+          return 'Error getting basketDetails';
         }
       } else {
         debugPrint('empty results');
