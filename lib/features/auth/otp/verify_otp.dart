@@ -111,7 +111,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
     setState(() {
       token = userToken;
     });
-    DiaspoCareAPis.sendOtp(token);
+    DiaspoCareAPis.sendEmailOtp(token);
   }
 
   @override
@@ -182,7 +182,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                       Padding(
                         padding: EdgeInsets.only(left: 20.0),
                         child: Text(
-                          'Almost there!\nLet\'s verify your phone',
+                          'Almost there!\nLet\'s verify your email',
                           style: TextStyle(
                               color: Colors.black54,
                               fontSize: 18,

@@ -1474,4 +1474,77 @@ class DiaspoCareAPis {
 
     return currency;
   }
+
+  static Future sendEmailOtp(token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.users.generate_email_verification_OTP'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            'Authorization': "$tokenType $token",
+          });
+
+      if (response.body.isNotEmpty) {
+        json.decode(response.body);
+        var data = jsonDecode(response.body);
+        debugPrint('hResponseBody Decoded');
+        if (data.toString().contains('true')) {
+          return 'Otp sent';
+        } else {
+          return 'Error sending otp';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future verifyEmailOtp(otpCode, token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.users.verify_phonenumber'),
+          body: jsonEncode(
+            {
+              "otp": otpCode,
+            },
+          ),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            'Authorization': "$tokenType $token",
+          });
+
+      if (response.body.isNotEmpty) {
+        json.decode(response.body);
+        var data = jsonDecode(response.body);
+        debugPrint('hResponseBody Decoded');
+        if (data.toString().contains('true')) {
+          return 'Otp verified';
+        } else {
+          return 'OTP code does not match';
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
 }

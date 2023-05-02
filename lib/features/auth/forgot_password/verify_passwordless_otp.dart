@@ -166,11 +166,11 @@ class _VerifyPasswordlessOtpState extends State<VerifyPasswordlessOtp> {
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
-                  Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
+                  const Padding(
+                      padding: EdgeInsets.only(top: 8.0),
                       child: Text(
-                        widget.phoneNumber,
-                        style: const TextStyle(
+                        'your email',
+                        style: TextStyle(
                             color: Colors.black54,
                             fontSize: 18,
                             fontWeight: FontWeight.w600),

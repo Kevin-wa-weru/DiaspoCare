@@ -11,24 +11,25 @@ class GetPhoneNUmberCubit extends Cubit<GetPhoneNUmberState> {
   getPhone() async {
     emit(const GetPhoneNUmberState.loading());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? phone = prefs.getString('userPhoneNumber');
+    String? phone = prefs.getString('userEmail');
 
-    String? countryCode = prefs.getString('persistentcountryCode');
+    // String? countryCode = prefs.getString('persistentcountryCode');
 
-    if (countryCode == 'ke') {
-      emit(GetPhoneNUmberState.loaded('+254$phone'));
-    }
+    emit(GetPhoneNUmberState.loaded(phone!));
+    // if (countryCode == 'ke') {
+    //   emit(GetPhoneNUmberState.loaded('+254$phone'));
+    // }
 
-    if (countryCode == 'gh') {
-      emit(GetPhoneNUmberState.loaded('+233$phone'));
-    }
+    // if (countryCode == 'gh') {
+    //   emit(GetPhoneNUmberState.loaded('+233$phone'));
+    // }
 
-    if (countryCode == 'ng') {
-      emit(GetPhoneNUmberState.loaded('+234$phone'));
-    }
+    // if (countryCode == 'ng') {
+    //   emit(GetPhoneNUmberState.loaded('+234$phone'));
+    // }
 
-    if (countryCode == 'ug') {
-      emit(GetPhoneNUmberState.loaded('+256$phone'));
-    }
+    // if (countryCode == 'ug') {
+    //   emit(GetPhoneNUmberState.loaded('+256$phone'));
+    // }
   }
 }
