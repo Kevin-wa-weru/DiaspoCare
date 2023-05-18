@@ -1547,4 +1547,39 @@ class DiaspoCareAPis {
       return 'Server busy try again later';
     }
   }
+
+  static Future registerFCM(fcmToken, accessToken) async {
+    print('HEllsfsfsf $accessToken $accessToken');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
+    try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.fcm.register_device'),
+          body: jsonEncode(
+            {
+              "registration_token": fcmToken,
+            },
+          ),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            'Authorization': "$tokenType $accessToken",
+          });
+
+      if (response.body.isNotEmpty) {
+        json.decode(response.body);
+        var data = jsonDecode(response.body);
+        debugPrint('hResponseBody Decoded sdsdsdsds $data');
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
 }

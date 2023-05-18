@@ -1,0 +1,85 @@
+{
+  "project_info": {
+    "project_number": "590565822636",
+    "firebase_url": "https://fir-analytics-5c75e-default-rtdb.firebaseio.com",
+    "project_id": "fir-analytics-5c75e",
+    "storage_bucket": "fir-analytics-5c75e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590565822636:android:f76f449d2a814d14a90f09",
+        "android_client_info": {
+          "package_name": "com.diaspocare.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "590565822636-arvn36015et0vngrs4qvh66c5418j63m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHd4qRYt2HoBDOBkTZcG4Ov-J_-eeXZO8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "590565822636-arvn36015et0vngrs4qvh66c5418j63m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "590565822636-t8l3q9anegvl93vdvfg6vp85pctrdeaa.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.testapp.mtl",
+                "app_store_id": "1578303718"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590565822636:android:e8ae6643b04e12e9a90f09",
+        "android_client_info": {
+          "package_name": "com.diaspocare.diaspocareVendor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "590565822636-arvn36015et0vngrs4qvh66c5418j63m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHd4qRYt2HoBDOBkTZcG4Ov-J_-eeXZO8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "590565822636-arvn36015et0vngrs4qvh66c5418j63m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "590565822636-t8l3q9anegvl93vdvfg6vp85pctrdeaa.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.testapp.mtl",
+                "app_store_id": "1578303718"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

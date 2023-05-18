@@ -31,6 +31,9 @@ dependencies:
   shimmer: ^2.0.0
   geolocator: ^8.2.0
   geocoding: ^2.0.4
+  firebase_messaging: ^14.5.0
+  firebase_core: ^2.11.0
+  flutter_local_notifications: ^14.0.0+2
 
 dev_dependencies:
   flutter_test:
