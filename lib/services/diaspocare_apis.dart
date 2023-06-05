@@ -1311,6 +1311,7 @@ class DiaspoCareAPis {
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
         if (response.statusCode == 200) {
+          print('Sfafssffas $data');
           return data['message'];
         } else {
           return false;
@@ -1577,6 +1578,8 @@ class DiaspoCareAPis {
         debugPrint('empty results');
         return 'An unkown error occurred';
       }
+
+      // 567345
     } catch (e) {
       debugPrint(e.toString());
       return 'Server busy try again later';

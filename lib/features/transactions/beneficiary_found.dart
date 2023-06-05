@@ -104,7 +104,7 @@ class _BeneficiaryFoundState extends State<BeneficiaryFound> {
                             loading: () {},
                             loaded: (message) async {
                               if (discounts.isEmpty) {
-                                Navigator.push(
+                                Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => AddingToBssket(
@@ -120,7 +120,7 @@ class _BeneficiaryFoundState extends State<BeneficiaryFound> {
                                       ),
                                     ));
                               } else {
-                                Navigator.push(
+                                Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => AddingToBssket(

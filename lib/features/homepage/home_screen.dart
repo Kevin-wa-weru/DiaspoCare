@@ -7,6 +7,7 @@ import 'package:diasporacare/features/homepage/cubit/get_vendor_details_cubit.da
 import 'package:diasporacare/features/homepage/home_page.dart';
 import 'package:diasporacare/features/homepage/promotions.dart';
 import 'package:diasporacare/features/transactions/transactions.dart';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<GetVendorDetailsCubit>().getVendorDetails();
     context.read<CheckIfVerifiedCubit>().checkIfVerified();
     context.read<GetNewRequestCountCubit>().getNewREquestCount();
-
     context.read<GetDashBoardStatsCubit>().getDashboardStats();
     context.read<GetBestSellingItemsCubit>().getBestSellingItems();
     super.initState();
@@ -38,35 +38,68 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: PageView(
-        physics: const ClampingScrollPhysics(),
-        // physics: const NeverScrollableScrollPhysics(),
-        controller: _pageController,
-        allowImplicitScrolling: true,
-        onPageChanged: (int page) {
-          setState(() {
-            currentIndex = page;
-          });
-        },
-        children: const [
-          HomePage(
-            pharmacyName: '',
-            vendorName: '',
+      body: DoubleBackToCloseApp(
+        snackBar: SnackBar(
+          backgroundColor: Colors.black54,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+          duration: const Duration(seconds: 2),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Text(
+                'Tap again to exit the app',
+                style: TextStyle(
+                    fontFamily: 'JosefinSans',
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 13),
+              ),
+            ],
           ),
-          Transaction(),
-          Promotions(),
-          Account(),
-        ],
+          behavior: SnackBarBehavior.floating,
+          elevation: 2,
+          margin: const EdgeInsets.only(
+            left: 20,
+            right: 20,
+            bottom: 5,
+          ),
+        ),
+        child: PageView(
+          physics: const ClampingScrollPhysics(),
+          controller: _pageController,
+          allowImplicitScrolling: true,
+          onPageChanged: (int page) {
+            setState(() {
+              currentIndex = page;
+            });
+          },
+          children: const [
+            HomePage(
+              pharmacyName: '',
+              vendorName: '',
+            ),
+            Transaction(),
+            Promotions(),
+            Account(),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         // elevation: 0,
+        type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.white,
         selectedLabelStyle: const TextStyle(
-            fontSize: 10, fontWeight: FontWeight.w600, color: Colors.black54),
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
+        ),
         unselectedLabelStyle: const TextStyle(
-            fontSize: 10, fontWeight: FontWeight.w600, color: Colors.black87),
-        unselectedItemColor: Colors.black,
-        selectedItemColor: Colors.black54,
+          fontSize: 10,
+          fontWeight: FontWeight.w600,
+          color: Colors.black54,
+        ),
+        unselectedItemColor: Colors.black54,
+        selectedItemColor: const Color(0xFF145DA0),
         showUnselectedLabels: true,
         onTap: (index) {
           setState(() => currentIndex = index);
@@ -86,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 20,
                         child: SvgPicture.asset(
                           'assets/icons/home.svg',
-                          color: Colors.black54,
+                          color: const Color(0xFF145DA0),
                         ),
                       ),
                       const SizedBox(height: 4)
@@ -99,6 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 20,
                         child: SvgPicture.asset(
                           'assets/icons/home.svg',
+                          color: Colors.black54,
                         ),
                       ),
                       const SizedBox(height: 4)
@@ -115,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 20,
                         child: SvgPicture.asset(
                           'assets/icons/transaction.svg',
-                          color: Colors.black54,
+                          color: const Color(0xFF145DA0),
                         ),
                       ),
                       const SizedBox(height: 4)
@@ -128,6 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 20,
                         child: SvgPicture.asset(
                           'assets/icons/transaction.svg',
+                          color: Colors.black54,
                         ),
                       ),
                       const SizedBox(height: 4)
@@ -144,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 20,
                         child: SvgPicture.asset(
                           'assets/icons/promotions.svg',
-                          color: Colors.black54,
+                          color: const Color(0xFF145DA0),
                         ),
                       ),
                       const SizedBox(height: 4)
@@ -157,6 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 20,
                         child: SvgPicture.asset(
                           'assets/icons/promotions.svg',
+                          color: Colors.black54,
                         ),
                       ),
                       const SizedBox(height: 4)
@@ -173,7 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 20,
                         child: SvgPicture.asset(
                           'assets/icons/account.svg',
-                          color: Colors.black54,
+                          color: const Color(0xFF145DA0),
                         ),
                       ),
                       const SizedBox(height: 4)
@@ -186,6 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 20,
                         child: SvgPicture.asset(
                           'assets/icons/account.svg',
+                          color: Colors.black54,
                         ),
                       ),
                       const SizedBox(height: 4)

@@ -327,7 +327,7 @@ class _AddingToBssketState extends State<AddingToBssket> {
                         }
                         return GestureDetector(
                           onTap: () {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => RequestPayment(

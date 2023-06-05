@@ -387,7 +387,7 @@ class _SignInState extends State<SignIn> {
                                         if (result == 'Successfull login') {
                                           // showSnackBarWithoutButton(
                                           //     context, result);
-                                          Navigator.push(
+                                          Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>

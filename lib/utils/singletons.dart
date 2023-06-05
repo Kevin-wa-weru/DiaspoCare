@@ -102,5 +102,7 @@ class Singletons {
             create: (context) => GetNewRequestCountCubit()),
         BlocProvider<GetQuotesAndResponsesCubit>(
             create: (context) => GetQuotesAndResponsesCubit()),
+        BlocProvider<PayoutVisibleCubit>(
+            create: (context) => PayoutVisibleCubit()),
       ];
 }

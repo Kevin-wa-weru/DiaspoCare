@@ -188,7 +188,7 @@ class _RequestPaymentState extends State<RequestPayment> {
                   loading: () {},
                   loaded: (message) {
                     if (message == 'Error sending otp') {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => VerifyOtpForPayment(
@@ -198,7 +198,7 @@ class _RequestPaymentState extends State<RequestPayment> {
                       // showSnackBarWithoutButton(
                       //     context, 'There was an error sending Otp');
                     } else {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => VerifyOtpForPayment(
