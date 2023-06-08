@@ -6,19 +6,21 @@ import 'package:diasporacare/features/homepage/cubit/check_if_verified_cubit.dar
 import 'package:diasporacare/features/homepage/cubit/get_best_selling_items_cubit.dart';
 import 'package:diasporacare/features/homepage/cubit/get_dash_board_stats_cubit.dart';
 import 'package:diasporacare/features/homepage/cubit/get_new_request_count_cubit.dart';
+import 'package:diasporacare/features/homepage/cubit/get_payout_threshold_cubit.dart';
 import 'package:diasporacare/features/homepage/cubit/get_vendor_details_cubit.dart';
 import 'package:diasporacare/features/homepage/cubit/payout_visible_cubit.dart';
 import 'package:diasporacare/features/homepage/payouts.dart';
 import 'package:diasporacare/features/homepage/quote_requests.dart';
 import 'package:diasporacare/features/transactions/search_beneficiary.dart';
 import 'package:diasporacare/features/widgets/loading_container_animation.dart';
+import 'package:diasporacare/services/diaspocare_apis.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({
     Key? key,
     required this.vendorName,
@@ -26,6 +28,24 @@ class HomePage extends StatelessWidget {
   }) : super(key: key);
   final String vendorName;
   final String pharmacyName;
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String? currency;
+  getCurrency() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('userToken');
+    String? facilityName = prefs.getString('facilityName');
+
+    var currencyy =
+        await DiaspoCareAPis.getFacilityDetails(facilityName!, token!);
+    setState(() {
+      currency = currencyy['currency'];
+    });
+  }
 
   void showSnackBarWithoutButton(BuildContext context, message) {
     final snackBar = SnackBar(
@@ -55,6 +75,14 @@ class HomePage extends StatelessWidget {
       ),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  String? thresholdAmount;
+
+  @override
+  void initState() {
+    getCurrency();
+    super.initState();
   }
 
   @override
@@ -470,221 +498,273 @@ class HomePage extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.02,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                  height: MediaQuery.of(context).size.height * 0.04,
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10.0),
-                    ),
-                    border: Border.all(
-                      color: Colors.black12,
-                      width: 1.0,
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
+          BlocConsumer<GetPayoutThresholdCubit, GetPayoutThresholdState>(
+            listener: (context, state) {
+              state.when(
+                  initial: () {},
+                  loading: () {},
+                  loaded: (amount, isVisible, hasSetThreshold) {
+                    setState(() {
+                      thresholdAmount = amount;
+                    });
+                  },
+                  error: (m) {});
+            },
+            builder: (context, state) {
+              return state.when(initial: () {
+                return Container();
+              }, loading: () {
+                return Container();
+              }, loaded: (message, isVisible, hasSetThreshold) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
                         height: MediaQuery.of(context).size.height * 0.04,
-                        width: MediaQuery.of(context).size.width * 0.2,
+                        width: MediaQuery.of(context).size.width * 0.6,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF145DA0),
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(10.0),
-                            bottomLeft: Radius.circular(10.0),
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(10.0),
                           ),
                           border: Border.all(
                             color: Colors.black12,
                             width: 1.0,
                           ),
                         ),
-                        child: const Center(
-                          child: Text(
-                            'Balance',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 11,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                      ),
-                      BlocBuilder<PayoutVisibleCubit, PayoutVisibleState>(
-                        builder: (context, state) {
-                          return state.when(initial: () {
-                            return const Padding(
-                              padding: EdgeInsets.only(left: 8.0, right: 8.0),
-                              child: Text(
-                                'KES: 14,0000.00',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.04,
+                              width: MediaQuery.of(context).size.width * 0.2,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF145DA0),
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(10.0),
+                                  bottomLeft: Radius.circular(10.0),
+                                ),
+                                border: Border.all(
+                                  color: Colors.black12,
+                                  width: 1.0,
+                                ),
                               ),
-                            );
-                          }, loading: () {
-                            return const Padding(
-                              padding: EdgeInsets.only(left: 8.0, right: 8.0),
-                              child: Text(
-                                'KES: 14,0000.00',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            );
-                          }, loaded: (isVisible) {
-                            if (isVisible == true) {
-                              return const Padding(
-                                padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                              child: const Center(
                                 child: Text(
-                                  'KES: 14,0000.00',
+                                  'Balance',
                                   style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600),
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w400),
                                 ),
-                              );
-                            } else {
-                              return Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 8.0, right: 8.0),
-                                  child: ImageFiltered(
-                                    imageFilter:
-                                        ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                                    child: const Text(
-                                      'KES: 14,0000.00',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            BlocBuilder<PayoutVisibleCubit, PayoutVisibleState>(
+                              builder: (context, state) {
+                                return state.when(initial: () {
+                                  return Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.3,
+                                    color: Colors.transparent,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 2.0, right: 8.0),
+                                      child: Text(
+                                        'KES: $message',
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
-                                  ));
-                            }
-                          }, error: (m) {
-                            return Container();
-                          });
+                                  );
+                                }, loading: () {
+                                  return Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.3,
+                                    color: Colors.transparent,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, right: 8.0),
+                                      child: Text(
+                                        'KES: $message',
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  );
+                                }, loaded: (isVisible) {
+                                  if (isVisible == true) {
+                                    return Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.3,
+                                      color: Colors.transparent,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0, right: 8.0),
+                                        child: Text(
+                                          'KES: $message',
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    return Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.3,
+                                      color: Colors.transparent,
+                                      child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8.0, right: 8.0),
+                                          child: ImageFiltered(
+                                            imageFilter: ImageFilter.blur(
+                                                sigmaX: 5, sigmaY: 5),
+                                            child: Text(
+                                              'KES: $message',
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                          )),
+                                    );
+                                  }
+                                }, error: (m) {
+                                  return Container();
+                                });
+                              },
+                            ),
+                            Expanded(
+                              child: BlocConsumer<PayoutVisibleCubit,
+                                  PayoutVisibleState>(
+                                listener: (context, state) {
+                                  state.when(
+                                      initial: () {},
+                                      loading: () {},
+                                      loaded: (isVisible) {},
+                                      error: (m) {});
+                                },
+                                builder: (context, state) {
+                                  return state.when(initial: () {
+                                    return InkWell(
+                                      onTap: () async {
+                                        SharedPreferences prefs =
+                                            await SharedPreferences
+                                                .getInstance();
+
+                                        bool? visiblity =
+                                            prefs.getBool('payoutVisible');
+
+                                        if (visiblity == null) {
+                                          context
+                                              .read<PayoutVisibleCubit>()
+                                              .changeVisibility(false);
+                                        } else {
+                                          context
+                                              .read<PayoutVisibleCubit>()
+                                              .changeVisibility(!visiblity);
+                                        }
+                                      },
+                                      child: const Icon(
+                                        Icons.visibility_off,
+                                        color: Colors.grey,
+                                        size: 22,
+                                      ),
+                                    );
+                                  }, loading: () {
+                                    return InkWell(
+                                      onTap: () async {
+                                        SharedPreferences prefs =
+                                            await SharedPreferences
+                                                .getInstance();
+
+                                        bool? visiblity =
+                                            prefs.getBool('payoutVisible');
+
+                                        if (visiblity == null) {
+                                          context
+                                              .read<PayoutVisibleCubit>()
+                                              .changeVisibility(false);
+                                        } else {
+                                          context
+                                              .read<PayoutVisibleCubit>()
+                                              .changeVisibility(!visiblity);
+                                        }
+                                      },
+                                      child: const Icon(
+                                        Icons.visibility_off,
+                                        color: Colors.grey,
+                                        size: 22,
+                                      ),
+                                    );
+                                  }, loaded: (isVisible) {
+                                    return InkWell(
+                                      onTap: () async {
+                                        SharedPreferences prefs =
+                                            await SharedPreferences
+                                                .getInstance();
+
+                                        bool? visiblity =
+                                            prefs.getBool('payoutVisible');
+
+                                        if (visiblity == null) {
+                                          context
+                                              .read<PayoutVisibleCubit>()
+                                              .changeVisibility(false);
+                                        } else {
+                                          context
+                                              .read<PayoutVisibleCubit>()
+                                              .changeVisibility(!visiblity);
+                                        }
+                                      },
+                                      child: Icon(
+                                        isVisible == true
+                                            ? Icons.visibility_off
+                                            : Icons.visibility,
+                                        color: Colors.grey,
+                                        size: 22,
+                                      ),
+                                    );
+                                  }, error: (m) {
+                                    return Container();
+                                  });
+                                },
+                              ),
+                            )
+                          ],
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PayOuts(
+                                  amount: thresholdAmount!,
+                                  currency: currency!,
+                                ),
+                              ));
                         },
-                      ),
-                      Expanded(
-                        child: BlocConsumer<PayoutVisibleCubit,
-                            PayoutVisibleState>(
-                          listener: (context, state) {
-                            state.when(
-                                initial: () {},
-                                loading: () {},
-                                loaded: (isVisible) {},
-                                error: (m) {});
-                          },
-                          builder: (context, state) {
-                            return state.when(initial: () {
-                              return InkWell(
-                                onTap: () async {
-                                  SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
-
-                                  bool? visiblity =
-                                      prefs.getBool('payoutVisible');
-
-                                  if (visiblity == null) {
-                                    context
-                                        .read<PayoutVisibleCubit>()
-                                        .changeVisibility(false);
-                                  } else {
-                                    context
-                                        .read<PayoutVisibleCubit>()
-                                        .changeVisibility(!visiblity);
-                                  }
-                                },
-                                child: const Icon(
-                                  Icons.visibility_off,
-                                  color: Colors.grey,
-                                  size: 22,
-                                ),
-                              );
-                            }, loading: () {
-                              return InkWell(
-                                onTap: () async {
-                                  SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
-
-                                  bool? visiblity =
-                                      prefs.getBool('payoutVisible');
-
-                                  if (visiblity == null) {
-                                    context
-                                        .read<PayoutVisibleCubit>()
-                                        .changeVisibility(false);
-                                  } else {
-                                    context
-                                        .read<PayoutVisibleCubit>()
-                                        .changeVisibility(!visiblity);
-                                  }
-                                },
-                                child: const Icon(
-                                  Icons.visibility_off,
-                                  color: Colors.grey,
-                                  size: 22,
-                                ),
-                              );
-                            }, loaded: (isVisible) {
-                              return InkWell(
-                                onTap: () async {
-                                  SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
-
-                                  bool? visiblity =
-                                      prefs.getBool('payoutVisible');
-
-                                  if (visiblity == null) {
-                                    context
-                                        .read<PayoutVisibleCubit>()
-                                        .changeVisibility(false);
-                                  } else {
-                                    context
-                                        .read<PayoutVisibleCubit>()
-                                        .changeVisibility(!visiblity);
-                                  }
-                                },
-                                child: Icon(
-                                  isVisible == true
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  color: Colors.grey,
-                                  size: 22,
-                                ),
-                              );
-                            }, error: (m) {
-                              return Container();
-                            });
-                          },
+                        child: const Text(
+                          'Edit',
+                          style: TextStyle(
+                              color: Color(0xFF145DA0),
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800),
                         ),
-                      )
-                    ],
-                  )),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const PayOuts(),
-                        ));
-                  },
-                  child: const Text(
-                    'Edit',
-                    style: TextStyle(
-                        color: Color(0xFF145DA0),
-                        fontSize: 11,
-                        fontWeight: FontWeight.w800),
-                  ),
-                ),
-              ),
-            ],
+                      ),
+                    ),
+                  ],
+                );
+              }, error: (m) {
+                return Container();
+              });
+            },
           ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.0125,

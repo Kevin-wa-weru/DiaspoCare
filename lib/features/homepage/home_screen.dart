@@ -3,15 +3,18 @@ import 'package:diasporacare/features/homepage/cubit/check_if_verified_cubit.dar
 import 'package:diasporacare/features/homepage/cubit/get_best_selling_items_cubit.dart';
 import 'package:diasporacare/features/homepage/cubit/get_dash_board_stats_cubit.dart';
 import 'package:diasporacare/features/homepage/cubit/get_new_request_count_cubit.dart';
+import 'package:diasporacare/features/homepage/cubit/get_payout_threshold_cubit.dart';
 import 'package:diasporacare/features/homepage/cubit/get_vendor_details_cubit.dart';
 import 'package:diasporacare/features/homepage/home_page.dart';
 import 'package:diasporacare/features/homepage/promotions.dart';
 import 'package:diasporacare/features/transactions/transactions.dart';
+import 'package:diasporacare/services/diaspocare_apis.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    context.read<GetPayoutThresholdCubit>().getPayoutThreshold(false);
     context.read<GetVendorDetailsCubit>().getVendorDetails();
     context.read<CheckIfVerifiedCubit>().checkIfVerified();
     context.read<GetNewRequestCountCubit>().getNewREquestCount();

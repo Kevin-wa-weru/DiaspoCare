@@ -104,5 +104,11 @@ class Singletons {
             create: (context) => GetQuotesAndResponsesCubit()),
         BlocProvider<PayoutVisibleCubit>(
             create: (context) => PayoutVisibleCubit()),
+        BlocProvider<GetPayoutThresholdCubit>(
+            create: (context) => GetPayoutThresholdCubit()),
+        BlocProvider<UpdatePayoutThresholdCubit>(
+            create: (context) => UpdatePayoutThresholdCubit()),
+        BlocProvider<ChangeThresholdWidgetCubit>(
+            create: (context) => ChangeThresholdWidgetCubit()),
       ];
 }

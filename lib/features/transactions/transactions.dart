@@ -58,10 +58,10 @@ class _TransactionState extends State<Transaction> {
     String? token = prefs.getString('userToken');
     String? facilityName = prefs.getString('facilityName');
 
-    var currency =
+    var currencyy =
         await DiaspoCareAPis.getFacilityDetails(facilityName!, token!);
     setState(() {
-      currency = currency['currency'];
+      currency = currencyy['currency'];
     });
   }
 
