@@ -19,7 +19,7 @@ class UpdatePayoutThresholdCubit extends Cubit<UpdatePayoutThresholdState> {
 
     prefs.setBool('hasSetThreshold', true);
 
-    var response = await DiaspoCareAPis.getPayoutThreshold(token);
+    await DiaspoCareAPis.updatePayoutThreshold(amount, token);
 
     emit(UpdatePayoutThresholdState.loaded(amount.toString()));
   }

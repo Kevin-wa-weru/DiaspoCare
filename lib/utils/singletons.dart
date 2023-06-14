@@ -110,5 +110,7 @@ class Singletons {
             create: (context) => UpdatePayoutThresholdCubit()),
         BlocProvider<ChangeThresholdWidgetCubit>(
             create: (context) => ChangeThresholdWidgetCubit()),
+        BlocProvider<GetPayTransfersCubit>(
+            create: (context) => GetPayTransfersCubit()),
       ];
 }

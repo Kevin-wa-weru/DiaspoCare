@@ -512,9 +512,93 @@ class _HomePageState extends State<HomePage> {
             },
             builder: (context, state) {
               return state.when(initial: () {
-                return Container();
+                return Container(
+                  height: MediaQuery.of(context).size.height * 0.04,
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  decoration: const BoxDecoration(
+                    color: Colors.black12,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                  ),
+                );
               }, loading: () {
-                return Container();
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.04,
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      decoration: const BoxDecoration(
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.04,
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            decoration: BoxDecoration(
+                              color: Colors.black12,
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(10.0),
+                                bottomLeft: Radius.circular(10.0),
+                              ),
+                              border: Border.all(
+                                color: Colors.black12,
+                                width: 1.0,
+                              ),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                '',
+                                style: TextStyle(
+                                    color: Colors.black12,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.02,
+                              width: MediaQuery.of(context).size.width * 0.16,
+                              decoration: const BoxDecoration(
+                                color: Colors.black12,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Expanded(
+                            child: Icon(
+                              Icons.visibility,
+                              color: Colors.black12,
+                              size: 22,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.02,
+                        width: MediaQuery.of(context).size.width * 0.12,
+                        decoration: const BoxDecoration(
+                          color: Colors.black12,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                );
               }, loaded: (message, isVisible, hasSetThreshold) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -567,7 +651,7 @@ class _HomePageState extends State<HomePage> {
                                     color: Colors.transparent,
                                     child: Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 2.0, right: 8.0),
+                                          left: 8.0, right: 8.0),
                                       child: Text(
                                         'KES: $message',
                                         style: const TextStyle(
@@ -881,12 +965,11 @@ class _HomePageState extends State<HomePage> {
                                   Padding(
                                       padding: const EdgeInsets.only(
                                           left: 15.0, top: 10),
-                                      child: LoadingContainerAnimation(
-                                          targetContainer: Container(
+                                      child: Container(
                                         color: Colors.black12,
                                         width: 100,
                                         height: 15,
-                                      ))),
+                                      )),
                                 ],
                               ),
                               Row(
@@ -972,12 +1055,11 @@ class _HomePageState extends State<HomePage> {
                                   Padding(
                                       padding: const EdgeInsets.only(
                                           left: 15.0, top: 10),
-                                      child: LoadingContainerAnimation(
-                                          targetContainer: Container(
+                                      child: Container(
                                         color: Colors.black12,
                                         width: 100,
                                         height: 15,
-                                      ))),
+                                      )),
                                 ],
                               ),
                               Row(

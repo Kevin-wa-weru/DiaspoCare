@@ -27,6 +27,7 @@ import 'package:diasporacare/features/homepage/cubit/get_dash_board_stats_cubit.
 import 'package:diasporacare/features/homepage/cubit/get_discounts_cubit.dart';
 import 'package:diasporacare/features/homepage/cubit/get_facility_details_cubit.dart';
 import 'package:diasporacare/features/homepage/cubit/get_new_request_count_cubit.dart';
+import 'package:diasporacare/features/homepage/cubit/get_pay_transfers_cubit.dart';
 import 'package:diasporacare/features/homepage/cubit/get_payout_threshold_cubit.dart';
 import 'package:diasporacare/features/homepage/cubit/get_quote_requests_cubit.dart';
 import 'package:diasporacare/features/homepage/cubit/get_quotes_and_responses_cubit.dart';

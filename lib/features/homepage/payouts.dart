@@ -1,9 +1,16 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:diasporacare/features/homepage/cubit/change_threshold_widget_cubit.dart';
+import 'package:diasporacare/features/homepage/cubit/get_pay_transfers_cubit.dart';
+import 'package:diasporacare/features/homepage/cubit/get_payout_threshold_cubit.dart';
 import 'package:diasporacare/features/homepage/cubit/update_payout_threshold_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 
 class PayOuts extends StatefulWidget {
   const PayOuts({
@@ -25,6 +32,7 @@ class _PayOutsState extends State<PayOuts> {
     context
         .read<ChangeThresholdWidgetCubit>()
         .resolveInitialWidget(widget.amount);
+    context.read<GetPayTransfersCubit>().getTransfers();
     super.initState();
   }
 
@@ -41,8 +49,14 @@ class _PayOutsState extends State<PayOuts> {
               top: 8,
             ),
             child: GestureDetector(
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                bool? isVisible = prefs.getBool('payoutVisible');
+
+                context
+                    .read<GetPayoutThresholdCubit>()
+                    .getPayoutThreshold(isVisible!);
               },
               child: Container(
                 height: 20,
@@ -160,15 +174,32 @@ class _PayOutsState extends State<PayOuts> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.04,
           ),
-
-          // const Payouts(),
-
-          const Text('No payouts available',
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-              )),
+          BlocBuilder<GetPayTransfersCubit, GetPayTransfersState>(
+            builder: (context, state) {
+              return state.when(initial: () {
+                return PayoutsLoading();
+              }, loading: () {
+                return PayoutsLoading();
+              }, loaded: (m) {
+                if (m.isEmpty) {
+                  return const Text('No payouts available',
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ));
+                } else {
+                  // return PayoutsLoading();
+                  return Payouts(
+                    payouts: m,
+                    currency: widget.currency,
+                  );
+                }
+              }, error: (m) {
+                return Container();
+              });
+            },
+          ),
         ],
       )),
     );
@@ -178,7 +209,11 @@ class _PayOutsState extends State<PayOuts> {
 class Payouts extends StatelessWidget {
   const Payouts({
     Key? key,
+    required this.payouts,
+    required this.currency,
   }) : super(key: key);
+  final List payouts;
+  final String currency;
 
   @override
   Widget build(BuildContext context) {
@@ -186,294 +221,257 @@ class Payouts extends StatelessWidget {
       child: ListView(
         children: [
           Column(
-            children: [
-              Column(
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: Column(
+              children: payouts
+                  .map<Widget>(
+                    (e) => Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text(
-                              'Date: 23 May 2023',
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              'Transaction ID: 12sfarsc',
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
-                            Text(
-                              'Transfer Amount:',
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
-                            Text(
-                              'KES 123,890.00',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
-                            Text(
-                              'Completed',
-                              style: TextStyle(
-                                  color: Colors.green,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    height: 1,
-                    color: Colors.grey,
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text(
-                              'Date: 23 May 2023',
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              'Transaction ID: 12sfarsc',
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
-                            Text(
-                              'Transfer Amount:',
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'KES 123,890.00',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.08,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 2.0),
-                                  child: Text(
-                                    'Contact Support',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13,
-                                        fontStyle: FontStyle.italic,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Date:${Jiffy(DateTime.parse(e['creation'])).format(' do MMM yyyy')}',
+                                    style: const TextStyle(
+                                        color: Colors.black54,
+                                        fontSize: 12,
                                         fontWeight: FontWeight.w600),
                                   ),
-                                ),
+                                  Text(
+                                    'Transaction ID: ${e['transaction']}',
+                                    style: const TextStyle(
+                                        color: Colors.black54,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
                               ),
-                            )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
-                            Text(
-                              'Failed',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    height: 1,
-                    color: Colors.grey,
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text(
-                              'Date: 23 May 2023',
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              'Transaction ID: 12sfarsc',
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.02,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: const [
+                                  Text(
+                                    'Transfer Amount:',
+                                    style: TextStyle(
+                                        color: Colors.black54,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '$currency ${e['transfer_amount']}',
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  e['status'] != 'completed'
+                                      ? Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          child: const Center(
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 8.0,
+                                                  vertical: 2.0),
+                                              child: Text(
+                                                'Contact Support',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 13,
+                                                    fontStyle: FontStyle.italic,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : Container(),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.08,
+                                  ),
+                                  Text(
+                                    e['status'] == 'completed'
+                                        ? 'Completed'
+                                        : 'Failed',
+                                    style: TextStyle(
+                                        color: e['status'] == 'completed'
+                                            ? Colors.green
+                                            : Colors.red,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
-                            Text(
-                              'Transfer Amount:',
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: 1,
+                          color: Colors.grey,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'KES 123,890.00',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.08,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 2.0),
-                                  child: Text(
-                                    'Retrying...',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13,
-                                        fontStyle: FontStyle.italic,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
-                            Text(
-                              'Failed',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
                         ),
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    height: 1,
-                    color: Colors.grey,
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                ],
-              ),
-            ],
+                  )
+                  .toList()),
+        ],
+      ),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class PayoutsLoading extends StatelessWidget {
+  PayoutsLoading({
+    Key? key,
+  }) : super(key: key);
+  List transfers = [1, 2, 3, 4];
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListView(
+        children: [
+          Shimmer.fromColors(
+            baseColor: const Color(0xFF145DA0),
+            highlightColor: Colors.black12,
+            child: Column(
+                children: transfers
+                    .map<Widget>(
+                      (e) => Column(
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.03,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.2,
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black12,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                    ),
+                                    Container(
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.03,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.3,
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black12,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.02,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.03,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.2,
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black12,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.03,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.4,
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black12,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                    ),
+                                    Container(
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.03,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.2,
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black12,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.02,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            height: 1,
+                            color: Colors.black12,
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.02,
+                          ),
+                        ],
+                      ),
+                    )
+                    .toList()),
           ),
         ],
       ),
@@ -678,10 +676,17 @@ class _StepTwoState extends State<StepTwo> {
                 state.when(
                     initial: () {},
                     loading: () {},
-                    loaded: (m) {
+                    loaded: (m) async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      bool? isVisible = prefs.getBool('payoutVisible');
                       context
                           .read<ChangeThresholdWidgetCubit>()
                           .toogleWidget(m, 2);
+                      print('grrrissippa $isVisible');
+                      context
+                          .read<GetPayoutThresholdCubit>()
+                          .getPayoutThreshold(isVisible!);
                     },
                     error: (m) {});
               },

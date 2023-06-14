@@ -1621,14 +1621,53 @@ class DiaspoCareAPis {
   }
 
   static Future updatePayoutThreshold(amount, token) async {
+    print('Started updating payout with $amount');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenType = prefs.getString(
       'tokenType',
     );
     try {
+      http.Response response = await http.post(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.update_transfer_threshold'),
+          body: jsonEncode(
+            {"amount": amount},
+          ),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            'Authorization': "$tokenType $token",
+          });
+
+      if (response.body.isNotEmpty) {
+        json.decode(response.body);
+        var data = jsonDecode(response.body);
+        debugPrint('Updated threshold and returned these $data');
+        return data['message'];
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+
+      // 567345
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future getVendorTransfers(type, page) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
+    var token = prefs.getString(
+      'userToken',
+    );
+    try {
       http.Response response = await http.get(
           Uri.parse(
-              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.get_transfer_threshold'),
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.get_vendor_transfers?status=$type&page=$page'),
           headers: {
             "Content-Type": "application/json",
             "Access-Control_Allow_Origin": "*",
@@ -1639,7 +1678,13 @@ class DiaspoCareAPis {
         json.decode(response.body);
         var data = jsonDecode(response.body);
         debugPrint('hResponseBody Decoded sdsdsdsds $data');
-        return data['message'];
+
+        if (response.statusCode == 200) {
+          print('Getting vendor transfers $data');
+          return data['message'];
+        } else {
+          return [];
+        }
       } else {
         debugPrint('empty results');
         return 'An unkown error occurred';
