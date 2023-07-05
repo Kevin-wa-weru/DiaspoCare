@@ -60,9 +60,11 @@ class _TransactionState extends State<Transaction> {
 
     var currencyy =
         await DiaspoCareAPis.getFacilityDetails(facilityName!, token!);
-    setState(() {
+    if(mounted){
+      setState(() {
       currency = currencyy['currency'];
     });
+    }
   }
 
   Widget resolveBodyOfTransaction(

@@ -50,7 +50,6 @@ import 'package:diasporacare/features/transactions/cubit/search_beneficiary_cubi
 import 'package:diasporacare/features/transactions/cubit/search_items_cubit.dart';
 import 'package:diasporacare/features/transactions/cubit/verify_transaction_otp_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../features/homepage/cubit/change_threshold_widget_cubit.dart';
 
 part 'singletons.dart';
