@@ -25,12 +25,7 @@ class GetQuoteRequestsCubit extends Cubit<GetQuoteRequestsState> {
       tempHolder.add(response);
     }
 
-    print(
-        'Got all the items in this cubiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiit  $tempHolder');
-
     List? requests = prefs.getStringList('localStorageRequest');
-
-    print('Hello these are the new requestsssssssssssss $requests');
 
     emit(GetQuoteRequestsState.loaded(response, tempHolder, requests!));
     tempHolder = [];

@@ -9,7 +9,6 @@ class PayoutVisibleCubit extends Cubit<PayoutVisibleState> {
   PayoutVisibleCubit() : super(const PayoutVisibleState.initial());
 
   changeVisibility(bool isVisible) async {
-    print('FSJNjfnsjfbjsf $isVisible');
     emit(const PayoutVisibleState.loading());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('payoutVisible', isVisible);

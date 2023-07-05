@@ -24,9 +24,6 @@ class GetPayoutThresholdCubit extends Cubit<GetPayoutThresholdState> {
   }
 
   getPayoutThreshold(bool isVisible) async {
-    print(
-      'Started getting payout threshold',
-    );
     emit(const GetPayoutThresholdState.loading());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('payoutVisible', isVisible);

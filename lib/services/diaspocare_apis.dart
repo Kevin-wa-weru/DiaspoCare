@@ -36,7 +36,6 @@ class DiaspoCareAPis {
         if (data.toString().contains('Invalid login credentials')) {
           return 'Invalid login Credentails';
         } else if (data.toString().contains('Logged In')) {
-          print('Logged in token ${data['token']}');
           prefs.setString('userToken', data['token']);
           prefs.setString('userEmail', email.trim());
           prefs.setString('vendorName', data['full_name']);
@@ -103,7 +102,6 @@ class DiaspoCareAPis {
   }
 
   static Future signUp(email, regionCode, phone, password) async {
-    print('signUp with is $email $regionCode $phone, $password');
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -306,8 +304,6 @@ class DiaspoCareAPis {
 
       if (response.body.isNotEmpty) {
         json.decode(response.body);
-        var data = jsonDecode(response.body);
-        print('Sending otp code with $phoneNumber returned $data');
         debugPrint('hResponseBody Decoded');
         if (response.statusCode == 200) {
           return 'Otp sent';
@@ -348,8 +344,6 @@ class DiaspoCareAPis {
         var data = jsonDecode(response.body);
         debugPrint('hResponseBody Decoded');
 
-        print(
-            'Verifying passwordlss otp with $phoneNumber $otpCode "a317891682" returned $data');
         if (response.statusCode == 200) {
           if (data['is_vendor'] == false) {
             return 'Download supporter app to use the account';
@@ -1060,8 +1054,6 @@ class DiaspoCareAPis {
     var tokenType = prefs.getString(
       'tokenType',
     );
-    print('Initialising with these');
-    print('$basketId $code $token');
     try {
       http.Response response = await http.post(
           Uri.parse(
@@ -1074,10 +1066,6 @@ class DiaspoCareAPis {
           });
 
       if (response.body.isNotEmpty) {
-        var data = jsonDecode(response.body);
-        print('Initialising and returned this');
-        print(data);
-        print(response.statusCode);
         if (response.statusCode == 200) {
           return 'Otp sent';
         } else {
@@ -1245,7 +1233,6 @@ class DiaspoCareAPis {
           });
 
       if (response.body.isNotEmpty) {
-        print(response.body);
         if (response.statusCode == 200) {
           return 'Successfully updated location';
         } else {
@@ -1311,7 +1298,6 @@ class DiaspoCareAPis {
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
         if (response.statusCode == 200) {
-          print('Sfafssffas $data');
           return data['message'];
         } else {
           return false;
@@ -1550,7 +1536,6 @@ class DiaspoCareAPis {
   }
 
   static Future registerFCM(fcmToken, accessToken) async {
-    print('HEllsfsfsf $accessToken $accessToken');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenType = prefs.getString(
       'tokenType',
@@ -1621,7 +1606,6 @@ class DiaspoCareAPis {
   }
 
   static Future updatePayoutThreshold(amount, token) async {
-    print('Started updating payout with $amount');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var tokenType = prefs.getString(
       'tokenType',
@@ -1680,7 +1664,6 @@ class DiaspoCareAPis {
         debugPrint('hResponseBody Decoded sdsdsdsds $data');
 
         if (response.statusCode == 200) {
-          print('Getting vendor transfers $data');
           return data['message'];
         } else {
           return [];

@@ -48,7 +48,6 @@ class _VerifyOtpForPaymentState extends State<VerifyOtpForPayment> {
 
   @override
   void initState() {
-    print('${widget.basketDetail}');
     super.initState();
   }
 

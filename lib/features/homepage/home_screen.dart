@@ -8,13 +8,11 @@ import 'package:diasporacare/features/homepage/cubit/get_vendor_details_cubit.da
 import 'package:diasporacare/features/homepage/home_page.dart';
 import 'package:diasporacare/features/homepage/promotions.dart';
 import 'package:diasporacare/features/transactions/transactions.dart';
-import 'package:diasporacare/services/diaspocare_apis.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

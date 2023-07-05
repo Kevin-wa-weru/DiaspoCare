@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 
 class PayOuts extends StatefulWidget {
@@ -683,7 +682,6 @@ class _StepTwoState extends State<StepTwo> {
                       context
                           .read<ChangeThresholdWidgetCubit>()
                           .toogleWidget(m, 2);
-                      print('grrrissippa $isVisible');
                       context
                           .read<GetPayoutThresholdCubit>()
                           .getPayoutThreshold(isVisible!);
