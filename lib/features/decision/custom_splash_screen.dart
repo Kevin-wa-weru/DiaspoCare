@@ -1,9 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:diasporacare/features/auth/sign_in/sign_in.dart';
 import 'package:diasporacare/features/homepage/home_screen.dart';
 import 'package:diasporacare/features/landing/landing_page.dart';
-import 'package:diasporacare/features/widgets/spinner.dart';
 import 'package:diasporacare/services/local_auth.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
