@@ -1,6 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:diasporacare/features/auth/sign_in/sign_in.dart';
+import 'package:diasporacare/features/homepage/home_screen.dart';
 import 'package:diasporacare/features/landing/landing_page.dart';
 import 'package:diasporacare/features/widgets/spinner.dart';
+import 'package:diasporacare/services/local_auth.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,16 +17,25 @@ class CustomSplashScreen extends StatefulWidget {
 }
 
 class _CustomSplashScreenState extends State<CustomSplashScreen> {
+  bool authenticated = false;
+  bool isFirstTimer = false;
   checkifFirstTimeUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? isFirstTimeUSer = prefs.getBool('isFirstTimeUser');
 
     if (isFirstTimeUSer == false) {
-      Future.delayed(const Duration(seconds: 2), () {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const SignIn()));
+      final authenticate = await LocalAuth.authenticate();
+      setState(() {
+        authenticated = authenticate;
       });
+      if (authenticated) {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()));
+      }
     } else {
+      setState(() {
+        isFirstTimer = true;
+      });
       Future.delayed(const Duration(seconds: 2), () {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const LandingScreen()));
@@ -86,12 +99,13 @@ class _CustomSplashScreenState extends State<CustomSplashScreen> {
                   fontSize: 17,
                   fontWeight: FontWeight.w800),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 30.0),
-              child: Center(
-                child: Spinner(heightOfSpinner: 30, widthofSpinnner: 30),
-              ),
-            ),
+            // const Padding(
+            //   padding: EdgeInsets.only(top: 30.0),
+            //   child: Center(
+            //     child: Spinner(heightOfSpinner: 30, widthofSpinnner: 30),
+            //   ),
+            // )
+            Container()
           ],
         ),
       ),

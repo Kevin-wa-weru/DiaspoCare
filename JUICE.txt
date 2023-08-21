@@ -1,0 +1,35 @@
+trans/history     eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYzA0Zjg3ZjBmM2Q2ZjQ4ZjFmMzMxNTA5ZTg1YTk4M2M4ZGExNGNmNTAxOWE1ZGE3ODA0ODQ0OTViNDllYTQ0NjMwMDBkMDU4OGY3ZTM3MGEiLCJpYXQiOjE2NjQ2OTA3NzEsIm5iZiI6MTY2NDY5MDc3MSwiZXhwIjoxNjk2MjI2NzcxLCJzdWIiOiI3NyIsInNjb3BlcyI6W119.HoFxBWPl5ab5b8o6EyZpAHH_GNX_-B2Oszkvkd0qnCCyK9mncCMlqAOhGO_KoBMcIg-83PH3L86RPpfiYog2PFdkgTMZk1PA3xYLW_VEPhzWWKs3hYhqw1dV2_4uIQR6s6C851KPNOm4TbeCw5PD9TXGILg2OeX081q0l46q3ZybyXCc6hFVlx7lxkuOgXOYcgag-nwoKNu68n5I2GJ5ic1aGXv6q1jLfNgdiGhIM-edRP0aKQZ0WsTzPShV7X6vk4iIi_KRQ-vH9Tr8cbfEf0pRXmoGQzNn9_qtpUF6nS6q2z0iojUJNsIEXvJDRTH1mrISRqO2EHRI8fVXN3ukLYsK-bzSfTQmGlhPqavfjYI46XSIPS3QlSKr7bNczIY5V8lLpl3gNzjSjNQN4nEmio7ny7iCSJ2-3B7MMITE99JE9VduAAWasFJ_kKsGTbDm-AZgd2aosKCwk-cEwX0aJJ5h0pdMR-BzA0cjmg6J9BIgZLyDfJXCV_VRCxaXMjQl8zte3bUARNYL02Dm0kXvajmikJhOYGa6KTMdIZrNVUQC9bjjdn4Ya6Pp--72ix3QrokHULKpGA5lMrasVjOYjCQWN8i8bket8yZn0hdVl4cXqkPFVmco2V_IqVoy3jCK1NujBKqpaa8xIeleK-SMNpCxE_6d3WQ6g0Y5GpMMUU0
+
+withdraw    eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYzA0Zjg3ZjBmM2Q2ZjQ4ZjFmMzMxNTA5ZTg1YTk4M2M4ZGExNGNmNTAxOWE1ZGE3ODA0ODQ0OTViNDllYTQ0NjMwMDBkMDU4OGY3ZTM3MGEiLCJpYXQiOjE2NjQ2OTA3NzEsIm5iZiI6MTY2NDY5MDc3MSwiZXhwIjoxNjk2MjI2NzcxLCJzdWIiOiI3NyIsInNjb3BlcyI6W119.HoFxBWPl5ab5b8o6EyZpAHH_GNX_-B2Oszkvkd0qnCCyK9mncCMlqAOhGO_KoBMcIg-83PH3L86RPpfiYog2PFdkgTMZk1PA3xYLW_VEPhzWWKs3hYhqw1dV2_4uIQR6s6C851KPNOm4TbeCw5PD9TXGILg2OeX081q0l46q3ZybyXCc6hFVlx7lxkuOgXOYcgag-nwoKNu68n5I2GJ5ic1aGXv6q1jLfNgdiGhIM-edRP0aKQZ0WsTzPShV7X6vk4iIi_KRQ-vH9Tr8cbfEf0pRXmoGQzNn9_qtpUF6nS6q2z0iojUJNsIEXvJDRTH1mrISRqO2EHRI8fVXN3ukLYsK-bzSfTQmGlhPqavfjYI46XSIPS3QlSKr7bNczIY5V8lLpl3gNzjSjNQN4nEmio7ny7iCSJ2-3B7MMITE99JE9VduAAWasFJ_kKsGTbDm-AZgd2aosKCwk-cEwX0aJJ5h0pdMR-BzA0cjmg6J9BIgZLyDfJXCV_VRCxaXMjQl8zte3bUARNYL02Dm0kXvajmikJhOYGa6KTMdIZrNVUQC9bjjdn4Ya6Pp--72ix3QrokHULKpGA5lMrasVjOYjCQWN8i8bket8yZn0hdVl4cXqkPFVmco2V_IqVoy3jCK1NujBKqpaa8xIeleK-SMNpCxE_6d3WQ6g0Y5GpMMUU0
+
+
+
+
+
+
+
+
+
+{"success":
+{"message":"User Validated Successfully",
+"user":
+    {"id":75,
+     "name":"Macharia Waithira",
+     "phone":"254736249439",
+     "email":"macharia71@gmail.com",
+     "password":"$2y$10$M89DAKWMTExC2dzTrhgcLuoect9VqalZkVrb32xB5SIHr9EE4eJSy",
+     "image_path":null,
+     "path":null,
+     "state":null,
+     "country":null,
+     "address":null,
+     "zipcode":null,
+     "language":null,
+     "timezone":null,
+     "currency":null,
+     "client_id":"483974",
+     "activated":0,
+     "remember_token":null,
+     "reputation":0,
+     "created_at":"2022-11-22 18:15:24",
+     "updated_at":"2022-11-22 18:15:24"}}

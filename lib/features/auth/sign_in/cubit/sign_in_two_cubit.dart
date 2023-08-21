@@ -14,7 +14,9 @@ class SignInTwoCubit extends Cubit<SignInTwoState> {
     emit(const SignInTwoState.loading());
     var response = await DiaspoCareAPis.login(email, password);
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isFirstTimeUser', false);
+    if (response == 'Successfull login') {
+      prefs.setBool('isFirstTimeUser', false);
+    }
     String? token = prefs.getString('userToken');
 
     String? fcmToken = await FirebaseMessaging.instance.getToken();

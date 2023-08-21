@@ -12,9 +12,12 @@ class SignInCubit extends Cubit<SignInState> {
 
   signIn(String email, String password) async {
     emit(const SignInState.loading());
-    var response = await DiaspoCareAPis.login(email, password);
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isFirstTimeUser', false);
+    var response = await DiaspoCareAPis.login(email, password);
+
+    if (response == 'Successfull login') {
+      prefs.setBool('isFirstTimeUser', false);
+    }
     String? token = prefs.getString('userToken');
 
     String? fcmToken = await FirebaseMessaging.instance.getToken();
