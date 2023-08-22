@@ -39,6 +39,7 @@ class DiaspoCareAPis {
           prefs.setString('userToken', data['token']);
           prefs.setString('userEmail', email.trim());
           prefs.setString('vendorName', data['full_name']);
+          prefs.setString('userPassword', password);
           prefs.setString('tokenType', 'Basic');
 
           if (data['vendor'].isEmpty) {
@@ -1299,6 +1300,37 @@ class DiaspoCareAPis {
         var data = jsonDecode(response.body);
         if (response.statusCode == 200) {
           return data['message'];
+        } else {
+          return false;
+        }
+      } else {
+        debugPrint('empty results');
+        return 'An unkown error occurred';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return 'Server busy try again later';
+    }
+  }
+
+  static Future testTokenValidity(String facilityName, String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var tokenType = prefs.getString(
+      'tokenType',
+    );
+    try {
+      http.Response response = await http.get(
+          Uri.parse(
+              '$baseUrl/api/method/hcfa_core.remote_procedures.vendors.get_stats?branch=$facilityName'),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control_Allow_Origin": "*",
+            "Authorization": "$tokenType $token"
+          });
+
+      if (response.body.isNotEmpty) {
+        if (response.statusCode == 200) {
+          return true;
         } else {
           return false;
         }

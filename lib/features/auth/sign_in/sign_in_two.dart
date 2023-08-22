@@ -171,6 +171,7 @@ class _SignIntTwoState extends State<SignIntTwo> {
                         child: Column(
                           children: [
                             TextFormField(
+                              autofocus: true,
                               textAlign: TextAlign.left,
                               style: const TextStyle(
                                   color: Colors.black87,
@@ -503,7 +504,7 @@ class _SignIntTwoState extends State<SignIntTwo> {
                               ),
                             ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.05,
+                              height: MediaQuery.of(context).size.height * 0.02,
                             ),
                             GestureDetector(
                               onTap: () {

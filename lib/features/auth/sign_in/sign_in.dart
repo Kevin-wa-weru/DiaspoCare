@@ -171,6 +171,7 @@ class _SignInState extends State<SignIn> {
                         child: Column(
                           children: [
                             TextFormField(
+                              autofocus: true,
                               textAlign: TextAlign.left,
                               style: const TextStyle(
                                   color: Colors.black87,
@@ -505,7 +506,7 @@ class _SignInState extends State<SignIn> {
                               ),
                             ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.05,
+                              height: MediaQuery.of(context).size.height * 0.02,
                             ),
                             GestureDetector(
                               onTap: () {
