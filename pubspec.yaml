@@ -1,15 +1,12 @@
 name: diasporacare
 description: A new Flutter project.
 
+publish_to: "none"
 
-publish_to: 'none' 
-
-
-version: 2.0.0+10
+version: 2.0.1+10
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
-
 
 dependencies:
   flutter:
@@ -37,7 +34,6 @@ dependencies:
   double_back_to_close_app: ^2.1.0
   device_preview: ^1.1.0
   local_auth: ^2.1.6
- 
 
 dev_dependencies:
   flutter_test:
@@ -47,7 +43,6 @@ dev_dependencies:
   bloc_test: ^9.0.3
   flutter_lints: ^2.0.0
 
-  
 flutter_icons:
   android: "launcher_icon"
   ios: true
@@ -65,7 +60,7 @@ flutter:
         - asset: assets/fonts/google_fonts/Poppins-Black.ttf
         - asset: assets/fonts/google_fonts/Poppins-BlackItalic.ttf
         - asset: assets/fonts/google_fonts/Poppins-Bold.ttf
-        - asset: assets/fonts/google_fonts/Poppins-BoldItalic.ttf 
+        - asset: assets/fonts/google_fonts/Poppins-BoldItalic.ttf
         - asset: assets/fonts/google_fonts/Poppins-ExtraBold.ttf
         - asset: assets/fonts/google_fonts/Poppins-ExtraBoldItalic.ttf
         - asset: assets/fonts/google_fonts/Poppins-Extralight.ttf
